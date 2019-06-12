@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import * as d3 from 'd3/index';
+import {Component, OnInit} from "@angular/core";
+import * as d3 from "d3/index";
 
 @Component({
   selector: 'app-canvas-d3',
@@ -8,7 +8,8 @@ import * as d3 from 'd3/index';
 })
 export class CanvasD3Component implements OnInit {
   svg;
-  imageSVG;
+  image;
+  rectangleStrokeWidth = 5;
 
   constructor() {
   }
@@ -18,44 +19,71 @@ export class CanvasD3Component implements OnInit {
   }
 
   initSVG() {
-    this.svg = d3.select('#canvas-d3').append('svg')
-    .attr('width', 800)
-    .attr('height', 468);
+    this.svg = d3.select('#canvas-d3')
+      .append('svg')
+      .attr('width', 800)
+      .attr('height', 468);
 
-    this.imageSVG = this.svg.append('svg:image')
-    .attr('x', 0)
-    .attr('y', 0)
-    .attr('width', 800)
-    .attr('height', 468)
-    .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
-    .on('click', () => {
-      const coords = d3.mouse(d3.event.target);
-
-      this.drawRectangle(coords[0], coords[1]);
-    });
+    this.image = this.svg.append('svg:image')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 800)
+      .attr('height', 468)
+      .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
+      .on('click', () => {
+        const coords = d3.mouse(d3.event.target);
+        this.drawRectangle(coords[0], coords[1], 100, 100);
+      });
   }
 
-  drawRectangle(x: number, y: number) {
-    const rectangle = this.svg.append('rect');
+  addResizeHotspot(rectangleGroup, x: number, y: number) {
+    rectangleGroup.append('circle')
+      .attr('fill', 'white')
+      .attr('r', this.rectangleStrokeWidth > 1 ? this.rectangleStrokeWidth - 1 : 1)
+      .attr('cx', x)
+      .attr('cy', y);
 
-    rectangle.attr('width', 100)
-    .attr('height', 100)
-    .attr('x', x)
-    .attr('y', y)
-    .attr('stroke', '#2378ae')
-    .attr('stroke-width', 10)
-    .attr('fill', 'transparent')
-    .call(
-      d3.drag()
-      .on('start', () => {
-      })
-      .on('drag', () => {
-        rectangle.attr('x', d3.event.x);
-        rectangle.attr('y', d3.event.y);
+    return rectangleGroup;
+  }
 
-        console.log(d3.event);
+  drawRectangle(x: number, y: number, width: number, height: number) {
+    const rectangleGroup = this.svg.append('g');
+
+    // add rectangle
+    rectangleGroup.append('rect')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('stroke', 'orange')
+      .attr('stroke-width', this.rectangleStrokeWidth)
+      .attr('fill', '#2378ae')
+      .style("opacity", 0.4)
+      .attr("cursor", "move");
+
+    // add rectangle resize hotspots
+    this.addResizeHotspot(rectangleGroup, 0, 0);
+    this.addResizeHotspot(rectangleGroup, width, 0);
+    this.addResizeHotspot(rectangleGroup, 0, height);
+    this.addResizeHotspot(rectangleGroup, width, height);
+
+    // add drag behaviour
+    rectangleGroup
+      .datum({x: x, y: y})
+      .attr("transform", function (d) {
+        return "translate(" + [d.x, d.y] + ")";
       })
-      .on('end', (() => {
-      })));
+      .call(
+        d3.drag()
+          .on('start', () => {
+          })
+          .on('drag', function (d) {
+            d3.select(this).attr("transform", function (d) {
+              d.x += d3.event.dx;
+              d.y += d3.event.dy;
+
+              return "translate(" + [d.x, d.y] + ")"
+            })
+          })
+          .on('end', (() => {
+          })));
   }
 }
