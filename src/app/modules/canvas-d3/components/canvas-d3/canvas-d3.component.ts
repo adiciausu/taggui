@@ -84,6 +84,7 @@ export class CanvasD3Component implements OnInit {
       .attr('r', this.rectangleStrokeWidth > 1 ? this.rectangleStrokeWidth - 1 : 1)
       .attr('cx', x)
       .attr('cy', y)
+      .attr("cursor", className.toLowerCase() + "-resize")
       .call(resize);
   }
 
