@@ -34,6 +34,10 @@ export class CanvasD3Component implements OnInit {
         const coords = d3.mouse(d3.event.target);
         this.drawRectangle(coords[0], coords[1], 100, 100);
       });
+
+    this.svg.call(d3.zoom().on('zoom', () => {
+      this.svg.attr('transform', d3.event.transform);
+    }));
   }
 
   addResizeHotspot(rectangleGroup, x: number, y: number) {
