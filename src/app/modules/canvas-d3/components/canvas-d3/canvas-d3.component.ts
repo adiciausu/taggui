@@ -8,33 +8,34 @@ import * as d3 from "d3/index";
 })
 export class CanvasD3Component implements OnInit {
   svg;
-  image;
   rectangleStrokeWidth = 5;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.initSVG();
+    this.initSVG(800, 468);
   }
 
-  initSVG() {
+  initSVG(width: number, height: number) {
     this.svg = d3.select('#canvas-d3')
       .append('svg')
-      .attr('width', 800)
-      .attr('height', 468);
+      .attr('width', width)
+      .attr('height', height);
 
-    this.image = this.svg.append('svg:image')
+    // add image
+    this.svg.append('svg:image')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 800)
-      .attr('height', 468)
+      .attr('width', width)
+      .attr('height', height)
       .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
       .on('click', () => {
         const coords = d3.mouse(d3.event.target);
         this.drawRectangle(coords[0], coords[1], 100, 100);
       });
 
+    // add zoom
     this.svg.call(d3.zoom().on('zoom', () => {
       this.svg.attr('transform', d3.event.transform);
     }));
