@@ -27,8 +27,6 @@ export class CanvasD3Component implements OnInit {
     this.svg.append('svg:image')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', width)
-      .attr('height', height)
       .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
       .on('click', () => {
         const coords = d3.mouse(d3.event.target);
@@ -36,9 +34,13 @@ export class CanvasD3Component implements OnInit {
       });
 
     // add zoom
-    this.svg.call(d3.zoom().on('zoom', () => {
-      this.svg.attr('transform', d3.event.transform);
-    }));
+    const zoom = d3.zoom()
+      .scaleExtent([.5, 2])
+      .on('zoom', () => {
+        this.svg.attr('transform', d3.event.transform);
+      });
+
+    this.svg.call(zoom);
   }
 
   addResizeHotspot(rectangleGroup, x: number, y: number) {
@@ -80,8 +82,8 @@ export class CanvasD3Component implements OnInit {
         d3.drag()
           .on('start', () => {
           })
-          .on('drag', function (d) {
-            d3.select(this).attr("transform", function (d) {
+          .on('drag', (d: {x: number, y: number}) => {
+            rectangleGroup.attr("transform", function (d) {
               d.x += d3.event.dx;
               d.y += d3.event.dy;
 
