@@ -24,7 +24,7 @@ export class CanvasD3Component implements OnInit {
       .attr('height', height);
 
     // add image
-    this.svg.append('svg:image')
+    this.svg.append('image')
       .attr('x', 0)
       .attr('y', 0)
       .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
@@ -43,14 +43,48 @@ export class CanvasD3Component implements OnInit {
     this.svg.call(zoom);
   }
 
-  addResizeHotspot(rectangleGroup, x: number, y: number) {
+  addResizeHotspot(rectangleGroup, x: number, y: number, className: string) {
+    const resize = d3.drag().on('drag', (d) => {
+      const rect = rectangleGroup.select('rect');
+
+      if (d3.event.x > rect.attr('x')) {
+        const newWidth = d3.event.x - rect.attr('x');
+        rect.attr('width', newWidth);
+        rectangleGroup.select('.SE')
+          .attr('cx', newWidth)
+        rectangleGroup.select('.NE')
+          .attr('cx', newWidth)
+      } else {
+        // const newWidth = rect.attr('x') - d3.event.x;
+        // rect.attr('width', newWidth);
+        // rect.attr('x', d3.event.x);
+        //
+        // rectangleGroup.select('.SE')
+        //   .attr('cx', 0);
+        // rectangleGroup.select('.NE')
+        //   .attr('cx', 0);
+      }
+
+      if (d3.event.y > rect.attr('y')) {
+        const newHeight = d3.event.y - rect.attr('y');
+
+        rect.attr('height', newHeight);
+        rectangleGroup.select('.SE')
+          .attr('cy', newHeight);
+        rectangleGroup.select('.SW')
+          .attr('cy', newHeight)
+      } else {
+        //
+      }
+    });
+
     rectangleGroup.append('circle')
+      .classed(className, true)
       .attr('fill', 'white')
       .attr('r', this.rectangleStrokeWidth > 1 ? this.rectangleStrokeWidth - 1 : 1)
       .attr('cx', x)
-      .attr('cy', y);
-
-    return rectangleGroup;
+      .attr('cy', y)
+      .call(resize);
   }
 
   drawRectangle(x: number, y: number, width: number, height: number) {
@@ -67,10 +101,10 @@ export class CanvasD3Component implements OnInit {
       .attr("cursor", "move");
 
     // add rectangle resize hotspots
-    this.addResizeHotspot(rectangleGroup, 0, 0);
-    this.addResizeHotspot(rectangleGroup, width, 0);
-    this.addResizeHotspot(rectangleGroup, 0, height);
-    this.addResizeHotspot(rectangleGroup, width, height);
+    this.addResizeHotspot(rectangleGroup, 0, 0, 'NW');
+    this.addResizeHotspot(rectangleGroup, width, 0, 'NE');
+    this.addResizeHotspot(rectangleGroup, 0, height, 'SW');
+    this.addResizeHotspot(rectangleGroup, width, height, 'SE');
 
     // add drag behaviour
     rectangleGroup
@@ -80,8 +114,6 @@ export class CanvasD3Component implements OnInit {
       })
       .call(
         d3.drag()
-          .on('start', () => {
-          })
           .on('drag', (d: {x: number, y: number}) => {
             rectangleGroup.attr("transform", function (d) {
               d.x += d3.event.dx;
@@ -90,7 +122,6 @@ export class CanvasD3Component implements OnInit {
               return "translate(" + [d.x, d.y] + ")"
             })
           })
-          .on('end', (() => {
-          })));
+      );
   }
 }
