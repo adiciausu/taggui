@@ -15,6 +15,9 @@ export class AnnotateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.classService.findAll().subscribe(items => this.classes = items);
+    this.classService.findAll().subscribe(items => {
+      this.classes = items;
+      this.selectedClass = items[0];
+    });
   }
 }

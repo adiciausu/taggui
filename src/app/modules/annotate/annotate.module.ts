@@ -4,6 +4,7 @@ import {AnnotateRoutingModule} from './annotate-routing.module';
 import {CanvasD3Module} from '../canvas-d3/canvas-d3.module';
 import {ClassService} from '../class/service/class.service';
 import {ListboxModule} from 'primeng/listbox';
+import {SharedModule} from '../../shared/shared.module';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import {ListboxModule} from 'primeng/listbox';
     AnnotateComponent
   ],
   imports: [
+    SharedModule,
     AnnotateRoutingModule,
 
     CanvasD3Module,

@@ -1,10 +1,10 @@
-<h1>Anotate the pic below</h1>
 <div class="p-grid">
   <div class="p-col-3">
-    <h2>Classes</h2>
+    <h3>Available Classes</h3>
     <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name"></p-listbox>
   </div>
   <div class="p-col-9">
+    <h3>Anotate objcts from the class: "<i>{{ selectedClass.name }}</i>" pic below</h3>
     <app-canvas-d3>
     </app-canvas-d3>
   </div>

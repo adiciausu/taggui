@@ -3,17 +3,14 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from './core/core.module';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     // angular
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CommonModule,
+    BrowserAnimationsModule,
 
     // core
     CoreModule,
