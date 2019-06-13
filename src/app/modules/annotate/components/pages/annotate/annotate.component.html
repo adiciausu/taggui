@@ -1,5 +1,11 @@
 <h1>Anotate the pic below</h1>
-
-<app-canvas-d3>
-
-</app-canvas-d3>
+<div class="p-grid">
+  <div class="p-col-3">
+    <h2>Classes</h2>
+    <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name"></p-listbox>
+  </div>
+  <div class="p-col-9">
+    <app-canvas-d3>
+    </app-canvas-d3>
+  </div>
+</div>
