@@ -4,7 +4,7 @@ import * as d3 from 'd3/index';
 @Component({
   selector: 'app-canvas-d3',
   templateUrl: './canvas-d3.component.html',
-  styleUrls: ['./canvas-d3.component.scss']
+  styleUrls: ['./canvas-d3.component']
 })
 export class CanvasD3Component implements OnInit {
   svg;
