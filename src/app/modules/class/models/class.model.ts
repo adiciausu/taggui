@@ -1,6 +1,6 @@
 export enum Shape {
-  RECTANGLE,
-  POLYGON
+  RECTANGLE = 'RECTANGLE',
+  POLYGON = 'POLYGON'
 }
 
 export interface Class {
