@@ -1,9 +1,9 @@
-enum Shape {
+export enum Shape {
   RECTANGLE,
   POLYGON
 }
 
-interface Class {
+export interface Class {
   id: number;
   name: string;
   shape: Shape;
