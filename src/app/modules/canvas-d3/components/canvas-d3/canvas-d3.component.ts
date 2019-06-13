@@ -18,7 +18,8 @@ export class CanvasD3Component implements OnInit {
   }
 
   initSVG() {
-    this.svg = d3.select('#canvas-d3').append('svg')
+    this.svg = d3.select('#canvas-d3')
+    .append('svg')
     .attr('width', 800)
     .attr('height', 468);
 
@@ -48,14 +49,15 @@ export class CanvasD3Component implements OnInit {
     .call(
       d3.drag()
       .on('start', () => {
+        console.log(d3.event.x);
+        rectangle.attr('stroke-width', 5);
       })
       .on('drag', () => {
         rectangle.attr('x', d3.event.x);
         rectangle.attr('y', d3.event.y);
-
-        console.log(d3.event);
       })
       .on('end', (() => {
+        rectangle.attr('stroke-width', 10);
       })));
   }
 }
