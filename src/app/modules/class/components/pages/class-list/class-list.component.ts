@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ClassService} from '../../../service/class.service';
+import {Class} from '../../../models/class.model';
 
 @Component({
   selector: 'app-class-list',
