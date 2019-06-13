@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ObjectListComponent} from './components/pages/object-list/object-list.component';
+import {ClassListComponent} from './components/pages/class-list/class-list.component';
 
 const routes: Routes = [{
   path: 'list',
-  component: ObjectListComponent
+  component: ClassListComponent
 }];
 
 @NgModule({
@@ -13,5 +13,5 @@ const routes: Routes = [{
   ]
 })
 
-export class ObjectRoutingModule {
+export class ClassRoutingModule {
 }
