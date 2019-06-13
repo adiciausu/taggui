@@ -12,6 +12,7 @@ export class AnnotateComponent implements OnInit {
   selectedClass: Class;
   images: any[];
   selectedImage: string;
+  hotkeysDialogVisible: boolean;
 
   constructor(private classService: ClassService) {
   }
@@ -24,5 +25,13 @@ export class AnnotateComponent implements OnInit {
 
     this.images = [{ name: "img1.png" }, { name: "img2.png" }, { name: "img3.png" }, { name: "img4.png" }, { name: "img5.png" }, { name: "img6.png" }, { name: "img7.png" }, { name: "img8.png" }, { name: "img9.png" }];
     this.selectedImage = this.images[0];
+  }
+
+  onConfigureImagesHotkeys() {
+    this.hotkeysDialogVisible = true;
+  }
+
+  onConfigureClasssesHotkeys() {
+    this.hotkeysDialogVisible = true;
   }
 }
