@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from './components/pages/home/home.component';
+import {AnnotateComponent} from './components/pages/annotate/annotate.component';
 
 const routes: Routes = [{
   path: '',
-  component: HomeComponent
+  component: AnnotateComponent
 }];
 
 @NgModule({
@@ -13,5 +13,5 @@ const routes: Routes = [{
   ]
 })
 
-export class HomeRoutingModule {
+export class AnnotateRoutingModule {
 }

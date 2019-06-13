@@ -2,7 +2,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 
 export const routes: Routes = [
-  { path: '', loadChildren: './modules/home/home.module#HomeModule' },
+  { path: '', loadChildren: './modules/annotate/annotate.module#AnnotateModule' },
   { path: 'class', loadChildren: './modules/class/class.module#ClassModule' }
 ];
 
