@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3/index';
 
 @Component({
@@ -27,7 +27,9 @@ export class CanvasD3Component implements OnInit {
     this.svg.append('image')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
+     .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
+     
+     
       .on('click', () => {
         const coords = d3.mouse(d3.event.target);
         this.drawRectangle(coords[0], coords[1], 100, 100);
@@ -44,8 +46,14 @@ export class CanvasD3Component implements OnInit {
   }
 
   addResizeHotspot(rectangleGroup, x: number, y: number, className: string) {
+
+    //    console.log("addResizeHotspot:" + x + ", " + y);
+
     const resize = d3.drag().on('drag', (d) => {
       const rect = rectangleGroup.select('rect');
+
+      console.log(rect.attr('x'));
+      console.log(d3.event.x > rect.attr('x'));
 
       if (d3.event.x > rect.attr('x')) {
         const newWidth = d3.event.x - rect.attr('x');
@@ -81,7 +89,7 @@ export class CanvasD3Component implements OnInit {
     rectangleGroup.append('circle')
       .classed(className, true)
       .attr('fill', 'white')
-      .attr('r', this.rectangleStrokeWidth > 1 ? this.rectangleStrokeWidth - 1 : 1)
+      .attr('r', this.rectangleStrokeWidth > 1 ? this.rectangleStrokeWidth + 5 : 1)
       .attr('cx', x)
       .attr('cy', y)
       .attr('cursor', className.toLowerCase() + '-resize')
@@ -103,20 +111,20 @@ export class CanvasD3Component implements OnInit {
       .attr('cursor', 'move');
 
     // add rectangle resize hotspots
-    this.addResizeHotspot(rectangleGroup, 0, 0, 'NW');
-    this.addResizeHotspot(rectangleGroup, width, 0, 'NE');
-    this.addResizeHotspot(rectangleGroup, 0, height, 'SW');
+    //this.addResizeHotspot(rectangleGroup, 0, 0, 'NW');
+    //this.addResizeHotspot(rectangleGroup, width, 0, 'NE');
+    //this.addResizeHotspot(rectangleGroup, 0, height, 'SW');
     this.addResizeHotspot(rectangleGroup, width, height, 'SE');
 
     // add drag behaviour
     rectangleGroup
-      .datum({x: x, y: y})
-      .attr('transform',  (d) => {
+      .datum({ x: x, y: y })
+      .attr('transform', (d) => {
         return 'translate(' + [d.x, d.y] + ')';
       })
       .call(
         d3.drag()
-          .on('drag', (d: {x: number, y: number}) => {
+          .on('drag', (d: { x: number, y: number }) => {
             rectangleGroup.attr('transform', (datum) => {
               datum.x += d3.event.dx;
               datum.y += d3.event.dy;

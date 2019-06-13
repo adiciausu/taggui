@@ -10,8 +10,9 @@ export class MenuComponent {
 
   constructor() {
     this.menuItems = [
-      {label: 'Home', routerLink: ['/']},
-      {label: 'Classes', routerLink: ['/class/list']}
+      {label: 'Annotate', routerLink: ['/']},
+      {label: 'Classes', routerLink: ['/class/list']},
+      {label: 'Images', routerLink: ['/class/list']}
     ];
   }
 }

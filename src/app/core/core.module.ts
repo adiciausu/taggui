@@ -12,7 +12,8 @@ import {MenubarModule} from 'primeng/menubar';
     MenuComponent
   ],
   imports: [
-    MenubarModule
+    MenubarModule,
+    
   ],
   exports: [
     HeaderComponent,
