@@ -8,11 +8,17 @@
     </p-listbox>
   </div>
 
-  <div class="p-col border-gray" style='background:#FFF;margin-left:10px;'>
-    <div style='width:100%;padding-left:10px;padding-top:10px'>
+  <div class="p-col border-gray" style='background:#FFF;margin-left:10px;display:flex;flex-direction:column; '>
+
+    <div style='padding-left:10px;padding-top:10px;' (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
       <app-canvas-d3>
       </app-canvas-d3>
     </div>
+
+    <div style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;margin-top:auto'>
+      {{hintMessage}}
+    </div>
+
   </div>
 
   <div class="p-col-2 border-gray" style='background:#FFF;height:90vh;margin-left:10px;margin-right:10px;'>

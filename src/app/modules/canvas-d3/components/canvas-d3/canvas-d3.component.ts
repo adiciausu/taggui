@@ -27,9 +27,9 @@ export class CanvasD3Component implements OnInit {
     this.svg.append('image')
       .attr('x', 0)
       .attr('y', 0)
-     .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
-     
-     
+      .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
+
+
       .on('click', () => {
         const coords = d3.mouse(d3.event.target);
         this.drawRectangle(coords[0], coords[1], 100, 100);
@@ -47,13 +47,8 @@ export class CanvasD3Component implements OnInit {
 
   addResizeHotspot(rectangleGroup, x: number, y: number, className: string) {
 
-    //    console.log("addResizeHotspot:" + x + ", " + y);
-
     const resize = d3.drag().on('drag', (d) => {
       const rect = rectangleGroup.select('rect');
-
-      console.log(rect.attr('x'));
-      console.log(d3.event.x > rect.attr('x'));
 
       if (d3.event.x > rect.attr('x')) {
         const newWidth = d3.event.x - rect.attr('x');

@@ -13,6 +13,7 @@ export class AnnotateComponent implements OnInit {
   images: any[];
   selectedImage: string;
   hotkeysDialogVisible: boolean;
+  hintMessage: string;
 
   constructor(private classService: ClassService) {
   }
@@ -33,5 +34,13 @@ export class AnnotateComponent implements OnInit {
 
   onConfigureClasssesHotkeys() {
     this.hotkeysDialogVisible = true;
+  }
+
+  onMouseEnter() {
+    this.hintMessage = "press DEL to delete box under cursor";
+  }
+
+  onMouseLeave() {
+    this.hintMessage = "";
   }
 }
