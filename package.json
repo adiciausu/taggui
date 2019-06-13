@@ -24,7 +24,8 @@
     "zone.js": "~0.9.1",
     "d3": "5.8.2",
     "ng2-logger": "2.0.48",
-    "@types/d3": "5.7.2"
+    "@types/d3": "5.7.2",
+    "primeflex": "1.0.0-rc.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.800.0",
