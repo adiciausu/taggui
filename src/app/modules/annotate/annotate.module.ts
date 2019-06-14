@@ -7,6 +7,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { SharedModule } from '../../shared/shared.module';
 import { ButtonModule } from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+import {ImageService} from './service/image.service';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {DialogModule} from 'primeng/dialog';
     DialogModule
   ],
   providers: [
-    ClassService
+    ClassService,
+    ImageService
   ]
 })
 export class AnnotateModule {

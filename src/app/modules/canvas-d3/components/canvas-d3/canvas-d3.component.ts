@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3/index';
 import {Class} from '../../../class/models/class.model';
+import {Image} from '../../models/image.model';
 
 @Component({
   selector: 'app-canvas-d3',
@@ -9,8 +10,10 @@ import {Class} from '../../../class/models/class.model';
 })
 export class CanvasD3Component implements OnInit {
   @Input() selectedClass: Class;
+  @Input() selectedImage: Image;
 
   svg;
+  image;
   rectangleStrokeWidth = 5;
   hotCornerRadius = 10;
   currentMouseCoords = [];
@@ -19,7 +22,8 @@ export class CanvasD3Component implements OnInit {
   }
 
   ngOnInit() {
-    this.initSVG(800, 468);
+    this.initSVG();
+    this.drawImage(this.selectedImage);
   }
 
   drawClassAtCurrentMouseCorrds(clazz: Class) {
@@ -69,17 +73,20 @@ export class CanvasD3Component implements OnInit {
     );
   }
 
-  private initSVG(width: number, height: number) {
+  drawImage(image: Image) {
+    this.svg.attr('width', image.width)
+    .attr('height', image.height);
+    this.image.attr('xlink:href', image.path);
+  }
+
+  private initSVG() {
     this.svg = d3.select('#canvas-d3')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
+    .append('svg');
 
     // add image
-    this.svg.append('image')
+    this.image = this.svg.append('image')
     .attr('x', 0)
     .attr('y', 0)
-    .attr('xlink:href', 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg')
     .on('click', () => {
       const coords = d3.mouse(d3.event.target);
       this.drawClass(coords[0], coords[1], 100, 100, this.selectedClass);
@@ -101,7 +108,6 @@ export class CanvasD3Component implements OnInit {
 
   private addResizeHotcorner(rectangleGroup, x: number, y: number, className: string) {
     const resize = d3.drag().on('drag', () => {
-
       const rect = rectangleGroup.select('rect');
       const currentShapeOriginCoords = rect.data()[0];
       const newCoords = d3.mouse(this.svg.node());

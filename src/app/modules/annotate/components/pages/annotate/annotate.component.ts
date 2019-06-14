@@ -2,6 +2,8 @@ import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ClassService} from '../../../../class/service/class.service';
 import {Class} from '../../../../class/models/class.model';
 import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canvas-d3.component';
+import {ImageService} from '../../../service/image.service';
+import {Image} from '../../../../canvas-d3/models/image.model';
 
 @Component({
   selector: 'app-annotate',
@@ -11,25 +13,30 @@ import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canv
 export class AnnotateComponent implements OnInit {
   classes: Class[];
   selectedClass: Class;
-  images: any[];
-  selectedImage: string;
+
+  images: Image[];
+  selectedImage: Image;
+  selectedImageIndex: number;
+
   hotkeysDialogVisible: boolean;
   hintMessage: string;
 
   @ViewChild(CanvasD3Component, {static: false}) canvasd3Component: CanvasD3Component;
 
-  constructor(private classService: ClassService) {
+  constructor(private classService: ClassService, private imageService: ImageService) {
   }
 
   ngOnInit() {
     this.classService.findAll().subscribe(items => {
       this.classes = items;
-      this.selectedClass = items[0];
+      this.selectedClass = this.classes[0];
     });
 
-    this.images = [{name: 'img1.png'}, {name: 'img2.png'}, {name: 'img3.png'}, {name: 'img4.png'}, {name: 'img5.png'},
-      {name: 'img6.png'}, {name: 'img7.png'}, {name: 'img8.png'}, {name: 'img9.png'}];
-    this.selectedImage = this.images[0];
+    this.imageService.findBach().subscribe(items => {
+      this.images = items;
+      this.selectedImage = this.images[0];
+      this.selectedImageIndex = 0;
+    });
   }
 
   onConfigureImagesHotkeys() {
@@ -50,9 +57,31 @@ export class AnnotateComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.keyCode === 101) { // e key
+      if (!this.images[this.selectedImageIndex + 1]) {
+        return;
+      }
+      this.selectImage(this.selectedImageIndex + 1);
+      return;
+    }
+
+    if (event.keyCode === 113) { // q key
+      if (this.selectedImageIndex <= 0) {
+        return;
+      }
+      this.selectImage(this.selectedImageIndex - 1);
+      return;
+    }
+
     if (this.handleDigit(event.keyCode)) {
       return;
     }
+  }
+
+  private selectImage(index: number) {
+    this.selectedImage = this.images[index];
+    this.selectedImageIndex = index;
+    this.canvasd3Component.drawImage(this.selectedImage);
   }
 
   private handleDigit(keyCode) {
