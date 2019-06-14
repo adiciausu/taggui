@@ -51,11 +51,12 @@ export class AnnotateComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if ((event.key <= 0) || (event.key > 9) || !(this.classes[event.key - 1])) {
+    const digit = event.keyCode - 48;
+    if ((digit <= 0) || (digit > 9) || !(this.classes[digit - 1])) {
       return;
     }
 
-    this.selectedClass = this.classes[event.key - 1];
+    this.selectedClass = this.classes[digit - 1];
     this.canvasd3Component.drawClassAtCurrentMouseCorrds(this.selectedClass);
   }
 }
