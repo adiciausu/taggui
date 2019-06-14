@@ -1,7 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3/index';
-import {Class} from '../../../class/models/class.model';
+import {Class, Shape} from '../../../class/models/class.model';
 import {Image} from '../../../image/models/image.model';
+import {AnnotationService} from '../../service/annotation.service';
+import {ImageAnnotations} from '../../model/ImageAnnotations.model';
+import {Annotation} from '../../model/Annotation.model';
 
 @Component({
   selector: 'app-canvas-d3',
@@ -17,22 +20,46 @@ export class CanvasD3Component implements OnInit {
   rectangleStrokeWidth = 5;
   hotCornerRadius = 10;
   currentMouseCoords = [];
-  annotations = [];
+  annotationNodes = [];
+  imageAnnotations: ImageAnnotations;
 
-  constructor() {
+  constructor(private annotationService: AnnotationService) {
   }
 
   ngOnInit() {
     this.initSVG();
     this.drawImage(this.selectedImage);
+    this.imageAnnotations = {imageId: this.selectedImage.id, annotations: {}};
   }
 
-  drawClassAtCurrentMouseCorrds(clazz: Class) {
-    return this.drawClass(this.currentMouseCoords[0], this.currentMouseCoords[1], 100, 100, clazz);
+  saveClassAtCurrentMouseCorrds(clazz: Class) {
+    return this.saveClass(this.currentMouseCoords[0], this.currentMouseCoords[1], 100, 100, clazz);
+  }
+
+  saveClass(x: number, y: number, width: number, height: number, clazz: Class) {
+    this.drawClass(x, y, width, height, clazz);
+
+    const ann: Annotation = {
+      shape: Shape.RECTANGLE,
+      points: [
+        {x, y},
+        {x: x + width, y: y + height},
+      ]
+    };
+    this.imageAnnotations.annotations[clazz.name] = this.imageAnnotations.annotations[clazz.name] || [];
+    this.imageAnnotations.annotations[clazz.name].push(ann);
+    this.annotationService.save(this.imageAnnotations);
+  }
+
+  drawImage(image: Image) {
+    this.svg.attr('width', image.width)
+    .attr('height', image.height);
+    this.image.attr('xlink:href', image.path);
+    this.annotationNodes.forEach((annotation) => annotation.remove());
   }
 
   // only rectangle implemented
-  drawClass(x: number, y: number, width: number, height: number, clazz: Class) {
+  private drawClass(x: number, y: number, width: number, height: number, clazz: Class) {
     if (!clazz) {
       throw new Error('No class selected');
     }
@@ -53,7 +80,7 @@ export class CanvasD3Component implements OnInit {
 
     // add drag behaviour
     rectangleGroup
-    .datum({x: x, y: y})
+    .datum({x, y})
     .attr('transform', (d) => {
       return 'translate(' + [d.x, d.y] + ')';
     })
@@ -69,14 +96,7 @@ export class CanvasD3Component implements OnInit {
       })
     );
 
-    this.annotations.push(rectangleGroup);
-  }
-
-  drawImage(image: Image) {
-    this.svg.attr('width', image.width)
-    .attr('height', image.height);
-    this.image.attr('xlink:href', image.path);
-    this.annotations.forEach((annotation) => annotation.remove());
+    this.annotationNodes.push(rectangleGroup);
   }
 
   private initSVG() {
@@ -89,7 +109,7 @@ export class CanvasD3Component implements OnInit {
     .attr('y', 0)
     .on('click', () => {
       const coords = d3.mouse(d3.event.target);
-      this.drawClass(coords[0], coords[1], 100, 100, this.selectedClass);
+      this.saveClass(coords[0], coords[1], 100, 100, this.selectedClass);
     });
 
     // add zoom

@@ -104,7 +104,7 @@ export class AnnotateComponent implements OnInit {
     const digit = keyCode - 48;
     if (digit > 0 && digit < 9 && this.classes[digit - 1]) {
       this.selectedClass = this.classes[digit - 1];
-      this.canvasd3Component.drawClassAtCurrentMouseCorrds(this.selectedClass);
+      this.canvasd3Component.saveClassAtCurrentMouseCorrds(this.selectedClass);
 
       return true;
     }
