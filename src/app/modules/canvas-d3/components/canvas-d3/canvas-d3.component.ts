@@ -49,10 +49,6 @@ export class CanvasD3Component implements OnInit {
     .style('opacity', 0.4)
     .attr('cursor', 'move');
 
-    // add rectangle resize hotspots
-    // this.addResizeHotspot(rectangleGroup, 0, 0, 'NW');
-    // this.addResizeHotspot(rectangleGroup, width, 0, 'NE');
-    // this.addResizeHotspot(rectangleGroup, 0, height, 'SW');
     this.addResizeHotcorner(rectangleGroup, width, height, 'SE');
 
     // add drag behaviour
