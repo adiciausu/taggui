@@ -34,7 +34,7 @@
               class="ui-button-secondary"
               style='font-size:80%;float:right;margin-top:0px;'></button>
     </div>
-    <p-listbox [options]="images" [(ngModel)]="selectedImage" optionLabel="name"
+    <p-listbox [options]="images" [(ngModel)]="selectedImage" optionLabel="name" (onChange)="onSelectImage($event)"
                [style]="{'width':'100%', 'border':'none', 'margin-top':'15px'}">
 
     </p-listbox>

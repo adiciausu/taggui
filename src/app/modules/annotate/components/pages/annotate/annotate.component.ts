@@ -39,6 +39,12 @@ export class AnnotateComponent implements OnInit {
     });
   }
 
+  onSelectImage(event) {
+    const newImage: Image = event.value as Image;
+    const imageIndex = this.images.findIndex((image) => image.path === newImage.path);
+    this.selectImageIndex(imageIndex);
+  }
+
   onConfigureImagesHotkeys() {
     this.hotkeysDialogVisible = true;
   }
@@ -61,7 +67,7 @@ export class AnnotateComponent implements OnInit {
       if (!this.images[this.selectedImageIndex + 1]) {
         return;
       }
-      this.selectImage(this.selectedImageIndex + 1);
+      this.selectImageIndex(this.selectedImageIndex + 1);
       return;
     }
 
@@ -69,7 +75,7 @@ export class AnnotateComponent implements OnInit {
       if (this.selectedImageIndex <= 0) {
         return;
       }
-      this.selectImage(this.selectedImageIndex - 1);
+      this.selectImageIndex(this.selectedImageIndex - 1);
       return;
     }
 
@@ -78,7 +84,7 @@ export class AnnotateComponent implements OnInit {
     }
   }
 
-  private selectImage(index: number) {
+  private selectImageIndex(index: number) {
     this.selectedImage = this.images[index];
     this.selectedImageIndex = index;
     this.canvasd3Component.drawImage(this.selectedImage);
