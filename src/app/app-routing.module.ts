@@ -4,7 +4,8 @@ import {NgModule} from '@angular/core';
 export const routes: Routes = [
   { path: '', loadChildren: './modules/annotate/annotate.module#AnnotateModule' },
   { path: 'class', loadChildren: './modules/class/class.module#ClassModule' },
-  { path: 'image', loadChildren: './modules/image/image.module#ImageModule' }
+  { path: 'image', loadChildren: './modules/image/image.module#ImageModule' },
+  { path: 'export', loadChildren: './modules/export/export.module#ExportModule' }
 ];
 
 @NgModule({

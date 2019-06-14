@@ -13,7 +13,7 @@ export class MenuComponent {
       { label: 'Annotate', routerLink: ['/'] },
       { label: 'Classes', routerLink: ['/class/list'] },
       { label: 'Images', routerLink: ['/image/list'] },
-      { label: 'Export', routerLink: ['/class/list'] }
+      { label: 'Export', routerLink: ['/export'] }
     ];
   }
 }
