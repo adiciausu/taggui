@@ -7,6 +7,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { SharedModule } from '../../shared/shared.module';
 import { ButtonModule } from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {DialogModule} from 'primeng/dialog';
     CanvasD3Module,
     ListboxModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    DropdownModule
   ],
   providers: [
     ClassService

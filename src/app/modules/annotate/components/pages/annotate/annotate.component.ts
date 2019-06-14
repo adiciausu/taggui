@@ -1,8 +1,8 @@
 
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import { ClassService } from '../../../../class/service/class.service';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { CanvasD3Component } from '../../../../canvas-d3/components/canvas-d3/canvas-d3.component';
 import { Class } from '../../../../class/models/class.model';
-import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canvas-d3.component';
+import { ClassService } from '../../../../class/service/class.service';
 
 @Component({
   selector: 'app-annotate',
@@ -16,8 +16,11 @@ export class AnnotateComponent implements OnInit {
   selectedImage: string;
   hotkeysDialogVisible: boolean;
   hintMessage: string;
+  smartClassStrategies: any[];
+  selectedStrategy: string;
+  strategySelectionVisibile: boolean;
 
-  @ViewChild(CanvasD3Component, {static: false}) canvasd3Component: CanvasD3Component;
+  @ViewChild(CanvasD3Component, { static: false }) canvasd3Component: CanvasD3Component;
 
   constructor(private classService: ClassService) {
   }
@@ -29,8 +32,12 @@ export class AnnotateComponent implements OnInit {
     });
 
     this.images = [{ name: 'img1.png' }, { name: 'img2.png' }, { name: 'img3.png' }, { name: 'img4.png' }, { name: 'img5.png' },
-      { name: 'img6.png' }, { name: 'img7.png' }, { name: 'img8.png' }, { name: 'img9.png' }];
+    { name: 'img6.png' }, { name: 'img7.png' }, { name: 'img8.png' }, { name: 'img9.png' }];
     this.selectedImage = this.images[0];
+
+    this.smartClassStrategies = [{ name: "Use Google Detection API" }, { name: "Use my own neural network" }, { name: "Use OpenCV blob detection strategy" }];
+
+    this.selectedStrategy = this.smartClassStrategies[0];
   }
 
   onConfigureImagesHotkeys() {
@@ -47,6 +54,11 @@ export class AnnotateComponent implements OnInit {
 
   onMouseLeave() {
     this.hintMessage = '';
+  }
+
+  onSelectStrategy(strategy) {
+    this.strategySelectionVisibile = true;
+
   }
 
   @HostListener('document:keypress', ['$event'])
