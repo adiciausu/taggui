@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Image } from '../../image/models/image.model';
+import { Image } from '../models/image.model';
 
 @Injectable()
 export class ImageService {

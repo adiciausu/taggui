@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {Class, Shape} from '../models/class.model';
 
-
 @Injectable()
 export class ClassService {
   findAll(): Observable<Class[]> {

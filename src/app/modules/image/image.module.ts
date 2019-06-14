@@ -3,7 +3,7 @@ import {ImageListComponent} from './components/pages/class-list/image-list.compo
 import {ImageRoutingModule} from './image-routing.module';
 import {TableModule} from 'primeng/table';
 import {SharedModule} from '../../shared/shared.module';
-import {ImageService} from '../annotate/service/image.service';
+import {ImageService} from './service/image.service';
 
 @NgModule({
   declarations: [

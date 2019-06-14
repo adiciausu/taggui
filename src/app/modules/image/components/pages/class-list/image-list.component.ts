@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ClassService} from '../../../service/class.service';
 import {Image} from '../../../models/image.model';
-import {ImageService} from '../../../../annotate/service/image.service';
+import {ImageService} from '../../../service/image.service';
 
 @Component({
   selector: 'app-image-list',

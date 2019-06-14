@@ -7,7 +7,7 @@ import {ListboxModule} from 'primeng/listbox';
 import {SharedModule} from '../../shared/shared.module';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
-import {ImageService} from './service/image.service';
+import {ImageService} from '../image/service/image.service';
 import {DropdownModule} from 'primeng/dropdown';
 
 
