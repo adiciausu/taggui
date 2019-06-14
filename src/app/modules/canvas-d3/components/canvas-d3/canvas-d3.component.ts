@@ -101,39 +101,25 @@ export class CanvasD3Component implements OnInit {
 
   private addResizeHotcorner(rectangleGroup, x: number, y: number, className: string) {
     const resize = d3.drag().on('drag', () => {
+
       const rect = rectangleGroup.select('rect');
+      const currentShapeOriginCoords = rect.data()[0];
+      const newCoords = d3.mouse(this.svg.node());
 
-      console.log(rect.attr('x'));
-
-      if (d3.event.x > rect.attr('x')) {
-        const newWidth = d3.event.x - rect.attr('x');
+      if (newCoords[0] > currentShapeOriginCoords.x) {
+        const newWidth = newCoords[0] - currentShapeOriginCoords.x;
         rect.attr('width', newWidth);
         rectangleGroup.select('.SE')
         .attr('cx', newWidth);
-        // rectangleGroup.select('.NE')
-        // .attr('cx', newWidth);
-      } else {
-        // const newWidth = rect.attr('x') - d3.event.x;
-        // rect.attr('width', newWidth);
-        // rect.attr('x', d3.event.x);
-        //
-        // rectangleGroup.select('.SE')
-        //   .attr('cx', 0);
-        // rectangleGroup.select('.NE')
-        //   .attr('cx', 0);
       }
 
-      if (d3.event.y > rect.attr('y')) {
-        const newHeight = d3.event.y - rect.attr('y');
-
+      if (newCoords[1] > currentShapeOriginCoords.y) {
+        const newHeight = newCoords[1] - currentShapeOriginCoords.y;
         rect.attr('height', newHeight);
         rectangleGroup.select('.SE')
         .attr('cy', newHeight);
-        // rectangleGroup.select('.SW')
-        // .attr('cy', newHeight);
-      } else {
-        //
       }
+
     });
 
     rectangleGroup.append('circle')
