@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3/index';
 import {Class} from '../../../class/models/class.model';
-import {Image} from '../../models/image.model';
+import {Image} from '../../../image/models/image.model';
 
 @Component({
   selector: 'app-canvas-d3',
