@@ -17,6 +17,7 @@ export class CanvasD3Component implements OnInit {
   rectangleStrokeWidth = 5;
   hotCornerRadius = 10;
   currentMouseCoords = [];
+  annotations = [];
 
   constructor() {
   }
@@ -71,12 +72,15 @@ export class CanvasD3Component implements OnInit {
         });
       })
     );
+
+    this.annotations.push(rectangleGroup);
   }
 
   drawImage(image: Image) {
     this.svg.attr('width', image.width)
     .attr('height', image.height);
     this.image.attr('xlink:href', image.path);
+    this.annotations.forEach((annotation) => annotation.remove());
   }
 
   private initSVG() {
