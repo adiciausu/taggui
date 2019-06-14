@@ -20,6 +20,9 @@ export class AnnotateComponent implements OnInit {
 
   hotkeysDialogVisible: boolean;
   hintMessage: string;
+  smartClassStrategies: any[];
+  selectedStrategy: string;
+  strategySelectionVisibile: boolean;
 
   @ViewChild(CanvasD3Component, {static: false}) canvasd3Component: CanvasD3Component;
 
@@ -43,6 +46,8 @@ export class AnnotateComponent implements OnInit {
     const newImage: Image = event.value as Image;
     const imageIndex = this.images.findIndex((image) => image.path === newImage.path);
     this.selectImageIndex(imageIndex);
+    this.smartClassStrategies = [{name: 'Use Google Detection API'}, {name: 'Use my own neural network'}, {name: 'Use OpenCV blob detection strategy'}];
+    this.selectedStrategy = this.smartClassStrategies[0];
   }
 
   onConfigureImagesHotkeys() {
@@ -59,6 +64,11 @@ export class AnnotateComponent implements OnInit {
 
   onMouseLeave() {
     this.hintMessage = '';
+  }
+
+  onSelectStrategy(strategy) {
+    this.strategySelectionVisibile = true;
+
   }
 
   @HostListener('document:keypress', ['$event'])
