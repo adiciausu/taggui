@@ -2,3 +2,15 @@
 @import "../node_modules/primeng/resources/primeng.css";
 @import "../node_modules/primeicons/primeicons.css";
 @import "../node_modules/primeflex/primeflex.css";
+
+body {
+    background:#DDD;
+}
+
+.ui-menubar ul {
+    padding-left:60px !important;
+}
+
+.border-gray{
+    border:1px solid #AAA;
+}

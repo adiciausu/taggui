@@ -1,18 +1,49 @@
 <div class="p-grid">
-  <div class="p-col-3">
-    <h3>Available Classes</h3>
-    <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name">
-      <!--<ng-template let-class let-idx="index" pTemplate="item">-->
-        <!--<div class="p-grid">-->
-          <!--<div class="p-col-9">{{class.name}}</div>-->
-          <!--<div class="p-col-3">({{idx + 1}})</div>-->
-        <!--</div>-->
-      <!--</ng-template>-->
+  <div class="p-col-2 border-gray" style='background:#FFF;height:90vh'>
+    <div style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;'>
+      press 1-9 to select a class
+      <button (click)="onConfigureClasssesHotkeys()" pButton type="button" label="..."
+              class="ui-button-secondary"
+              style='font-size:80%;float:right;margin-top:0px;'></button>
+    </div>
+    <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name"
+               [style]="{'width':'100%', 'border':'none','margin-top':'15px'}">
     </p-listbox>
   </div>
-  <div class="p-col-9">
-    <h3>Anotate objcts from the class: "<i>{{ selectedClass.name }}</i>" pic below</h3>
-    <app-canvas-d3 [selectedClass]="selectedClass">
-    </app-canvas-d3>
+
+  <div class="p-col border-gray"
+       style='background:#FFF;margin-left:10px;display:flex;flex-direction:column; '>
+
+    <div style='padding-left:10px;padding-top:10px;' (mouseenter)="onMouseEnter()"
+         (mouseleave)="onMouseLeave()">
+      <app-canvas-d3 [selectedClass]="selectedClass" onclick="">
+      </app-canvas-d3>
+    </div>
+
+    <div
+      style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;margin-top:auto'>
+      {{hintMessage}}
+    </div>
   </div>
+
+  <div class="p-col-2 border-gray"
+       style='background:#FFF;height:90vh;margin-left:10px;margin-right:10px;'>
+    <div style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;'>
+      press 'q' / 'e' to navigate images
+      <button (click)="onConfigureImagesHotkeys()" pButton type="button" label="..."
+              class="ui-button-secondary"
+              style='font-size:80%;float:right;margin-top:0px;'></button>
+    </div>
+    <p-listbox [options]="images" [(ngModel)]="selectedImage" optionLabel="name"
+               [style]="{'width':'100%', 'border':'none', 'margin-top':'15px'}">
+
+    </p-listbox>
+  </div>
+
+  <p-dialog header="Coming soon" [(visible)]="hotkeysDialogVisible">
+    <div style='padding:30px;'>
+      Soon you'll be able to configure your own hotkeys.
+    </div>
+  </p-dialog>
+
 </div>

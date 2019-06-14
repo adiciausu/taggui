@@ -12,6 +12,7 @@ export class CanvasD3Component implements OnInit {
 
   svg;
   rectangleStrokeWidth = 5;
+  hotCornerRadius = 10;
   currentMouseCoords = [];
 
   constructor() {
@@ -45,9 +46,9 @@ export class CanvasD3Component implements OnInit {
     .attr('cursor', 'move');
 
     // add rectangle resize hotspots
-    this.addResizeHotspot(rectangleGroup, 0, 0, 'NW');
-    this.addResizeHotspot(rectangleGroup, width, 0, 'NE');
-    this.addResizeHotspot(rectangleGroup, 0, height, 'SW');
+    // this.addResizeHotspot(rectangleGroup, 0, 0, 'NW');
+    // this.addResizeHotspot(rectangleGroup, width, 0, 'NE');
+    // this.addResizeHotspot(rectangleGroup, 0, height, 'SW');
     this.addResizeHotspot(rectangleGroup, width, height, 'SE');
 
     // add drag behaviour
@@ -109,8 +110,8 @@ export class CanvasD3Component implements OnInit {
         rect.attr('width', newWidth);
         rectangleGroup.select('.SE')
         .attr('cx', newWidth);
-        rectangleGroup.select('.NE')
-        .attr('cx', newWidth);
+        // rectangleGroup.select('.NE')
+        // .attr('cx', newWidth);
       } else {
         // const newWidth = rect.attr('x') - d3.event.x;
         // rect.attr('width', newWidth);
@@ -128,8 +129,8 @@ export class CanvasD3Component implements OnInit {
         rect.attr('height', newHeight);
         rectangleGroup.select('.SE')
         .attr('cy', newHeight);
-        rectangleGroup.select('.SW')
-        .attr('cy', newHeight);
+        // rectangleGroup.select('.SW')
+        // .attr('cy', newHeight);
       } else {
         //
       }
@@ -138,10 +139,11 @@ export class CanvasD3Component implements OnInit {
     rectangleGroup.append('circle')
     .classed(className, true)
     .attr('fill', 'white')
-    .attr('r', this.rectangleStrokeWidth > 1 ? this.rectangleStrokeWidth - 1 : 1)
+    .attr('r', this.hotCornerRadius)
     .attr('cx', x)
     .attr('cy', y)
     .attr('cursor', className.toLowerCase() + '-resize')
     .call(resize);
+
   }
 }
