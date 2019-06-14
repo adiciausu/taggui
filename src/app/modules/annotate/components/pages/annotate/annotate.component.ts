@@ -1,7 +1,6 @@
-
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import { ClassService } from '../../../../class/service/class.service';
-import { Class } from '../../../../class/models/class.model';
+import {ClassService} from '../../../../class/service/class.service';
+import {Class} from '../../../../class/models/class.model';
 import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canvas-d3.component';
 
 @Component({
@@ -28,8 +27,8 @@ export class AnnotateComponent implements OnInit {
       this.selectedClass = items[0];
     });
 
-    this.images = [{ name: 'img1.png' }, { name: 'img2.png' }, { name: 'img3.png' }, { name: 'img4.png' }, { name: 'img5.png' },
-      { name: 'img6.png' }, { name: 'img7.png' }, { name: 'img8.png' }, { name: 'img9.png' }];
+    this.images = [{name: 'img1.png'}, {name: 'img2.png'}, {name: 'img3.png'}, {name: 'img4.png'}, {name: 'img5.png'},
+      {name: 'img6.png'}, {name: 'img7.png'}, {name: 'img8.png'}, {name: 'img9.png'}];
     this.selectedImage = this.images[0];
   }
 
@@ -51,12 +50,18 @@ export class AnnotateComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    const digit = event.keyCode - 48;
-    if ((digit <= 0) || (digit > 9) || !(this.classes[digit - 1])) {
+    if (this.handleDigit(event.keyCode)) {
       return;
     }
+  }
 
-    this.selectedClass = this.classes[digit - 1];
-    this.canvasd3Component.drawClassAtCurrentMouseCorrds(this.selectedClass);
+  private handleDigit(keyCode) {
+    const digit = keyCode - 48;
+    if (digit > 0 && digit < 9 && this.classes[digit - 1]) {
+      this.selectedClass = this.classes[digit - 1];
+      this.canvasd3Component.drawClassAtCurrentMouseCorrds(this.selectedClass);
+
+      return true;
+    }
   }
 }
