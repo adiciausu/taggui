@@ -26,13 +26,12 @@ export class CanvasD3Component implements OnInit {
     return this.drawClass(this.currentMouseCoords[0], this.currentMouseCoords[1], 100, 100, clazz);
   }
 
-
+  // only rectangle implemented
   drawClass(x: number, y: number, width: number, height: number, clazz: Class) {
     if (!clazz) {
       throw new Error('No class selected');
     }
 
-    // only rectangle implemented
     const rectangleGroup = this.svg.append('g');
 
     // add rectangle
@@ -49,7 +48,7 @@ export class CanvasD3Component implements OnInit {
     // this.addResizeHotspot(rectangleGroup, 0, 0, 'NW');
     // this.addResizeHotspot(rectangleGroup, width, 0, 'NE');
     // this.addResizeHotspot(rectangleGroup, 0, height, 'SW');
-    this.addResizeHotspot(rectangleGroup, width, height, 'SE');
+    this.addResizeHotcorner(rectangleGroup, width, height, 'SE');
 
     // add drag behaviour
     rectangleGroup
@@ -94,16 +93,17 @@ export class CanvasD3Component implements OnInit {
     });
     this.svg.call(zoom);
 
-
     // start mouse move listener
     this.svg.on('mousemove', () => {
       this.currentMouseCoords = d3.mouse(d3.event.target);
     });
   }
 
-  private addResizeHotspot(rectangleGroup, x: number, y: number, className: string) {
-    const resize = d3.drag().on('drag', (d) => {
+  private addResizeHotcorner(rectangleGroup, x: number, y: number, className: string) {
+    const resize = d3.drag().on('drag', () => {
       const rect = rectangleGroup.select('rect');
+
+      console.log(rect.attr('x'));
 
       if (d3.event.x > rect.attr('x')) {
         const newWidth = d3.event.x - rect.attr('x');
@@ -144,6 +144,5 @@ export class CanvasD3Component implements OnInit {
     .attr('cy', y)
     .attr('cursor', className.toLowerCase() + '-resize')
     .call(resize);
-
   }
 }
