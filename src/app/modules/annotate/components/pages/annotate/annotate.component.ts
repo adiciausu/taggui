@@ -3,7 +3,7 @@ import {ClassService} from '../../../../class/service/class.service';
 import {Class} from '../../../../class/models/class.model';
 import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canvas-d3.component';
 import {ImageService} from '../../../service/image.service';
-import {Image} from '../../../../canvas-d3/models/image.model';
+import {Image} from '../../../../image/models/image.model';
 
 @Component({
   selector: 'app-annotate',

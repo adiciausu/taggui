@@ -12,7 +12,7 @@ export class MenuComponent {
     this.menuItems = [
       { label: 'Annotate', routerLink: ['/'] },
       { label: 'Classes', routerLink: ['/class/list'] },
-      { label: 'Images', routerLink: ['/class/list'] },
+      { label: 'Images', routerLink: ['/image/list'] },
       { label: 'Export', routerLink: ['/class/list'] }
     ];
   }
