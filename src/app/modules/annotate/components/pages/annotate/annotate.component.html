@@ -1,11 +1,18 @@
 <div class="p-grid">
   <div class="p-col-3">
     <h3>Available Classes</h3>
-    <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name"></p-listbox>
+    <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name">
+      <!--<ng-template let-class let-idx="index" pTemplate="item">-->
+        <!--<div class="p-grid">-->
+          <!--<div class="p-col-9">{{class.name}}</div>-->
+          <!--<div class="p-col-3">({{idx + 1}})</div>-->
+        <!--</div>-->
+      <!--</ng-template>-->
+    </p-listbox>
   </div>
   <div class="p-col-9">
     <h3>Anotate objcts from the class: "<i>{{ selectedClass.name }}</i>" pic below</h3>
-    <app-canvas-d3>
+    <app-canvas-d3 [selectedClass]="selectedClass">
     </app-canvas-d3>
   </div>
 </div>
