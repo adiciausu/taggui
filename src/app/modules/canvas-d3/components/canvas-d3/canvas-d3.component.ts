@@ -48,7 +48,7 @@ export class CanvasD3Component implements OnInit {
     };
     this.imageAnnotations.annotations[clazz.name] = this.imageAnnotations.annotations[clazz.name] || [];
     this.imageAnnotations.annotations[clazz.name].push(ann);
-    this.annotationService.save(this.imageAnnotations);
+    this.annotationService.save(this.imageAnnotations).subscribe();
   }
 
   drawImage(image: Image) {
