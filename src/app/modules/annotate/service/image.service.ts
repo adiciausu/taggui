@@ -1,34 +1,50 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {Image} from '../../canvas-d3/models/image.model';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Image } from '../../canvas-d3/models/image.model';
 
 @Injectable()
 export class ImageService {
   findBach(): Observable<Image[]> {
     const img1: Image = {
-      path: 'https://dz5vhvq2e26ss.cloudfront.net/media/image/7595667854e9da321.01809399.jpg',
-      name: 'cars.jpg',
+      path: 'https://raw.githubusercontent.com/viorelspinu/object_detection_demo/master/data/images/train/20190503_201456.jpg',
+      name: 'img-1.jpg',
       id: 1,
-      width: 800,
-      height: 468
+      width: 640,
+      height: 480
     };
 
     const img2: Image = {
-      path: 'https://petapixel.com/assets/uploads/2016/10/Los-Angeles-International-25L-and-25R-Wake-Turbulence-800x450.jpg',
-      name: 'planes.PNG',
+      path: 'https://raw.githubusercontent.com/viorelspinu/object_detection_demo/master/data/images/train/20190503_201508.jpg',
+      name: 'img-2.jpg',
       id: 1,
-      width: 800,
-      height: 450
+      width: 640,
+      height: 480
     };
 
     const img3: Image = {
-      path: 'https://cdn1.harryanddavid.com/wcsstore/HarryAndDavid/images/catalog/18_26862_30XP_01ex.jpg',
-      name: 'fruites.jpg',
+      path: 'https://raw.githubusercontent.com/viorelspinu/object_detection_demo/master/data/images/train/20190503_201519.jpg',
+      name: 'img-3.jpg',
       id: 1,
-      width: 690,
-      height: 775
+      width: 640,
+      height: 480
     };
 
-    return of([img1, img2, img3]);
+    const img4: Image = {
+      path: 'https://raw.githubusercontent.com/viorelspinu/object_detection_demo/master/data/images/train/20190503_201527.jpg',
+      name: 'img-4.jpg',
+      id: 1,
+      width: 640,
+      height: 480
+    };
+
+    const img5: Image = {
+      path: 'https://raw.githubusercontent.com/viorelspinu/object_detection_demo/master/data/images/train/20190503_201532.jpg',
+      name: 'img-5.jpg',
+      id: 1,
+      width: 640,
+      height: 480
+    };
+
+    return of([img1, img2, img3, img4, img5]);
   }
 }
