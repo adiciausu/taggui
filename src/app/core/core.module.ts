@@ -4,6 +4,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {MenuComponent} from './components/menu/menu.component';
 import {MenubarModule} from 'primeng/menubar';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import {MenubarModule} from 'primeng/menubar';
   ],
   imports: [
     MenubarModule,
-    
+    HttpClientModule,
   ],
   exports: [
     HeaderComponent,
