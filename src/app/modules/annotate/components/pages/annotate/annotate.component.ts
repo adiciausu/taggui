@@ -35,7 +35,7 @@ export class AnnotateComponent implements OnInit {
       this.selectedClass = this.classes[0];
     });
 
-    this.imageService.findBach().subscribe(items => {
+    this.imageService.findAll().subscribe(items => {
       this.images = items;
       this.selectedImage = this.images[0];
       this.selectedImageIndex = 0;
@@ -46,7 +46,11 @@ export class AnnotateComponent implements OnInit {
     const newImage: Image = event.value as Image;
     const imageIndex = this.images.findIndex((image) => image.path === newImage.path);
     this.selectImageIndex(imageIndex);
-    this.smartClassStrategies = [{name: 'Use Google Detection API'}, {name: 'Use my own neural network'}, {name: 'Use OpenCV blob detection strategy'}];
+    this.smartClassStrategies = [
+      {name: 'Use Google Detection API'},
+      {name: 'Use my own neural network'},
+      {name: 'Use OpenCV blob detection strategy'}
+    ];
     this.selectedStrategy = this.smartClassStrategies[0];
   }
 

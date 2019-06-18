@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import {SharedModule} from '../../shared/shared.module';
 import {CanvasD3Component} from './components/canvas-d3/canvas-d3.component';
-import {AnnotationService} from './service/annotation.service';
+import {ImageService} from '../image/service/image.service';
+
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import {AnnotationService} from './service/annotation.service';
     SharedModule,
   ],
   providers: [
-    AnnotationService
+    ImageService
   ]
 })
 export class CanvasD3Module { }

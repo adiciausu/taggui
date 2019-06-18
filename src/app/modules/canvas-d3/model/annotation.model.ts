@@ -1,4 +1,4 @@
-import {Point} from './Point.model';
+import {Point} from './point.model';
 import {Shape} from '../../class/models/class.model';
 
 export interface Annotation {

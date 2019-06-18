@@ -2,9 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3/index';
 import {Class, Shape} from '../../../class/models/class.model';
 import {Image} from '../../../image/models/image.model';
-import {AnnotationService} from '../../service/annotation.service';
-import {ImageAnnotations} from '../../model/ImageAnnotations.model';
-import {Annotation} from '../../model/Annotation.model';
+import {ImageService} from '../../../image/service/image.service';
+import {Annotation} from '../../model/annotation.model';
 
 @Component({
   selector: 'app-canvas-d3',
@@ -21,15 +20,13 @@ export class CanvasD3Component implements OnInit {
   hotCornerRadius = 10;
   currentMouseCoords = [];
   annotationNodes = [];
-  imageAnnotations: ImageAnnotations;
 
-  constructor(private annotationService: AnnotationService) {
+  constructor(private annotationService: ImageService) {
   }
 
   ngOnInit() {
     this.initSVG();
     this.drawImage(this.selectedImage);
-    this.imageAnnotations = {imageId: this.selectedImage.id, annotations: {}};
   }
 
   saveClassAtCurrentMouseCorrds(clazz: Class) {
@@ -46,9 +43,9 @@ export class CanvasD3Component implements OnInit {
         {x: x + width, y: y + height},
       ]
     };
-    this.imageAnnotations.annotations[clazz.name] = this.imageAnnotations.annotations[clazz.name] || [];
-    this.imageAnnotations.annotations[clazz.name].push(ann);
-    this.annotationService.save(this.imageAnnotations).subscribe();
+    this.selectedImage.annotations[clazz.name] = this.selectedImage.annotations[clazz.name] || [];
+    this.selectedImage.annotations[clazz.name].push(ann);
+    this.annotationService.save(this.selectedImage).subscribe();
   }
 
   drawImage(image: Image) {
