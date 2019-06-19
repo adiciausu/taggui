@@ -5,6 +5,7 @@ import {ClassService} from './service/class.service';
 import {TableModule} from 'primeng/table';
 import {SharedModule} from '../../shared/shared.module';
 import {ButtonModule} from "primeng/button";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {ButtonModule} from "primeng/button";
     ClassRoutingModule,
 
     TableModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule
   ],
   providers: [
     ClassService
