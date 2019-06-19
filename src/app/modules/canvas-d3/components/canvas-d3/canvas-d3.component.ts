@@ -34,7 +34,7 @@ export class CanvasD3Component implements OnInit {
   }
 
   saveClass(x: number, y: number, width: number, height: number, clazz: Class) {
-    this.drawRectangle(x, y, width, height, clazz);
+    this.drawRectangle(x, y, width, height, clazz, this.selectedImage.annotations[clazz.name].length);
 
     const ann: Annotation = {
       shape: Shape.RECTANGLE,
@@ -68,14 +68,14 @@ export class CanvasD3Component implements OnInit {
         }
       }
 
-      for (const annotation of image.annotations[className]) {
+      for (const annotationKey in image.annotations[className]) {
+        const annotation = image.annotations[className][annotationKey];
         switch (annotation.shape) {
           case Shape.RECTANGLE:
-            this.drawRectangle(
-              annotation.points[0].x, annotation.points[0].y,
+            this.drawRectangle(annotation.points[0].x, annotation.points[0].y,
               annotation.points[1].x - annotation.points[0].x,
               annotation.points[1].y - annotation.points[0].y,
-              clazz);
+              clazz, annotationKey);
             break;
           case Shape.POLYGON:
           default:
@@ -83,18 +83,16 @@ export class CanvasD3Component implements OnInit {
 
         }
       }
-
-      console.log(image.annotations[className]);
     }
   }
 
-  // only rectangle implemented
-  private drawRectangle(x: number, y: number, width: number, height: number, clazz: Class) {
+  private drawRectangle(x: number, y: number, width: number, height: number, clazz: Class, index: number) {
     if (!clazz) {
       throw new Error('No class selected');
     }
 
-    const rectangleGroup = this.svg.append('g');
+    const rectangleGroup = this.svg.append('g')
+      .attr('id', clazz.name + '-' + index);
 
     // add rectangle
     rectangleGroup.append('rect')
@@ -118,6 +116,12 @@ export class CanvasD3Component implements OnInit {
         })
       })
       .on('end', (d: { x: number, y: number }) => {
+        console.log(this.selectedImage.annotations[clazz.name]);
+        this.selectedImage.annotations[clazz.name][index].points[0].x = d.x;
+        this.selectedImage.annotations[clazz.name][index].points[0].y = d.y;
+        this.selectedImage.annotations[clazz.name][index].points[1].x = d.x + width;
+        this.selectedImage.annotations[clazz.name][index].points[1].y = d.y + height;
+        console.log(d.x, d.y, this.selectedImage.annotations[clazz.name]);
         this.imageService.save(this.selectedImage).subscribe();
       });
 
