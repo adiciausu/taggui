@@ -50,7 +50,7 @@ export class CanvasD3Component implements OnInit {
 
   drawImage(image: Image) {
     this.svg.attr('width', image.width)
-    .attr('height', image.height);
+      .attr('height', image.height);
     this.image.attr('xlink:href', image.path);
     this.annotationNodes.forEach((annotation) => annotation.remove());
   }
@@ -65,56 +65,59 @@ export class CanvasD3Component implements OnInit {
 
     // add rectangle
     rectangleGroup.append('rect')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('stroke', 'orange')
-    .attr('stroke-width', this.rectangleStrokeWidth)
-    .attr('fill', clazz.color)
-    .style('opacity', 0.4)
-    .attr('cursor', 'move');
+      .attr('width', width)
+      .attr('height', height)
+      .attr('stroke', 'orange')
+      .attr('stroke-width', this.rectangleStrokeWidth)
+      .attr('fill', clazz.color)
+      .style('opacity', 0.4)
+      .attr('cursor', 'move');
 
     this.addResizeHotcorner(rectangleGroup, width, height, 'SE');
 
-    // add drag behaviour
-    rectangleGroup
-    .datum({x, y})
-    .attr('transform', (d) => {
-      return 'translate(' + [d.x, d.y] + ')';
-    })
-    .call(
-      d3.drag()
+    const rectangleDragBehaviour = d3.drag()
       .on('drag', (d: { x: number, y: number }) => {
         rectangleGroup.attr('transform', (datum) => {
           datum.x += d3.event.dx;
           datum.y += d3.event.dy;
 
           return 'translate(' + [datum.x, datum.y] + ')';
-        });
+        })
       })
-    );
+      .on('end', (d: { x: number, y: number }) => {
+        this.annotationService.save(this.selectedImage).subscribe();
+      });
+
+    // add drag behaviour
+    rectangleGroup
+      .datum({x, y})
+      .attr('transform', (d) => {
+        return 'translate(' + [d.x, d.y] + ')';
+      })
+      .call(rectangleDragBehaviour);
 
     this.annotationNodes.push(rectangleGroup);
   }
 
   private initSVG() {
     this.svg = d3.select('#canvas-d3')
-    .append('svg');
+      .append('svg');
 
     // add image
     this.image = this.svg.append('image')
-    .attr('x', 0)
-    .attr('y', 0)
-    .on('click', () => {
-      const coords = d3.mouse(d3.event.target);
-      this.saveClass(coords[0], coords[1], 100, 100, this.selectedClass);
-    });
+      .attr('x', 0)
+      .attr('y', 0)
+      .on('click', () => {
+        const coords = d3.mouse(d3.event.target);
+        this.saveClass(coords[0], coords[1], 100, 100, this.selectedClass);
+      });
 
     // add zoom
     const zoom = d3.zoom()
-    .scaleExtent([.5, 2])
-    .on('zoom', () => {
-      this.svg.attr('transform', d3.event.transform);
-    });
+      .scaleExtent([.5, 2])
+      .on('zoom', () => {
+        this.svg.attr('transform', d3.event.transform);
+      });
     this.svg.call(zoom);
 
     // start mouse move listener
@@ -133,25 +136,25 @@ export class CanvasD3Component implements OnInit {
         const newWidth = newCoords[0] - currentShapeOriginCoords.x;
         rect.attr('width', newWidth);
         rectangleGroup.select('.SE')
-        .attr('cx', newWidth);
+          .attr('cx', newWidth);
       }
 
       if (newCoords[1] > currentShapeOriginCoords.y) {
         const newHeight = newCoords[1] - currentShapeOriginCoords.y;
         rect.attr('height', newHeight);
         rectangleGroup.select('.SE')
-        .attr('cy', newHeight);
+          .attr('cy', newHeight);
       }
 
     });
 
     rectangleGroup.append('circle')
-    .classed(className, true)
-    .attr('fill', 'white')
-    .attr('r', this.hotCornerRadius)
-    .attr('cx', x)
-    .attr('cy', y)
-    .attr('cursor', className.toLowerCase() + '-resize')
-    .call(resize);
+      .classed(className, true)
+      .attr('fill', 'white')
+      .attr('r', this.hotCornerRadius)
+      .attr('cx', x)
+      .attr('cy', y)
+      .attr('cursor', className.toLowerCase() + '-resize')
+      .call(resize);
   }
 }
