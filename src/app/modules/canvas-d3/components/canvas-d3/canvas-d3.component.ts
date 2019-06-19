@@ -34,7 +34,11 @@ export class CanvasD3Component implements OnInit {
   }
 
   saveClass(x: number, y: number, width: number, height: number, clazz: Class) {
-    this.drawRectangle(x, y, width, height, clazz, this.selectedImage.annotations[clazz.name].length);
+    let index = 0;
+    if (this.selectedImage.annotations[clazz.name]) {
+      index = this.selectedImage.annotations[clazz.name].length;
+    }
+    this.drawRectangle(x, y, width, height, clazz, index);
 
     const ann: Annotation = {
       shape: Shape.RECTANGLE,
@@ -49,7 +53,6 @@ export class CanvasD3Component implements OnInit {
   }
 
   drawImage(image: Image) {
-    console.log(image);
     this.svg.attr('width', image.width)
       .attr('height', image.height);
     this.image.attr('xlink:href', image.path);
@@ -104,8 +107,7 @@ export class CanvasD3Component implements OnInit {
       .style('opacity', 0.4)
       .attr('cursor', 'move');
 
-    this.addResizeHotcorner(rectangleGroup, width, height, 'SE');
-
+    this.addResizeHotcorner(rectangleGroup, width, height, 'SE', clazz, index);
     const rectangleDragBehaviour = d3.drag()
       .on('drag', (d: { x: number, y: number }) => {
         rectangleGroup.attr('transform', (datum) => {
@@ -116,12 +118,10 @@ export class CanvasD3Component implements OnInit {
         })
       })
       .on('end', (d: { x: number, y: number }) => {
-        console.log(this.selectedImage.annotations[clazz.name]);
         this.selectedImage.annotations[clazz.name][index].points[0].x = d.x;
         this.selectedImage.annotations[clazz.name][index].points[0].y = d.y;
         this.selectedImage.annotations[clazz.name][index].points[1].x = d.x + width;
         this.selectedImage.annotations[clazz.name][index].points[1].y = d.y + height;
-        console.log(d.x, d.y, this.selectedImage.annotations[clazz.name]);
         this.imageService.save(this.selectedImage).subscribe();
       });
 
@@ -163,35 +163,41 @@ export class CanvasD3Component implements OnInit {
     });
   }
 
-  private addResizeHotcorner(rectangleGroup, x: number, y: number, className: string) {
-    const resize = d3.drag().on('drag', () => {
-      const rect = rectangleGroup.select('rect');
-      const currentShapeOriginCoords = rect.data()[0];
-      const newCoords = d3.mouse(this.svg.node());
+  private addResizeHotcorner(rectangleGroup, x: number, y: number, cssClassName: string, clazz: Class, index: number) {
+    const resize = d3.drag()
+      .on('drag', () => {
+        const rect = rectangleGroup.select('rect');
+        const currentShapeOriginCoords = rect.data()[0];
+        const newCoords = d3.mouse(this.svg.node());
 
-      if (newCoords[0] > currentShapeOriginCoords.x) {
-        const newWidth = newCoords[0] - currentShapeOriginCoords.x;
-        rect.attr('width', newWidth);
-        rectangleGroup.select('.SE')
-          .attr('cx', newWidth);
-      }
+        if (newCoords[0] > currentShapeOriginCoords.x) {
+          const newWidth = newCoords[0] - currentShapeOriginCoords.x;
+          rect.attr('width', newWidth);
+          rectangleGroup.select('.SE')
+            .attr('cx', newWidth);
 
-      if (newCoords[1] > currentShapeOriginCoords.y) {
-        const newHeight = newCoords[1] - currentShapeOriginCoords.y;
-        rect.attr('height', newHeight);
-        rectangleGroup.select('.SE')
-          .attr('cy', newHeight);
-      }
+          this.selectedImage.annotations[clazz.name][index].points[1].x = this.selectedImage.annotations[clazz.name][index].points[0].x + newWidth;
+        }
 
-    });
+        if (newCoords[1] > currentShapeOriginCoords.y) {
+          const newHeight = newCoords[1] - currentShapeOriginCoords.y;
+          rect.attr('height', newHeight);
+          rectangleGroup.select('.SE')
+            .attr('cy', newHeight);
+          this.selectedImage.annotations[clazz.name][index].points[1].y = this.selectedImage.annotations[clazz.name][index].points[0].y + newHeight;
+        }
+      })
+      .on('end', () => {
+        this.imageService.save(this.selectedImage).subscribe();
+      });
 
     rectangleGroup.append('circle')
-      .classed(className, true)
+      .classed(cssClassName, true)
       .attr('fill', 'white')
       .attr('r', this.hotCornerRadius)
       .attr('cx', x)
       .attr('cy', y)
-      .attr('cursor', className.toLowerCase() + '-resize')
+      .attr('cursor', cssClassName.toLowerCase() + '-resize')
       .call(resize);
   }
 }
