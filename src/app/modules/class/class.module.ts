@@ -4,6 +4,7 @@ import {ClassRoutingModule} from './class-routing.module';
 import {ClassService} from './service/class.service';
 import {TableModule} from 'primeng/table';
 import {SharedModule} from '../../shared/shared.module';
+import {ButtonModule} from "primeng/button";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {SharedModule} from '../../shared/shared.module';
     SharedModule,
     ClassRoutingModule,
 
-    TableModule
+    TableModule,
+    ButtonModule
   ],
   providers: [
     ClassService

@@ -1,20 +1,23 @@
+<div class="p-grid">
+  <p-button label="Click" ></p-button>
+</div>
 <div>
-<p-table [value]="classes">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Id</th>
-      <th>Class Name</th>
-      <th>Shape</th>
-      <th>Color</th>
-    </tr>
-  </ng-template>
-  <ng-template let-class pTemplate="body">
-    <tr>
-      <td> {{class.id}}</td>
-      <td> {{class.name}}</td>
-      <td> {{class.shape}}</td>
-      <td [ngStyle]="{'color': class.color}">{{class.color}}</td>
-    </tr>
-  </ng-template>
-</p-table>
+  <p-table [value]="classes">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Class Name</th>
+        <th>Shape</th>
+        <th>Color</th>
+      </tr>
+    </ng-template>
+    <ng-template let-class pTemplate="body">
+      <tr>
+        <td> {{class.id}}</td>
+        <td> {{class.name}}</td>
+        <td> {{class.shape}}</td>
+        <td [ngStyle]="{'color': class.color}">{{class.color}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
