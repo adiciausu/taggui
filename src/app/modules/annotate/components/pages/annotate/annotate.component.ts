@@ -39,6 +39,7 @@ export class AnnotateComponent implements OnInit {
       this.images = items;
       this.selectedImage = this.images[0];
       this.selectedImageIndex = 0;
+      this.canvasd3Component.drawImage(this.selectedImage);
     });
   }
 

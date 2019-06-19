@@ -12,6 +12,7 @@ import {Annotation} from '../../model/annotation.model';
 })
 export class CanvasD3Component implements OnInit {
   @Input() selectedClass: Class;
+  @Input() classes: Class[];
   @Input() selectedImage: Image;
 
   svg;
@@ -21,12 +22,11 @@ export class CanvasD3Component implements OnInit {
   currentMouseCoords = [];
   annotationNodes = [];
 
-  constructor(private annotationService: ImageService) {
+  constructor(private imageService: ImageService) {
   }
 
   ngOnInit() {
     this.initSVG();
-    this.drawImage(this.selectedImage);
   }
 
   saveClassAtCurrentMouseCorrds(clazz: Class) {
@@ -34,7 +34,7 @@ export class CanvasD3Component implements OnInit {
   }
 
   saveClass(x: number, y: number, width: number, height: number, clazz: Class) {
-    this.drawClass(x, y, width, height, clazz);
+    this.drawRectangle(x, y, width, height, clazz);
 
     const ann: Annotation = {
       shape: Shape.RECTANGLE,
@@ -45,18 +45,51 @@ export class CanvasD3Component implements OnInit {
     };
     this.selectedImage.annotations[clazz.name] = this.selectedImage.annotations[clazz.name] || [];
     this.selectedImage.annotations[clazz.name].push(ann);
-    this.annotationService.save(this.selectedImage).subscribe();
+    this.imageService.save(this.selectedImage).subscribe();
   }
 
   drawImage(image: Image) {
+    console.log(image);
     this.svg.attr('width', image.width)
       .attr('height', image.height);
     this.image.attr('xlink:href', image.path);
+
+    // remove old annotations
     this.annotationNodes.forEach((annotation) => annotation.remove());
+
+    // draw new annotations
+    for (const className in image.annotations) {
+      // determine class
+      let clazz = null;
+      for (const searchedClass of this.classes) {
+        if (searchedClass.name === className) {
+          clazz = searchedClass;
+          break;
+        }
+      }
+
+      for (const annotation of image.annotations[className]) {
+        switch (annotation.shape) {
+          case Shape.RECTANGLE:
+            this.drawRectangle(
+              annotation.points[0].x, annotation.points[0].y,
+              annotation.points[1].x - annotation.points[0].x,
+              annotation.points[1].y - annotation.points[0].y,
+              clazz);
+            break;
+          case Shape.POLYGON:
+          default:
+            throw new Error('Not implemented!');
+
+        }
+      }
+
+      console.log(image.annotations[className]);
+    }
   }
 
   // only rectangle implemented
-  private drawClass(x: number, y: number, width: number, height: number, clazz: Class) {
+  private drawRectangle(x: number, y: number, width: number, height: number, clazz: Class) {
     if (!clazz) {
       throw new Error('No class selected');
     }
@@ -85,7 +118,7 @@ export class CanvasD3Component implements OnInit {
         })
       })
       .on('end', (d: { x: number, y: number }) => {
-        this.annotationService.save(this.selectedImage).subscribe();
+        this.imageService.save(this.selectedImage).subscribe();
       });
 
     // add drag behaviour
