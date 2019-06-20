@@ -3,8 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  staticHost: 'http://localhost:8081',
+  apiHost: 'http://localhost:8080',
+  staticImageHost: undefined // defined below
 };
+
+environment.staticImageHost =  environment.staticHost + '/images';
 
 /*
  * For easier debugging in development mode, you can import the following file

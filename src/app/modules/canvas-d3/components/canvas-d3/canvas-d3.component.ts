@@ -4,6 +4,7 @@ import {Class, Shape} from '../../../class/models/class.model';
 import {Image} from '../../../image/models/image.model';
 import {ImageService} from '../../../image/service/image.service';
 import {Annotation} from '../../model/annotation.model';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-canvas-d3',
@@ -21,6 +22,7 @@ export class CanvasD3Component implements OnInit {
   hotCornerRadius = 10;
   currentMouseCoords = [];
   annotationNodes = [];
+  env = environment;
 
   constructor(private imageService: ImageService) {
   }
@@ -55,7 +57,7 @@ export class CanvasD3Component implements OnInit {
   drawImage(image: Image) {
     this.svg.attr('width', image.width)
       .attr('height', image.height);
-    this.image.attr('xlink:href', image.path);
+    this.image.attr('xlink:href', this.env.staticImageHost + '/' + image.name);
 
     // remove old annotations
     this.annotationNodes.forEach((annotation) => annotation.remove());
