@@ -16,6 +16,7 @@
           <th>Id</th>
           <th>Name</th>
           <th>Size</th>
+          <th>Actions</th>
         </tr>
       </ng-template>
       <ng-template let-image pTemplate="body">
@@ -23,6 +24,11 @@
           <td> {{image.id}}</td>
           <td> {{image.name}}</td>
           <td> {{image.width}} X {{ image.height }}</td>
+          <td>
+            <p-button styleClass="ui-button-secondary" (click)="onDelete(image.id)"
+                      label="Delete">
+            </p-button>
+          </td>
         </tr>
       </ng-template>
     </p-table>

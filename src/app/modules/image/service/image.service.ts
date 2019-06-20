@@ -1,24 +1,25 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Image} from '../models/image.model';
+import {environment} from '../../../../environments/environment';
 
 @Injectable()
 export class ImageService {
-  baseURL = 'http://localhost:8080';
+  env = environment;
 
   constructor(private http: HttpClient) {
   }
 
   findAll(): Observable<Image[]> {
-    return this.http.get<Image[]>(this.baseURL + '/image/list');
+    return this.http.get<Image[]>(this.env.apiHost + '/image/list');
   }
 
   save(image: Image): Observable<boolean> {
-    return this.http.post<boolean>(this.baseURL + '/image', image);
+    return this.http.post<boolean>(this.env.apiHost + '/image', image);
   }
 
-  find(imageId: number): Observable<Image> {
-    return this.http.get<Image>(this.baseURL + '/image/' + imageId);
+  delete(imageId: number): Observable<boolean> {
+    return this.http.delete<boolean>(this.env.apiHost + '/image/' + imageId);
   }
 }

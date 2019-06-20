@@ -22,4 +22,10 @@ export class ImageListComponent implements OnInit {
   onUpload(event) {
     this.imageService.findAll().subscribe(items => this.images = items);
   }
+
+  onDelete(imageId: number) {
+    this.imageService.delete(imageId).subscribe(() => {
+      this.imageService.findAll().subscribe(items => this.images = items);
+    });
+  }
 }
