@@ -16,4 +16,8 @@ export class ImageListComponent implements OnInit {
   ngOnInit() {
     this.imageService.findAll().subscribe(items => this.images = items);
   }
+
+  onUpload(event) {
+    this.imageService.findAll().subscribe(items => this.images = items);
+  }
 }

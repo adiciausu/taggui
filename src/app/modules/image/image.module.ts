@@ -4,6 +4,7 @@ import {ImageRoutingModule} from './image-routing.module';
 import {TableModule} from 'primeng/table';
 import {SharedModule} from '../../shared/shared.module';
 import {ImageService} from './service/image.service';
+import {FileUploadModule} from 'primeng/fileupload';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {ImageService} from './service/image.service';
     SharedModule,
     ImageRoutingModule,
 
-    TableModule
+    TableModule,
+    FileUploadModule
   ],
   providers: [
     ImageService
