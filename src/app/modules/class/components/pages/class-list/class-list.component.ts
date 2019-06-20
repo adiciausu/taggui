@@ -12,9 +12,11 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 export class ClassListComponent implements OnInit {
   classes: Class[];
   isShowAddClassVisible = false;
-  newClass: Class = {} as Class;
   availableShapes: SelectItem[];
   addClassForm: FormGroup;
+  private defaultShape = Shape.RECTANGLE;
+  private defaultColor = 'FF0000';
+  newClass: Class = {shape: this.defaultShape, color: this.defaultColor} as Class;
 
   constructor(private classService: ClassService, private formBuilder: FormBuilder) {
     this.availableShapes = [
@@ -40,6 +42,7 @@ export class ClassListComponent implements OnInit {
     this.classService.save(this.addClassForm.value).subscribe(() => {
       this.classService.findAll().subscribe(items => this.classes = items);
       this.isShowAddClassVisible = false;
+      this.addClassForm.reset({shape: this.defaultShape, color: this.defaultColor} as Class);
     });
   }
 

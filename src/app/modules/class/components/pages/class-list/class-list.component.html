@@ -1,5 +1,5 @@
 <div>
-  <p-button label="Add class" (click)="showAddClassDialog()"></p-button>
+  <p-button label="Add class" styleClass="ui-button-success"  (click)="showAddClassDialog()"></p-button>
 </div>
 <div>
   <p-table [value]="classes">
@@ -19,7 +19,7 @@
         <td> {{class.shape}}</td>
         <td [ngStyle]="{'color': class.color}">{{class.color}}</td>
         <td>
-          <p-button class="ui-button-secondary" (click)="onDelete(class.id)" label="Delete"></p-button>
+          <p-button  styleClass="ui-button-danger" (click)="onDelete(class.id)" label="Delete"></p-button>
         </td>
       </tr>
     </ng-template>
