@@ -4,8 +4,11 @@ import {ClassRoutingModule} from './class-routing.module';
 import {ClassService} from './service/class.service';
 import {TableModule} from 'primeng/table';
 import {SharedModule} from '../../shared/shared.module';
-import {ButtonModule} from "primeng/button";
-import {DialogModule} from "primeng/dialog";
+import {ButtonModule} from 'primeng/button';
+import {DialogModule} from 'primeng/dialog';
+import {InputTextModule} from 'primeng/inputtext';
+import {DropdownModule} from 'primeng/dropdown';
+import {ColorPickerModule} from 'primeng/colorpicker';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import {DialogModule} from "primeng/dialog";
 
     TableModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    InputTextModule,
+    DropdownModule,
+    ColorPickerModule
   ],
   providers: [
     ClassService

@@ -4,7 +4,7 @@ export enum Shape {
 }
 
 export interface Class {
-  id: number;
+  id: string;
   name: string;
   shape: Shape;
   color: string;

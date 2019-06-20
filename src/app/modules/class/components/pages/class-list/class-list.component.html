@@ -1,5 +1,5 @@
 <div>
-  <p-button label="Add class" ></p-button>
+  <p-button label="Add class" (click)="showAddClassDialog()"></p-button>
 </div>
 <div>
   <p-table [value]="classes">
@@ -21,3 +21,38 @@
     </ng-template>
   </p-table>
 </div>
+
+
+<p-dialog [(visible)]="isShowAddClassVisible" [contentStyle]="{'overflow':'visible'}">
+  <p-header>
+    Add new class
+  </p-header>
+  <form [formGroup]="addClassForm" (ngSubmit)="onSaveNewClass()">
+    <div class="p-grid">
+      <div class="p-col-12">
+        <div class="ui-inputgroup">
+          <span class="ui-inputgroup-addon">Name</span>
+          <input type="text" pInputText formControlName="name"/>
+        </div>
+      </div>
+    </div>
+    <div class="p-grid">
+      <div class="p-col-12">
+        <div class="ui-inputgroup">
+          <span class="ui-inputgroup-addon">Shape</span>
+          <p-dropdown [options]="availableShapes" formControlName="shape"></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="p-grid">
+      <div class="p-col-12">
+        <div class="ui-inputgroup">
+          <span class="ui-inputgroup-addon">Color</span>
+          <p-colorPicker [(ngModel)]="newClass.color" formControlName="color"></p-colorPicker>
+        </div>
+      </div>
+    </div>
+    <p-button type="submit" label="Save" [disabled]="!addClassForm.valid"></p-button>
+  </form>
+</p-dialog>
+
