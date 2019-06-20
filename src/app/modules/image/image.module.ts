@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {ImageListComponent} from './components/pages/class-list/image-list.component';
+import {ImageListComponent} from './components/pages/image-list/image-list.component';
 import {ImageRoutingModule} from './image-routing.module';
 import {TableModule} from 'primeng/table';
 import {SharedModule} from '../../shared/shared.module';

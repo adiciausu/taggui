@@ -1,29 +1,35 @@
-<div>
-  <p-button label="Add class" styleClass="ui-button-success"  (click)="showAddClassDialog()"></p-button>
+<div class="p-grid">
+  <div class="p-col-12">
+    <p-button label="Add class" styleClass="ui-button-success"
+              (click)="showAddClassDialog()">
+    </p-button>
+  </div>
 </div>
-<div>
-  <p-table [value]="classes">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Id</th>
-        <th>Class Name</th>
-        <th>Shape</th>
-        <th>Color</th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
-    <ng-template let-class pTemplate="body">
-      <tr>
-        <td> {{class.id}}</td>
-        <td> {{class.name}}</td>
-        <td> {{class.shape}}</td>
-        <td [ngStyle]="{'color': class.color}">{{class.color}}</td>
-        <td>
-          <p-button  styleClass="ui-button-danger" (click)="onDelete(class.id)" label="Delete"></p-button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+<div class="p-grid">
+  <div class="p-col-12">
+    <p-table [value]="classes">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Id</th>
+          <th>Class Name</th>
+          <th>Shape</th>
+          <th>Color</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template let-class pTemplate="body">
+        <tr>
+          <td> {{class.id}}</td>
+          <td> {{class.name}}</td>
+          <td> {{class.shape}}</td>
+          <td [ngStyle]="{'color': class.color}">{{class.color}}</td>
+          <td>
+            <p-button styleClass="ui-button-secondary" (click)="onDelete(class.id)" label="Delete"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>
 
 
