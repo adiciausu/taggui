@@ -36,10 +36,16 @@ export class ClassListComponent implements OnInit {
     this.isShowAddClassVisible = true;
   }
 
-  onSaveNewClass(event) {
+  onSaveNewClass() {
     this.classService.save(this.addClassForm.value).subscribe(() => {
       this.classService.findAll().subscribe(items => this.classes = items);
       this.isShowAddClassVisible = false;
+    });
+  }
+
+  onDelete(classId: number) {
+    this.classService.delete(classId).subscribe(() => {
+      this.classService.findAll().subscribe(items => this.classes = items);
     });
   }
 }
