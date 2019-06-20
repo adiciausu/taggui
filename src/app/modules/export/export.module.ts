@@ -4,6 +4,7 @@ import {SharedModule} from '../../shared/shared.module';
 import {ImageService} from '../image/service/image.service';
 import {ExportComponent} from './components/pages/export/export.component';
 import {ExportRoutingModule} from './export-routing.module';
+import {ButtonModule} from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import {ExportRoutingModule} from './export-routing.module';
     SharedModule,
     ExportRoutingModule,
 
-    TableModule
+    ButtonModule
   ],
   providers: [
     ImageService

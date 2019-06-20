@@ -30,22 +30,22 @@ export class AnnotateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.classService.findAll().subscribe(items => {
-      this.classes = items;
+    this.classService.findAll().subscribe(classes => {
+      this.classes = classes;
       this.selectedClass = this.classes[0];
-    });
 
-    this.imageService.findAll().subscribe(items => {
-      this.images = items;
-      this.selectedImage = this.images[0];
-      this.selectedImageIndex = 0;
-      this.canvasd3Component.drawImage(this.selectedImage);
+      this.imageService.findAll().subscribe(images => {
+        this.images = images;
+        this.selectedImage = this.images[0];
+        this.selectedImageIndex = 0;
+        this.canvasd3Component.drawImage(this.selectedImage);
+      });
     });
   }
 
   onSelectImage(event) {
     const newImage: Image = event.value as Image;
-    const imageIndex = this.images.findIndex((image) => image.path === newImage.path);
+    const imageIndex: number = this.images.findIndex((image) => image.id === newImage.id);
     this.selectImageIndex(imageIndex);
     this.smartClassStrategies = [
       {name: 'Use Google Detection API'},

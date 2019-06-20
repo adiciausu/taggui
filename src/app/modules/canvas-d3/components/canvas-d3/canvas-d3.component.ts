@@ -63,7 +63,7 @@ export class CanvasD3Component implements OnInit {
     this.annotationNodes.forEach((annotation) => annotation.remove());
 
     // draw new annotations
-    for (const className in image.annotations) {
+    for (const className of Object.keys(image.annotations)) {
       // determine class
       let clazz = null;
       for (const searchedClass of this.classes) {
@@ -73,14 +73,14 @@ export class CanvasD3Component implements OnInit {
         }
       }
 
-      for (const annotationKey in image.annotations[className]) {
-        const annotation = image.annotations[className][annotationKey];
+      for (const index of Object.keys(image.annotations[className])) {
+        const annotation = image.annotations[className][index];
         switch (annotation.shape) {
           case Shape.RECTANGLE:
             this.drawRectangle(annotation.points[0].x, annotation.points[0].y,
               annotation.points[1].x - annotation.points[0].x,
               annotation.points[1].y - annotation.points[0].y,
-              clazz, annotationKey);
+              clazz, index as number);
             break;
           case Shape.POLYGON:
           default:
@@ -117,7 +117,7 @@ export class CanvasD3Component implements OnInit {
           datum.y += d3.event.dy;
 
           return 'translate(' + [datum.x, datum.y] + ')';
-        })
+        });
       })
       .on('end', (d: { x: number, y: number }) => {
         this.selectedImage.annotations[clazz.name][index].points[0].x = d.x;
