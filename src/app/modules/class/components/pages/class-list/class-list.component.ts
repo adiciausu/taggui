@@ -15,7 +15,7 @@ export class ClassListComponent implements OnInit {
   availableShapes: SelectItem[];
   addClassForm: FormGroup;
   private defaultShape = Shape.RECTANGLE;
-  private defaultColor = 'FF0000';
+  private defaultColor = '#FF0000';
   newClass: Class = {shape: this.defaultShape, color: this.defaultColor} as Class;
 
   constructor(private classService: ClassService, private formBuilder: FormBuilder) {

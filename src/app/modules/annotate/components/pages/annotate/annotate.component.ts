@@ -37,7 +37,10 @@ export class AnnotateComponent implements OnInit {
       this.classService.findAll().subscribe(classes => {
         this.classes = classes;
         this.selectedClass = this.classes[0];
-        this.canvasd3Component.drawImage(this.selectedImage);
+
+        if (this.selectedImage != null) {
+          this.canvasd3Component.drawImage(this.selectedImage);
+        }
       });
     });
   }
