@@ -13,6 +13,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {projectReducer} from '../modules/project/store/reducers/project.reducer';
 import {ProjectEffects} from '../modules/project/store/effects/project.effects';
 import {SharedModule} from '../shared/shared.module';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -26,8 +27,6 @@ import {SharedModule} from '../shared/shared.module';
     HttpClientModule,
     FormsModule,
     DropdownModule,
-    EffectsModule.forRoot([]), // necessary: https://github.com/ngrx/platform/issues/184
-    StoreModule.forRoot({}), // necessary,
 
     EffectsModule.forFeature([
       ProjectEffects

@@ -4,6 +4,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from './core/core.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +17,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
     // core
     CoreModule,
+
+    // store
+    EffectsModule.forRoot([]), // necessary: https://github.com/ngrx/platform/issues/184
+    StoreModule.forRoot({}), // necessary,
+    StoreDevtoolsModule.instrument({}),
 
     // app
     AppRoutingModule

@@ -21,7 +21,6 @@ export class MenuComponent implements OnInit {
   constructor(private store: Store<any>) {
     this.projects$ = this.store.pipe(select(getProjects));
     this.availableProjectSelectOptions$ = this.store.pipe(select(getProjectsAsSelectOptions));
-    this.projects$.subscribe(console.log);
 
     this.menuItems = [
       {label: 'Annotate', routerLink: ['/']},

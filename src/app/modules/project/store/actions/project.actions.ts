@@ -35,14 +35,14 @@ export class SaveProjectSuccessAction {
 export class DeleteProjectAction {
   readonly type = DELETE_PROJECT;
 
-  constructor(public payload: number) {
+  constructor(public payload: string) {
   }
 }
 
 export class DeleteProjectSuccessAction {
   readonly type = DELETE_PROJECT_SUCCESS;
 
-  constructor(public payload: number) {
+  constructor(public payload: string) {
   }
 }
 

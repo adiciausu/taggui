@@ -3,8 +3,10 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Injectable} from '@angular/core';
 import {ProjectService} from '../../service/project.service';
 import {
+  DELETE_PROJECT,
+  DeleteProjectAction,
+  DeleteProjectSuccessAction,
   LOAD_PROJECTS,
-  LoadProjectsAction,
   LoadProjectsSuccessAction,
   SAVE_PROJECT,
   SaveProjectAction,
@@ -20,7 +22,7 @@ export class ProjectEffects {
 
   @Effect() loadProjects$ = this.actions$.pipe(
     ofType(LOAD_PROJECTS),
-    switchMap((action: LoadProjectsAction) => this.projectService.findAll()),
+    switchMap(() => this.projectService.findAll()),
     map((projects: Project[]) => {
       return new LoadProjectsSuccessAction(projects);
     }),
@@ -30,8 +32,21 @@ export class ProjectEffects {
   @Effect() saveProject$ = this.actions$.pipe(
     ofType(SAVE_PROJECT),
     switchMap((action: SaveProjectAction) => this.projectService.save(action.payload)),
-    map((project: Project) => {
-      return new SaveProjectSuccessAction(project);
+    map((project: Project) => new SaveProjectSuccessAction(project)),
+    catchError(error => new Observable(error))
+  );
+
+  @Effect() deleteProject$ = this.actions$.pipe(
+    ofType(DELETE_PROJECT),
+    switchMap((action: DeleteProjectAction) => {
+      let a = this.projectService.delete(action.payload);
+      a.subscribe(console.log);
+
+      return a;
+    }),
+    map((id: string) => {
+      console.log('map');
+      return new DeleteProjectSuccessAction(id);
     }),
     catchError(error => new Observable(error))
   );

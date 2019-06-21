@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Project} from '../../../model/project.model';
 import {select, Store} from '@ngrx/store';
-import {LoadProjectsAction, SaveProjectAction} from '../../../store/actions/project.actions';
+import {DeleteProjectAction, LoadProjectsAction, SaveProjectAction} from '../../../store/actions/project.actions';
 import {getProjects} from '../../../store/reducers/project.reducer';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -49,17 +49,9 @@ export class ProjectListComponent implements OnInit {
     this.store.dispatch(new SaveProjectAction(this.addEditForm.value));
     this.isAddEditDialogVisible = false;
     this.addEditForm.reset({} as Project);
-
-    // this.projectService.save(this.addEditForm.value).subscribe(() => {
-    //   this.projectService.findAll().subscribe(items => this.projects = items);
-    //   this.isAddEditDialogVisible = false;
-    //   this.addEditForm.reset({} as Project);
-    // });
   }
 
   onDelete(id: number) {
-    // this.projectService.delete(id).subscribe(() => {
-    //   this.projectService.findAll().subscribe(items => this.projects = items);
-    // });
+    this.store.dispatch(new DeleteProjectAction(id));
   }
 }

@@ -19,7 +19,7 @@ export class ProjectService {
     return this.http.post<Project>(this.env.apiHost + '/project', project);
   }
 
-  delete(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(this.env.apiHost + '/project/' + id);
+  delete(id: string): Observable<string> {
+    return this.http.delete<string>(this.env.apiHost + '/project/' + id);
   }
 }
