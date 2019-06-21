@@ -1,7 +1,7 @@
 <div class="p-grid">
   <div class="p-col-12">
     <p-button label="Add class" styleClass="ui-button-success"
-              (click)="showAddClassDialog()">
+              (click)="showEditAddClassDialog()">
     </p-button>
   </div>
 </div>
@@ -24,8 +24,11 @@
           <td> {{class.shape}}</td>
           <td [ngStyle]="{'color': class.color}">{{class.color}}</td>
           <td>
-            <p-button styleClass="ui-button-secondary" (click)="onDelete(class.id)" label="Delete"></p-button>
-            <p-button styleClass="ui-button-secondary" (click)="onDelete(class.id)" label="Edit"></p-button>
+                <p-button styleClass="ui-button-secondary" (click)="onDelete(class.id)"
+                          label="Delete"></p-button>
+                <p-button styleClass="ui-button-secondary"
+                          (click)="showEditAddClassDialog(class.id)"
+                          label="Edit"></p-button>
           </td>
         </tr>
       </ng-template>
@@ -38,7 +41,8 @@
   <p-header>
     Add new class
   </p-header>
-  <form [formGroup]="addClassForm" (ngSubmit)="onSaveNewClass()">
+  <form [formGroup]="addEditClassForm" (ngSubmit)="onSaveNewClass()">
+    <input type="hidden" formControlName="id">
     <div class="p-grid">
       <div class="p-col-12">
         <div class="ui-inputgroup">
@@ -63,7 +67,7 @@
         </div>
       </div>
     </div>
-    <p-button type="submit" label="Save" [disabled]="!addClassForm.valid"></p-button>
+    <p-button type="submit" label="Save" [disabled]="!addEditClassForm.valid"></p-button>
   </form>
 </p-dialog>
 

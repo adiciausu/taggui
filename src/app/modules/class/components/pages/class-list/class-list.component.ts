@@ -13,7 +13,7 @@ export class ClassListComponent implements OnInit {
   classes: Class[];
   isShowAddClassVisible = false;
   availableShapes: SelectItem[];
-  addClassForm: FormGroup;
+  addEditClassForm: FormGroup;
   private defaultShape = Shape.RECTANGLE;
   private defaultColor = '#FF0000';
   newClass: Class = {shape: this.defaultShape, color: this.defaultColor} as Class;
@@ -21,28 +21,34 @@ export class ClassListComponent implements OnInit {
   constructor(private classService: ClassService, private formBuilder: FormBuilder) {
     this.availableShapes = [
       {label: 'Rectangle', value: Shape.RECTANGLE},
+      {label: 'Point (coming soon)', value: Shape.POINT},
       {label: 'Polygon (coming soon)', value: Shape.POLYGON}
     ];
   }
 
   ngOnInit() {
     this.classService.findAll().subscribe(items => this.classes = items);
-    this.addClassForm = this.formBuilder.group({
+    this.addEditClassForm = this.formBuilder.group({
+      id: new FormControl(this.newClass.id),
       name: new FormControl(this.newClass.name, Validators.required),
       shape: new FormControl(this.newClass.shape, Validators.required),
       color: new FormControl(this.newClass.color, Validators.required)
     });
   }
 
-  showAddClassDialog() {
+  showEditAddClassDialog(classId: string) {
     this.isShowAddClassVisible = true;
+    if (classId) {
+      const editedClass: Class = this.classes.find((item) => item.id === classId);
+      this.addEditClassForm.reset(editedClass);
+    }
   }
 
   onSaveNewClass() {
-    this.classService.save(this.addClassForm.value).subscribe(() => {
+    this.classService.save(this.addEditClassForm.value).subscribe(() => {
       this.classService.findAll().subscribe(items => this.classes = items);
       this.isShowAddClassVisible = false;
-      this.addClassForm.reset({shape: this.defaultShape, color: this.defaultColor} as Class);
+      this.addEditClassForm.reset({shape: this.defaultShape, color: this.defaultColor} as Class);
     });
   }
 
