@@ -3,9 +3,8 @@ import {SelectItem} from 'primeng/api';
 import {Project} from '../../../modules/project/model/project.model';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {getProjects} from '../../../modules/project/store/reducers/project.reducer';
+import {getProjects, getProjectsAsSelectOptions} from '../../../modules/project/store/reducers/project.reducer';
 import {LoadProjectsAction} from '../../../modules/project/store/actions/project.actions';
-import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu',
@@ -13,13 +12,17 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  menuItems: any[];
   projects$: Observable<Project[]>;
-  availableProjects: SelectItem[];
+  availableProjectSelectOptions$: Observable<SelectItem[]>;
+
+  menuItems: any[];
   selectedProject: Project;
 
   constructor(private store: Store<any>) {
     this.projects$ = this.store.pipe(select(getProjects));
+    this.availableProjectSelectOptions$ = this.store.pipe(select(getProjectsAsSelectOptions));
+    this.projects$.subscribe(console.log);
+
     this.menuItems = [
       {label: 'Annotate', routerLink: ['/']},
       {label: 'Classes', routerLink: ['/class/list']},
@@ -30,16 +33,6 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new LoadProjectsAction());
-    this.projects$.pipe(
-      map((projects: Project[]) => {
-        const projectSelectItems: SelectItem[] = [];
-        projects.forEach((project) => {
-          projectSelectItems.push({label: project.name, value: project.id});
-        });
-
-        this.availableProjects = projectSelectItems;
-        this.selectedProject = projects[0];
-      })
-    ).subscribe();
+    // this.selectedProject = projects[0];
   }
 }

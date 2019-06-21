@@ -1,6 +1,8 @@
 import {LOAD_PROJECTS_SUCCESS, ProjectActions, SAVE_PROJECT_SUCCESS} from '../actions/project.actions';
 import {Project} from '../../model/project.model';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {SelectItem} from 'primeng/api';
+import * as _ from 'lodash';
 
 export interface ProjectState {
   projects: Project[];
@@ -18,17 +20,18 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
         projects: action.payload
       };
     case SAVE_PROJECT_SUCCESS:
-      const idx = state.projects.findIndex((prj: Project) => {
+      const newState = _.clone(state);
+      const idx = newState.projects.findIndex((prj: Project) => {
         return prj.id === action.payload.id;
       });
 
       if (idx !== -1) {
-        state.projects[idx] = action.payload;
+        newState.projects[idx] = action.payload;
       } else {
-        state.projects.push(action.payload);
+        newState.projects.push(action.payload);
       }
 
-      return state;
+      return newState;
     default:
       return state;
   }
@@ -37,4 +40,12 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
 export const getProjectsState = createFeatureSelector<Project[]>('projects');
 export const getProjects = createSelector(getProjectsState, (state: ProjectState) => {
   return state.projects;
+});
+export const getProjectsAsSelectOptions = createSelector(getProjects, (projects: Project[]) => {
+  const projectSelectItems: SelectItem[] = [];
+  projects.forEach((project) => {
+    projectSelectItems.push({label: project.name, value: project.id});
+  });
+
+  return projectSelectItems;
 });

@@ -4,6 +4,6 @@
   <img
     id='logo'
     src="assets/images/tagdroid-logo.png">
-  <p-dropdown [options]="availableProjects" [(ngModel)]="selectedProject"></p-dropdown>
+  <p-dropdown [options]="availableProjectSelectOptions$ | async" ></p-dropdown>
   <a href="/project/list">Manage projects</a>
 </p-menubar>

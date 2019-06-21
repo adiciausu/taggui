@@ -12,6 +12,7 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {projectReducer} from '../modules/project/store/reducers/project.reducer';
 import {ProjectEffects} from '../modules/project/store/effects/project.effects';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {ProjectEffects} from '../modules/project/store/effects/project.effects';
     MenuComponent
   ],
   imports: [
+    SharedModule,
     MenubarModule,
     HttpClientModule,
     FormsModule,
