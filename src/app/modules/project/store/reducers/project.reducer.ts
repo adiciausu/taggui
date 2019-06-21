@@ -1,4 +1,4 @@
-import {LOAD_PROJECTS_SUCCESS, ProjectActions} from '../actions/project.actions';
+import {LOAD_PROJECTS_SUCCESS, ProjectActions, SAVE_PROJECT_SUCCESS} from '../actions/project.actions';
 import {Project} from '../../model/project.model';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 
@@ -17,6 +17,18 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
         ...state,
         projects: action.payload
       };
+    case SAVE_PROJECT_SUCCESS:
+      const idx = state.projects.findIndex((prj: Project) => {
+        return prj.id === action.payload.id;
+      });
+
+      if (idx !== -1) {
+        state.projects[idx] = action.payload;
+      } else {
+        state.projects.push(action.payload);
+      }
+
+      return state;
     default:
       return state;
   }

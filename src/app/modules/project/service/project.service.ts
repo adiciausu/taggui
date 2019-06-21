@@ -15,8 +15,8 @@ export class ProjectService {
     return this.http.get<Project[]>(this.env.apiHost + '/project/list');
   }
 
-  save(project: Project): Observable<boolean> {
-    return this.http.post<boolean>(this.env.apiHost + '/project', project);
+  save(project: Project): Observable<Project> {
+    return this.http.post<Project>(this.env.apiHost + '/project', project);
   }
 
   delete(id: number): Observable<boolean> {
