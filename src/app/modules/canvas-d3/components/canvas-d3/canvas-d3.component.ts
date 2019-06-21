@@ -78,7 +78,7 @@ export class CanvasD3Component implements OnInit {
         continue;
       }
 
-      for (const index of Object.keys(image.annotations[className])) {
+      for (const index of image.annotations[className].keys()) {
         const annotation = image.annotations[className][index];
         switch (annotation.shape) {
           case Shape.RECTANGLE:

@@ -17,6 +17,7 @@ export class ClassListComponent implements OnInit {
   private defaultShape = Shape.RECTANGLE;
   private defaultColor = '#FF0000';
   newClass: Class = {shape: this.defaultShape, color: this.defaultColor} as Class;
+  isEdit = false;
 
   constructor(private classService: ClassService, private formBuilder: FormBuilder) {
     this.availableShapes = [
@@ -37,10 +38,14 @@ export class ClassListComponent implements OnInit {
   }
 
   showEditAddClassDialog(classId: string) {
+
     this.isShowAddClassVisible = true;
     if (classId) {
+      this.isEdit = true;
       const editedClass: Class = this.classes.find((item) => item.id === classId);
       this.addEditClassForm.reset(editedClass);
+    } else {
+      this.isEdit = false;
     }
   }
 

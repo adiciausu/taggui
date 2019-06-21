@@ -39,7 +39,8 @@
 
 <p-dialog [(visible)]="isShowAddClassVisible" [contentStyle]="{'overflow':'visible'}">
   <p-header>
-    Add new class
+    <span *ngIf="!isEdit">Add new class</span>
+    <span *ngIf="isEdit">Edit class</span>
   </p-header>
   <form [formGroup]="addEditClassForm" (ngSubmit)="onSaveNewClass()">
     <input type="hidden" formControlName="id">
