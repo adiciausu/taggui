@@ -11,7 +11,7 @@ import {Image} from '../../../../image/models/image.model';
   styleUrls: ['./annotate.component.css']
 })
 export class AnnotateComponent implements OnInit {
-  classes: Class[];
+  classes: Class[] = [];
   selectedClass: Class;
 
   images: Image[];
@@ -30,14 +30,13 @@ export class AnnotateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.classService.findAll().subscribe(classes => {
-      this.classes = classes;
-      this.selectedClass = this.classes[0];
-
-      this.imageService.findAll().subscribe(images => {
-        this.images = images;
-        this.selectedImage = this.images[0];
-        this.selectedImageIndex = 0;
+    this.imageService.findAll().subscribe(images => {
+      this.images = images;
+      this.selectedImage = this.images[0];
+      this.selectedImageIndex = 0;
+      this.classService.findAll().subscribe(classes => {
+        this.classes = classes;
+        this.selectedClass = this.classes[0];
         this.canvasd3Component.drawImage(this.selectedImage);
       });
     });

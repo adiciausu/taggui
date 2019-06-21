@@ -13,7 +13,7 @@ import { environment } from '../../../../../environments/environment';
 })
 export class CanvasD3Component implements OnInit {
   @Input() selectedClass: Class;
-  @Input() classes: Class[];
+  @Input() classes: Class[] = [];
   @Input() selectedImage: Image;
 
   svg;
@@ -71,6 +71,11 @@ export class CanvasD3Component implements OnInit {
           clazz = searchedClass;
           break;
         }
+      }
+
+      if (!clazz) {
+        console.error('Inexistent class: ' + className);
+        continue;
       }
 
       for (const index of Object.keys(image.annotations[className])) {
