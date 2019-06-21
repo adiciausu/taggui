@@ -5,6 +5,10 @@ import {ProjectListComponent} from './components/pages/project-list/project-list
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+import {ProjectEffects} from './store/effects/project.effects';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {projectReducer} from './store/reducers/project.reducer';
 
 @NgModule({
   declarations: [
@@ -16,7 +20,11 @@ import {DialogModule} from 'primeng/dialog';
 
     TableModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    EffectsModule.forFeature([
+      ProjectEffects
+    ]),
+    StoreModule.forFeature('projects', projectReducer),
   ],
   providers: []
 })

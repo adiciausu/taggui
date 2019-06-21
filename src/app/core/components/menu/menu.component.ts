@@ -1,6 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ProjectService} from '../../../modules/project/service/project.service';
 import {SelectItem} from 'primeng/api';
+import {Project} from '../../../modules/project/model/project.model';
+import {Observable} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {getProjects} from '../../../modules/project/store/reducers/project.reducer';
+import {LoadProjectsAction} from '../../../modules/project/store/actions/project.actions';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu',
@@ -9,9 +14,12 @@ import {SelectItem} from 'primeng/api';
 })
 export class MenuComponent implements OnInit {
   menuItems: any[];
+  projects$: Observable<Project[]>;
   availableProjects: SelectItem[];
+  selectedProject: Project;
 
-  constructor(private projectService: ProjectService) {
+  constructor(private store: Store<any>) {
+    this.projects$ = this.store.pipe(select(getProjects));
     this.menuItems = [
       {label: 'Annotate', routerLink: ['/']},
       {label: 'Classes', routerLink: ['/class/list']},
@@ -21,14 +29,17 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.projectService.findAll().subscribe((projects) => {
-      const projectSelectItems: SelectItem[] = [];
-      projects.forEach((project) => {
+    this.store.dispatch(new LoadProjectsAction());
+    this.projects$.pipe(
+      map((projects: Project[]) => {
+        const projectSelectItems: SelectItem[] = [];
+        projects.forEach((project) => {
+          projectSelectItems.push({label: project.name, value: project.id});
+        });
 
-        projectSelectItems.push({label: project.name, value: project.id});
-      });
-
-      this.availableProjects = projectSelectItems;
-    });
+        this.availableProjects = projectSelectItems;
+        this.selectedProject = projects[0];
+      })
+    ).subscribe();
   }
 }

@@ -7,6 +7,11 @@ import {MenubarModule} from 'primeng/menubar';
 import {HttpClientModule} from '@angular/common/http';
 import {DropdownModule} from 'primeng/dropdown';
 import {ProjectService} from '../modules/project/service/project.service';
+import {FormsModule} from '@angular/forms';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {projectReducer} from '../modules/project/store/reducers/project.reducer';
+import {ProjectEffects} from '../modules/project/store/effects/project.effects';
 
 @NgModule({
   declarations: [
@@ -17,7 +22,15 @@ import {ProjectService} from '../modules/project/service/project.service';
   imports: [
     MenubarModule,
     HttpClientModule,
-    DropdownModule
+    FormsModule,
+    DropdownModule,
+    EffectsModule.forRoot([]), // necessary: https://github.com/ngrx/platform/issues/184
+    StoreModule.forRoot({}), // necessary,
+
+    EffectsModule.forFeature([
+      ProjectEffects
+    ]),
+    StoreModule.forFeature('projects', projectReducer),
   ],
   exports: [
     HeaderComponent,
