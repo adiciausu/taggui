@@ -74,7 +74,7 @@ export class CanvasD3Component implements OnInit {
       }
 
       if (!clazz) {
-        console.error('Inexistent class: ' + className);
+        console.error('Inexistent class: ' + className + '. Check to see if annotations remained on images after they where deleted');
         continue;
       }
 
