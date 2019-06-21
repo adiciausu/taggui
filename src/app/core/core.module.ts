@@ -5,6 +5,8 @@ import {FooterComponent} from './components/footer/footer.component';
 import {MenuComponent} from './components/menu/menu.component';
 import {MenubarModule} from 'primeng/menubar';
 import {HttpClientModule} from '@angular/common/http';
+import {DropdownModule} from 'primeng/dropdown';
+import {ProjectService} from '../modules/project/service/project.service';
 
 @NgModule({
   declarations: [
@@ -15,13 +17,16 @@ import {HttpClientModule} from '@angular/common/http';
   imports: [
     MenubarModule,
     HttpClientModule,
+    DropdownModule
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     MenuComponent
   ],
-  providers: []
+  providers: [
+    ProjectService
+  ]
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
