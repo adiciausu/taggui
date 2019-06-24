@@ -38,13 +38,17 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
       };
 
     case DELETE_PROJECT_SUCCESS:
-      let stateAfterDelete = _.clone(state);
-      stateAfterDelete = stateAfterDelete.projects.filter((project) => {
+      let projectListAfterDelete = _.clone(state.projects);
+      projectListAfterDelete = projectListAfterDelete.filter((project) => {
 
-        return project.id === action.payload;
+        return project.id !== action.payload;
       });
 
-      return stateAfterDelete;
+      return {
+        ...state,
+        projects: projectListAfterDelete
+      };
+
     default:
       return state;
   }
