@@ -38,7 +38,6 @@ export class ClassListComponent implements OnInit {
   }
 
   showEditAddClassDialog(classId: string) {
-
     this.isShowAddClassVisible = true;
     if (classId) {
       this.isEdit = true;

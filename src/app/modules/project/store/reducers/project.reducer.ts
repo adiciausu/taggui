@@ -19,23 +19,28 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
         ...state,
         projects: action.payload
       };
+
     case SAVE_PROJECT_SUCCESS:
-      const stateAfterSave = _.clone(state);
-      const idx = stateAfterSave.projects.findIndex((prj: Project) => {
+      const projectListStateAfterSave = _.clone(state.projects);
+      const idx = projectListStateAfterSave.findIndex((prj: Project) => {
         return prj.id === action.payload.id;
       });
 
       if (idx !== -1) {
-        stateAfterSave.projects[idx] = action.payload;
+        projectListStateAfterSave[idx] = action.payload;
       } else {
-        stateAfterSave.projects.push(action.payload);
+        projectListStateAfterSave.push(action.payload);
       }
 
-      return stateAfterSave;
+      return {
+        ...state,
+        projects: projectListStateAfterSave
+      };
+
     case DELETE_PROJECT_SUCCESS:
       let stateAfterDelete = _.clone(state);
       stateAfterDelete = stateAfterDelete.projects.filter((project) => {
-        console.log(project.id, action.payload, project.id === action.payload);
+
         return project.id === action.payload;
       });
 
