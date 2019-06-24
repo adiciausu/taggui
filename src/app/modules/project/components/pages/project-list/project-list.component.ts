@@ -51,7 +51,7 @@ export class ProjectListComponent implements OnInit {
     this.addEditForm.reset({} as Project);
   }
 
-  onDelete(id: number) {
+  onDelete(id: string) {
     this.store.dispatch(new DeleteProjectAction(id));
   }
 }

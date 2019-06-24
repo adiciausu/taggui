@@ -33,9 +33,9 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
 
       return stateAfterSave;
     case DELETE_PROJECT_SUCCESS:
-      console.log('deleteeee')
-      const stateAfterDelete = _.clone(state);
-      stateAfterDelete.projects.filter((project) => {
+      let stateAfterDelete = _.clone(state);
+      stateAfterDelete = stateAfterDelete.projects.filter((project) => {
+        console.log(project.id, action.payload, project.id === action.payload);
         return project.id === action.payload;
       });
 

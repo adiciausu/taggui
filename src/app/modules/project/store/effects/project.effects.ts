@@ -38,16 +38,8 @@ export class ProjectEffects {
 
   @Effect() deleteProject$ = this.actions$.pipe(
     ofType(DELETE_PROJECT),
-    switchMap((action: DeleteProjectAction) => {
-      let a = this.projectService.delete(action.payload);
-      a.subscribe(console.log);
-
-      return a;
-    }),
-    map((id: string) => {
-      console.log('map');
-      return new DeleteProjectSuccessAction(id);
-    }),
+    switchMap((action: DeleteProjectAction) => this.projectService.delete(action.payload)),
+    map((id: string) => new DeleteProjectSuccessAction(id)),
     catchError(error => new Observable(error))
   );
 
