@@ -42,19 +42,6 @@ export class AnnotateComponent implements OnInit {
     this.classes$ = this.store.pipe(select(getClasses));
     this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
 
-    this.selectedImage$.subscribe((item: Image) => {
-      this.selectedImage = item;
-    });
-    this.classes$.subscribe((items: Class[]) => {
-      this.classes = items;
-      if (items.length && !this.selectedClass) {
-        this.selectedClass = items[0];
-      }
-    });
-    this.selectedProjectId$.subscribe((item: string) => {
-      this.selectedProjectId = item;
-    });
-
     this.smartClassStrategies = [
       {name: 'Use Google Detection API'},
       {name: 'Use my own neural network'},
@@ -64,8 +51,20 @@ export class AnnotateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new LoadImagesAction(this.selectedProjectId));
-    this.store.dispatch(new LoadClassesAction(this.selectedProjectId));
+    this.selectedProjectId$.subscribe((item: string) => {
+      this.selectedProjectId = item;
+      this.store.dispatch(new LoadClassesAction(this.selectedProjectId));
+      this.store.dispatch(new LoadImagesAction(this.selectedProjectId));
+    });
+    this.selectedImage$.subscribe((item: Image) => {
+      this.selectedImage = item;
+    });
+    this.classes$.subscribe((items: Class[]) => {
+      this.classes = items;
+      if (items.length && !this.selectedClass) {
+        this.selectedClass = items[0];
+      }
+    });
   }
 
   onSelectImage(event) {

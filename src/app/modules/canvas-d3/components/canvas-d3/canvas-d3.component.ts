@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import * as d3 from 'd3/index';
 import {Class, Shape} from '../../../class/models/class.model';
 import {Image} from '../../../image/models/image.model';
 import {Annotation} from '../../model/annotation.model';
 import {environment} from '../../../../../environments/environment';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {SaveImageAction} from '../../../image/store/actions/image.actions';
 
@@ -33,21 +33,19 @@ export class CanvasD3Component implements OnInit {
 
   ngOnInit() {
     this.initSVG();
+
     this.selectedImage$.subscribe((image: Image) => {
       this.selectedImage = image;
       if (image) {
         this.drawImage(image);
+        if (this.classes.length) {
+          this.drawImageAnnotations(image);
+        }
       }
     });
 
     this.classes$.subscribe((classes: Class[]) => {
       this.classes = classes;
-    });
-
-    combineLatest(this.classes$, this.selectedImage$).subscribe(([classes, image]) => {
-      if (image && classes.length) {
-        this.drawImageAnnotations(image);
-      }
     });
   }
 
