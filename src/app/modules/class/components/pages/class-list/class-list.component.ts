@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ClassService} from '../../../service/class.service';
 import {Class, Shape} from '../../../models/class.model';
 import {SelectItem} from 'primeng/api';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {DeleteClassAction, LoadClassesAction, SaveClassAction} from '../../../store/actions/class.actions';
+import {Observable} from 'rxjs';
+import {getClasses} from '../../../store/selectors/class.selector';
 
 @Component({
   selector: 'app-class-list',
@@ -10,16 +13,22 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./class-list.component.css']
 })
 export class ClassListComponent implements OnInit {
+  classes$: Observable<Class[]>;
   classes: Class[];
   isShowAddClassVisible = false;
   availableShapes: SelectItem[];
   addEditClassForm: FormGroup;
+  isEdit = false;
   private defaultShape = Shape.RECTANGLE;
   private defaultColor = '#FF0000';
   newClass: Class = {shape: this.defaultShape, color: this.defaultColor} as Class;
-  isEdit = false;
 
-  constructor(private classService: ClassService, private formBuilder: FormBuilder) {
+  constructor(private store: Store<any>, private formBuilder: FormBuilder) {
+    this.classes$ = this.store.pipe(select(getClasses));
+    this.classes$.subscribe((items: Class[]) => {
+      this.classes = items;
+    });
+
     this.availableShapes = [
       {label: 'Rectangle', value: Shape.RECTANGLE},
       {label: 'Point (coming soon)', value: Shape.POINT},
@@ -28,7 +37,7 @@ export class ClassListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.classService.findAll().subscribe(items => this.classes = items);
+    this.store.dispatch(new LoadClassesAction());
     this.addEditClassForm = this.formBuilder.group({
       id: new FormControl(this.newClass.id),
       name: new FormControl(this.newClass.name, Validators.required),
@@ -49,16 +58,12 @@ export class ClassListComponent implements OnInit {
   }
 
   onSaveNewClass() {
-    this.classService.save(this.addEditClassForm.value).subscribe(() => {
-      this.classService.findAll().subscribe(items => this.classes = items);
-      this.isShowAddClassVisible = false;
-      this.addEditClassForm.reset({shape: this.defaultShape, color: this.defaultColor} as Class);
-    });
+    this.store.dispatch(new SaveClassAction(this.addEditClassForm.value));
+    this.isShowAddClassVisible = false;
+    this.addEditClassForm.reset({shape: this.defaultShape, color: this.defaultColor} as Class);
   }
 
-  onDelete(classId: number) {
-    this.classService.delete(classId).subscribe(() => {
-      this.classService.findAll().subscribe(items => this.classes = items);
-    });
+  onDelete(classId: string) {
+    this.store.dispatch(new DeleteClassAction(classId));
   }
 }

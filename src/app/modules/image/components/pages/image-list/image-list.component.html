@@ -10,7 +10,7 @@
 
 <div class="p-grid">
   <div class="p-col-12">
-    <p-table [value]="images">
+    <p-table [value]="images$ |async">
       <ng-template pTemplate="header">
         <tr>
           <th>Id</th>

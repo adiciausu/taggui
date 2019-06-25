@@ -26,7 +26,7 @@ export function classReducer(state: ClassState = intialClassState, action: Class
 
       return {
         ...state,
-        images: classListStateAfterSave
+        classes: classListStateAfterSave
       };
 
     case DELETE_CLASS_SUCCESS:
@@ -38,7 +38,7 @@ export function classReducer(state: ClassState = intialClassState, action: Class
 
       return {
         ...state,
-        images: classListAfterDelete
+        classes: classListAfterDelete
       };
 
     default:

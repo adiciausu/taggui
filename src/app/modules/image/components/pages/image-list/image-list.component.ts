@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Image} from '../../../models/image.model';
-import {ImageService} from '../../../service/image.service';
-import { environment } from '../../../../../../environments/environment';
+import {environment} from '../../../../../../environments/environment';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {DeleteImageAction, LoadImagesAction} from '../../../store/actions/image.actions';
+import {getImages} from '../../../store/selectors/image.selector';
 
 @Component({
   selector: 'app-image-list',
@@ -9,23 +12,22 @@ import { environment } from '../../../../../../environments/environment';
   styleUrls: ['./image-list.component.css']
 })
 export class ImageListComponent implements OnInit {
-  images: Image[];
+  images$: Observable<Image[]>;
   env = environment;
 
-  constructor(private imageService: ImageService) {
+  constructor(private store: Store<any>) {
+    this.images$ = this.store.select(getImages)
   }
 
   ngOnInit() {
-    this.imageService.findAll().subscribe(items => this.images = items);
+    this.store.dispatch(new LoadImagesAction());
   }
 
   onUpload() {
-    this.imageService.findAll().subscribe(items => this.images = items);
+    this.store.dispatch(new LoadImagesAction());
   }
 
   onDelete(imageId: string) {
-    this.imageService.delete(imageId).subscribe(() => {
-      this.imageService.findAll().subscribe(items => this.images = items);
-    });
+    this.store.dispatch(new DeleteImageAction(imageId));
   }
 }

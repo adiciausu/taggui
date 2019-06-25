@@ -36,7 +36,7 @@ import {classReducer} from '../class/store/reducers/class.reducer';
       ClassEffects
     ]),
     StoreModule.forFeature('images', imageReducer),
-    StoreModule.forFeature('classes', classReducer),
+    StoreModule.forFeature('classes$', classReducer),
   ],
   providers: [
     ClassService,
