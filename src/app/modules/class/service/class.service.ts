@@ -14,11 +14,11 @@ export class ClassService {
     return this.http.get<Class[]>(this.baseURL + '/class/list');
   }
 
-  save(clazz: Class): Observable<boolean> {
-    return this.http.post<boolean>(this.baseURL + '/class', clazz);
+  save(clazz: Class): Observable<Class> {
+    return this.http.post<Class>(this.baseURL + '/class', clazz);
   }
 
-  delete(classId: number): Observable<boolean> {
-    return this.http.delete<boolean>(this.baseURL + '/class/' + classId);
+  delete(classId: string): Observable<string> {
+    return this.http.delete<string>(this.baseURL + '/class/' + classId);
   }
 }

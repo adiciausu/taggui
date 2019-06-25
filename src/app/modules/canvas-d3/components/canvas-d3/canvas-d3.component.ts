@@ -14,9 +14,10 @@ import {Observable} from 'rxjs';
 })
 export class CanvasD3Component implements OnInit {
   @Input() selectedClass: Class;
-  @Input() classes: Class[] = [];
+  @Input() classes$: Observable<Class[]>;
   @Input() selectedImage$: Observable<Image>;
   selectedImage: Image;
+  classes: Class[] = [];
 
   svg;
   image;
@@ -37,6 +38,13 @@ export class CanvasD3Component implements OnInit {
       }
       this.selectedImage = image;
       this.drawImage(image);
+    });
+
+    this.classes$.subscribe((classes: Class[]) => {
+      if (!classes) {
+        return;
+      }
+      this.classes = classes;
     });
   }
 

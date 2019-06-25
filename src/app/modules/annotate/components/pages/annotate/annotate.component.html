@@ -9,7 +9,7 @@
                 class="ui-button-secondary"
                 style='font-size:80%;float:right;margin-top:0px;'></button>
       </div>
-      <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name"
+      <p-listbox [options]="classes$ | async" [(ngModel)]="selectedClass" optionLabel="name"
                  [style]="{'width':'100%', 'border':'none','margin-top':'15px'}">
       </p-listbox>
     </div>
@@ -30,7 +30,7 @@
     <div style='padding-left:10px;padding-top:10px;' (mouseenter)="onMouseEnter()"
          (mouseleave)="onMouseLeave()">
       <app-canvas-d3 [selectedImage$]="selectedImage$" [selectedClass]="selectedClass"
-                     [classes]="classes">
+                     [classes$]="classes$">
       </app-canvas-d3>
     </div>
 

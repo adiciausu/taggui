@@ -7,6 +7,8 @@ import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getImages, getSelectedImage, getSelectedImageIndex} from '../../../../image/store/selectors/image.selector';
 import {LoadImagesAction, NextImageAction, PreviousImageAction, SelectImageAction} from '../../../../image/store/actions/image.actions';
+import {LoadClassesAction} from '../../../../class/store/actions/class.actions';
+import {getClasses} from '../../../../class/store/selectors/class.selector';
 
 @Component({
   selector: 'app-annotate',
@@ -20,6 +22,8 @@ export class AnnotateComponent implements OnInit {
   images$: Observable<Image[]>;
   selectedImage$: Observable<Image>;
   selectedImageIndex$: Observable<number>;
+  classes$: Observable<Class>;
+
 
   selectedImage: Image;
 
@@ -35,9 +39,7 @@ export class AnnotateComponent implements OnInit {
     this.images$ = this.store.pipe(select(getImages));
     this.selectedImage$ = this.store.pipe(select(getSelectedImage));
     this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
-    this.selectedImage$.subscribe((image: Image) => {
-      this.selectedImage = image;
-    });
+    this.classes$ = this.store.pipe(select(getClasses));
 
     this.smartClassStrategies = [
       {name: 'Use Google Detection API'},
@@ -49,6 +51,7 @@ export class AnnotateComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new LoadImagesAction());
+    this.store.dispatch(new LoadClassesAction());
     this.classService.findAll().subscribe(classes => {
       this.classes = classes;
       this.selectedClass = this.classes[0];

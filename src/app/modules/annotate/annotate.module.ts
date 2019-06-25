@@ -13,6 +13,8 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {imageReducer} from '../image/store/reducers/image.reducer';
 import {ImageEffects} from '../image/store/effects/image.effects';
+import {ClassEffects} from '../class/store/effects/class.effects';
+import {classReducer} from '../class/store/reducers/class.reducer';
 
 
 @NgModule({
@@ -30,9 +32,11 @@ import {ImageEffects} from '../image/store/effects/image.effects';
     DropdownModule,
 
     EffectsModule.forFeature([
-      ImageEffects
+      ImageEffects,
+      ClassEffects
     ]),
     StoreModule.forFeature('images', imageReducer),
+    StoreModule.forFeature('classes', classReducer),
   ],
   providers: [
     ClassService,
