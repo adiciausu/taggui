@@ -5,7 +5,7 @@ import {Image} from '../../../image/models/image.model';
 import {ImageService} from '../../../image/service/image.service';
 import {Annotation} from '../../model/annotation.model';
 import {environment} from '../../../../../environments/environment';
-import {Observable} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-canvas-d3',
@@ -16,11 +16,11 @@ export class CanvasD3Component implements OnInit {
   @Input() selectedClass: Class;
   @Input() classes$: Observable<Class[]>;
   @Input() selectedImage$: Observable<Image>;
+
   selectedImage: Image;
   classes: Class[] = [];
-
   svg;
-  image;
+  svgImage;
   rectangleStrokeWidth = 5;
   hotCornerRadius = 10;
   currentMouseCoords = [];
@@ -33,18 +33,20 @@ export class CanvasD3Component implements OnInit {
   ngOnInit() {
     this.initSVG();
     this.selectedImage$.subscribe((image: Image) => {
-      if (!image) {
-        return;
-      }
       this.selectedImage = image;
-      this.drawImage(image);
-    });
+      if (image) {
+        this.drawImage(image);
+      }
+      });
 
     this.classes$.subscribe((classes: Class[]) => {
-      if (!classes) {
-        return;
-      }
       this.classes = classes;
+    });
+
+    combineLatest(this.classes$, this.selectedImage$).subscribe(([classes, image]) => {
+      if (image && classes.length) {
+        this.drawImageAnnotations(image);
+      }
     });
   }
 
@@ -71,12 +73,14 @@ export class CanvasD3Component implements OnInit {
     this.imageService.save(this.selectedImage).subscribe();
   }
 
-  drawImage(image: Image) {
+  private drawImage(image: Image) {
     this.svg.attr('width', image.width)
     .attr('height', image.height);
-    this.image.attr('xlink:href', this.env.staticImageHost + '/' + image.name);
+    this.svgImage.attr('xlink:href', this.env.staticImageHost + '/' + image.name);
+  }
 
-    // remove old annotations
+  private drawImageAnnotations(image: Image) {
+    // remove old
     this.annotationNodes.forEach((annotation) => annotation.remove());
 
     // draw new annotations
@@ -164,8 +168,8 @@ export class CanvasD3Component implements OnInit {
     this.svg = d3.select('#canvas-d3')
     .append('svg');
 
-    // add image
-    this.image = this.svg.append('image')
+    // add svgImage
+    this.svgImage = this.svg.append('image')
     .attr('x', 0)
     .attr('y', 0)
     .on('click', () => {

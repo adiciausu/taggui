@@ -22,7 +22,7 @@ export class AnnotateComponent implements OnInit {
   images$: Observable<Image[]>;
   selectedImage$: Observable<Image>;
   selectedImageIndex$: Observable<number>;
-  classes$: Observable<Class>;
+  classes$: Observable<Class[]>;
 
 
   selectedImage: Image;
@@ -41,6 +41,17 @@ export class AnnotateComponent implements OnInit {
     this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
     this.classes$ = this.store.pipe(select(getClasses));
 
+
+    this.selectedImage$.subscribe((item: Image) => {
+      this.selectedImage = item;
+    });
+    this.classes$.subscribe((items: Class[]) => {
+      this.classes = items;
+      if (items.length && !this.selectedClass) {
+        this.selectedClass = items[0];
+      }
+    });
+
     this.smartClassStrategies = [
       {name: 'Use Google Detection API'},
       {name: 'Use my own neural network'},
@@ -52,10 +63,6 @@ export class AnnotateComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new LoadImagesAction());
     this.store.dispatch(new LoadClassesAction());
-    this.classService.findAll().subscribe(classes => {
-      this.classes = classes;
-      this.selectedClass = this.classes[0];
-    });
   }
 
   onSelectImage(event) {
@@ -81,7 +88,6 @@ export class AnnotateComponent implements OnInit {
 
   onSelectStrategy(strategy) {
     this.strategySelectionVisibile = true;
-
   }
 
   @HostListener('document:keypress', ['$event'])
