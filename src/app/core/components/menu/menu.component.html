@@ -4,7 +4,8 @@
   <img
     id='logo'
     src="assets/images/tagdroid-logo.png">
-  <p-dropdown [options]="availableProjectSelectOptions$ | async">
+  <p-dropdown [options]="availableProjectSelectOptions$ | async"
+    (onChange)="onSelectedProjectChange($event)">
   </p-dropdown>
   <a href="/project/list">Manage projects</a>
 </p-menubar>

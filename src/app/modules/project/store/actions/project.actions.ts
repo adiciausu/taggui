@@ -6,6 +6,8 @@ export const SAVE_PROJECT = '[Project] Save';
 export const SAVE_PROJECT_SUCCESS = '[Project] Save Success';
 export const DELETE_PROJECT = '[Project] Delete';
 export const DELETE_PROJECT_SUCCESS = '[Project] Delete Success';
+export const SELECT_PROJECT = '[Project] Select';
+
 
 export class LoadProjectsAction {
   readonly type = LOAD_PROJECTS;
@@ -46,9 +48,17 @@ export class DeleteProjectSuccessAction {
   }
 }
 
+export class SelectProjectAction {
+  readonly type = SELECT_PROJECT;
+
+  constructor(public payload: string) {
+  }
+}
+
 export type ProjectActions = LoadProjectsAction
   | LoadProjectsSuccessAction
   | SaveProjectAction
   | SaveProjectSuccessAction
   | DeleteProjectAction
-  | DeleteProjectSuccessAction;
+  | DeleteProjectSuccessAction
+  | SelectProjectAction;

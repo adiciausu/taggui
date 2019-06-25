@@ -1,4 +1,10 @@
-import {DELETE_PROJECT_SUCCESS, LOAD_PROJECTS_SUCCESS, ProjectActions, SAVE_PROJECT_SUCCESS} from '../actions/project.actions';
+import {
+  DELETE_PROJECT_SUCCESS,
+  LOAD_PROJECTS_SUCCESS,
+  ProjectActions,
+  SAVE_PROJECT_SUCCESS,
+  SELECT_PROJECT
+} from '../actions/project.actions';
 import {Project} from '../../model/project.model';
 import * as _ from 'lodash';
 import {initialProjectState, ProjectState} from '../state/project.state';
@@ -39,6 +45,11 @@ export function projectReducer(state: ProjectState = initialProjectState, action
       return {
         ...state,
         projects: projectListAfterDelete
+      };
+    case SELECT_PROJECT:
+      return {
+        ...state,
+        selectedProjectId: action.payload
       };
 
     default:
