@@ -9,7 +9,7 @@ export const environment = {
   staticImageHost: undefined // defined below
 };
 
-environment.staticImageHost =  environment.staticHost + '/images';
+environment.staticImageHost =  environment.staticHost + '/images$';
 
 /*
  * For easier debugging in development mode, you can import the following file

@@ -2,8 +2,11 @@ import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ClassService} from '../../../../class/service/class.service';
 import {Class} from '../../../../class/models/class.model';
 import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canvas-d3.component';
-import {ImageService} from '../../../../image/service/image.service';
 import {Image} from '../../../../image/models/image.model';
+import {Observable} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {getImages, getSelectedImage, getSelectedImageIndex} from '../../../../image/store/selectors/image.selector';
+import {LoadImagesAction, NextImageAction, PreviousImageAction, SelectImageAction} from '../../../../image/store/actions/image.actions';
 
 @Component({
   selector: 'app-annotate',
@@ -14,9 +17,9 @@ export class AnnotateComponent implements OnInit {
   classes: Class[] = [];
   selectedClass: Class;
 
-  images: Image[];
-  selectedImage: Image;
-  selectedImageIndex: number;
+  images$: Observable<Image[]>;
+  selectedImage$: Observable<Image>;
+  selectedImageIndex$: Observable<number>;
 
   hotkeysDialogVisible: boolean;
   hintMessage: string;
@@ -26,35 +29,30 @@ export class AnnotateComponent implements OnInit {
 
   @ViewChild(CanvasD3Component, {static: false}) canvasd3Component: CanvasD3Component;
 
-  constructor(private classService: ClassService, private imageService: ImageService) {
-  }
+  constructor(private classService: ClassService, private store: Store<any>) {
+    this.images$ = this.store.pipe(select(getImages));
+    this.selectedImage$ = this.store.pipe(select(getSelectedImage));
+    this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
 
-  ngOnInit() {
-    this.imageService.findAll().subscribe(images => {
-      this.images = images;
-      this.selectedImage = this.images[0];
-      this.selectedImageIndex = 0;
-      this.classService.findAll().subscribe(classes => {
-        this.classes = classes;
-        this.selectedClass = this.classes[0];
-
-        if (this.selectedImage != null) {
-          this.canvasd3Component.drawImage(this.selectedImage);
-        }
-      });
-    });
-  }
-
-  onSelectImage(event) {
-    const newImage: Image = event.value as Image;
-    const imageIndex: number = this.images.findIndex((image) => image.id === newImage.id);
-    this.selectImageIndex(imageIndex);
     this.smartClassStrategies = [
       {name: 'Use Google Detection API'},
       {name: 'Use my own neural network'},
       {name: 'Use OpenCV blob detection strategy'}
     ];
     this.selectedStrategy = this.smartClassStrategies[0];
+  }
+
+  ngOnInit() {
+    this.store.dispatch(new LoadImagesAction());
+    this.classService.findAll().subscribe(classes => {
+      this.classes = classes;
+      this.selectedClass = this.classes[0];
+    });
+  }
+
+  onSelectImage(event) {
+    const newImage: Image = event.value as Image;
+    this.selectImage(newImage.id);
   }
 
   onConfigureImagesHotkeys() {
@@ -81,18 +79,12 @@ export class AnnotateComponent implements OnInit {
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.keyCode === 101) { // e key
-      if (!this.images[this.selectedImageIndex + 1]) {
-        return;
-      }
-      this.selectImageIndex(this.selectedImageIndex + 1);
+      this.store.dispatch(new NextImageAction());
       return;
     }
 
     if (event.keyCode === 113) { // q key
-      if (this.selectedImageIndex <= 0) {
-        return;
-      }
-      this.selectImageIndex(this.selectedImageIndex - 1);
+      this.store.dispatch(new PreviousImageAction());
       return;
     }
 
@@ -101,10 +93,8 @@ export class AnnotateComponent implements OnInit {
     }
   }
 
-  private selectImageIndex(index: number) {
-    this.selectedImage = this.images[index];
-    this.selectedImageIndex = index;
-    this.canvasd3Component.drawImage(this.selectedImage);
+  private selectImage(id: string) {
+    this.store.dispatch(new SelectImageAction(id));
   }
 
   private handleDigit(keyCode) {

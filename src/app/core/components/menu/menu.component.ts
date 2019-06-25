@@ -3,8 +3,8 @@ import {SelectItem} from 'primeng/api';
 import {Project} from '../../../modules/project/model/project.model';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {getProjects, getProjectsAsSelectOptions} from '../../../modules/project/store/reducers/project.reducer';
 import {LoadProjectsAction} from '../../../modules/project/store/actions/project.actions';
+import {getProjects, getProjectsAsSelectOptions} from '../../../modules/project/store/selectors/project.selector';
 
 @Component({
   selector: 'app-menu',
@@ -14,9 +14,7 @@ import {LoadProjectsAction} from '../../../modules/project/store/actions/project
 export class MenuComponent implements OnInit {
   projects$: Observable<Project[]>;
   availableProjectSelectOptions$: Observable<SelectItem[]>;
-
   menuItems: any[];
-  selectedProject: Project;
 
   constructor(private store: Store<any>) {
     this.projects$ = this.store.pipe(select(getProjects));
@@ -32,6 +30,5 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new LoadProjectsAction());
-    // this.selectedProject = projects[0];
   }
 }

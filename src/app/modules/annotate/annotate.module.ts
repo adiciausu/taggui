@@ -9,6 +9,10 @@ import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {ImageService} from '../image/service/image.service';
 import {DropdownModule} from 'primeng/dropdown';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {imageReducer} from '../image/store/reducers/image.reducer';
+import {ImageEffects} from '../image/store/effects/image.effects';
 
 
 @NgModule({
@@ -23,7 +27,12 @@ import {DropdownModule} from 'primeng/dropdown';
     ListboxModule,
     ButtonModule,
     DialogModule,
-    DropdownModule
+    DropdownModule,
+
+    EffectsModule.forFeature([
+      ImageEffects
+    ]),
+    StoreModule.forFeature('images', imageReducer),
   ],
   providers: [
     ClassService,

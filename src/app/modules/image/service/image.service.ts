@@ -15,11 +15,11 @@ export class ImageService {
     return this.http.get<Image[]>(this.env.apiHost + '/image/list');
   }
 
-  save(image: Image): Observable<boolean> {
-    return this.http.post<boolean>(this.env.apiHost + '/image', image);
+  save(image: Image): Observable<Image> {
+    return this.http.post<Image>(this.env.apiHost + '/image', image);
   }
 
-  delete(imageId: number): Observable<boolean> {
-    return this.http.delete<boolean>(this.env.apiHost + '/image/' + imageId);
+  delete(imageId: string): Observable<string> {
+    return this.http.delete<string>(this.env.apiHost + '/image/' + imageId);
   }
 }

@@ -3,9 +3,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Project} from '../../../model/project.model';
 import {select, Store} from '@ngrx/store';
 import {DeleteProjectAction, LoadProjectsAction, SaveProjectAction} from '../../../store/actions/project.actions';
-import {getProjects} from '../../../store/reducers/project.reducer';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {getProjects} from '../../../store/selectors/project.selector';
 
 @Component({
   selector: 'app-project-list',

@@ -5,39 +5,51 @@
     <div style="height:76vh;">
       <div style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;'>
         press 1-9 to select a class
-        <button (click)="onConfigureClasssesHotkeys()" pButton type="button" label="..." class="ui-button-secondary" style='font-size:80%;float:right;margin-top:0px;'></button>
+        <button (click)="onConfigureClasssesHotkeys()" pButton type="button" label="..."
+                class="ui-button-secondary"
+                style='font-size:80%;float:right;margin-top:0px;'></button>
       </div>
-      <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name" [style]="{'width':'100%', 'border':'none','margin-top':'15px'}">
+      <p-listbox [options]="classes" [(ngModel)]="selectedClass" optionLabel="name"
+                 [style]="{'width':'100%', 'border':'none','margin-top':'15px'}">
       </p-listbox>
     </div>
 
     <div>
-      <div style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;margin-bottom:10px;'>
+      <div
+        style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;margin-bottom:10px;'>
         select smart class detection strategy
       </div>
-      <p-dropdown (onChange)="onSelectStrategy($event.value)" [options]="smartClassStrategies" optionLabel="name" [(ngModel)]="selectedStrategy"></p-dropdown>
+      <p-dropdown (onChange)="onSelectStrategy($event.value)" [options]="smartClassStrategies"
+                  optionLabel="name" [(ngModel)]="selectedStrategy"></p-dropdown>
     </div>
   </div>
 
-  <div class="p-col border-gray" style='background:#FFF;margin-left:10px;display:flex;flex-direction:column; '>
+  <div class="p-col border-gray"
+       style='background:#FFF;margin-left:10px;display:flex;flex-direction:column; '>
 
     <div style='padding-left:10px;padding-top:10px;' (mouseenter)="onMouseEnter()"
          (mouseleave)="onMouseLeave()">
-      <app-canvas-d3 [selectedClass]="selectedClass" [selectedImage]="selectedImage" [classes]="classes">
+      <app-canvas-d3 [selectedImage]="selectedImage$ | async" [selectedClass]="selectedClass"
+                     [classes]="classes">
       </app-canvas-d3>
     </div>
 
-    <div style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;margin-top:auto'>
+    <div
+      style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;margin-top:auto'>
       {{hintMessage}}
     </div>
   </div>
 
-  <div class="p-col-2 border-gray" style='background:#FFF;height:90vh;margin-left:10px;margin-right:10px;'>
+  <div class="p-col-2 border-gray"
+       style='background:#FFF;height:90vh;margin-left:10px;margin-right:10px;'>
     <div style='font-size:80%;background:#EEE;width:100%;padding-left:10px;padding:8px;'>
       press 'q' / 'e' to navigate images
-      <button (click)="onConfigureImagesHotkeys()" pButton type="button" label="..." class="ui-button-secondary" style='font-size:80%;float:right;margin-top:0px;'></button>
+      <button (click)="onConfigureImagesHotkeys()" pButton type="button" label="..."
+              class="ui-button-secondary"
+              style='font-size:80%;float:right;margin-top:0px;'></button>
     </div>
-    <p-listbox [options]="images" [(ngModel)]="selectedImage" optionLabel="name" (onChange)="onSelectImage($event)"
+    <p-listbox [options]="images$ | async" optionLabel="name"
+               (onChange)="onSelectImage($event)"
                [style]="{'width':'100%', 'border':'none', 'margin-top':'15px'}">
 
     </p-listbox>
@@ -52,11 +64,15 @@
   <p-dialog header="Coming soon" [(visible)]="strategySelectionVisibile">
     <div style='padding:30px;'>
       Soon you will be able to select your smart strategy for detection objects.
-      <br><br>You can either use the Google Object Recognition API, or you can use your own neural network
-      <br> which will improve predictions overtime (e.g. you manually annotate the first 1000 images,
-      <br>you train your neural network and then you use it to annotate for you the next 5000 images,
+      <br><br>You can either use the Google Object Recognition API, or you can use your own neural
+      network
+      <br> which will improve predictions overtime (e.g. you manually annotate the first 1000
+      images,
+      <br>you train your neural network and then you use it to annotate for you the next 5000
+      images,
       <br>and you just fix the errors).
-      <br><br>As a third option, you will be able to use an OpenCV blog detection like algorithm which will detect 
+      <br><br>As a third option, you will be able to use an OpenCV blog detection like algorithm
+      which will detect
       <br>the edges of the objects.
     </div>
   </p-dialog>

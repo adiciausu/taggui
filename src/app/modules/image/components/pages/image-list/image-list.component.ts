@@ -19,11 +19,11 @@ export class ImageListComponent implements OnInit {
     this.imageService.findAll().subscribe(items => this.images = items);
   }
 
-  onUpload(event) {
+  onUpload() {
     this.imageService.findAll().subscribe(items => this.images = items);
   }
 
-  onDelete(imageId: number) {
+  onDelete(imageId: string) {
     this.imageService.delete(imageId).subscribe(() => {
       this.imageService.findAll().subscribe(items => this.images = items);
     });

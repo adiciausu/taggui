@@ -1,18 +1,10 @@
 import {DELETE_PROJECT_SUCCESS, LOAD_PROJECTS_SUCCESS, ProjectActions, SAVE_PROJECT_SUCCESS} from '../actions/project.actions';
 import {Project} from '../../model/project.model';
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {SelectItem} from 'primeng/api';
 import * as _ from 'lodash';
+import {initialProjectState, ProjectState} from '../state/project.state';
 
-export interface ProjectState {
-  projects: Project[];
-}
 
-export const initialState: ProjectState = {
-  projects: [],
-};
-
-export function projectReducer(state: ProjectState = initialState, action: ProjectActions): ProjectState {
+export function projectReducer(state: ProjectState = initialProjectState, action: ProjectActions): ProjectState {
   switch (action.type) {
     case LOAD_PROJECTS_SUCCESS:
       return {
@@ -53,16 +45,3 @@ export function projectReducer(state: ProjectState = initialState, action: Proje
       return state;
   }
 }
-
-export const getProjectsState = createFeatureSelector<ProjectState>('projects');
-export const getProjects = createSelector(getProjectsState, (state: ProjectState) => {
-  return state.projects;
-});
-export const getProjectsAsSelectOptions = createSelector(getProjects, (projects: Project[]) => {
-  const projectSelectItems: SelectItem[] = [];
-  projects.forEach((project) => {
-    projectSelectItems.push({label: project.name, value: project.id});
-  });
-
-  return projectSelectItems;
-});
