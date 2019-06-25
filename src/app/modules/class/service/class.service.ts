@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Class} from '../models/class.model';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable()
 export class ClassService {
@@ -10,8 +10,11 @@ export class ClassService {
   constructor(private http: HttpClient) {
   }
 
-  findAll(): Observable<Class[]> {
-    return this.http.get<Class[]>(this.baseURL + '/class/list');
+  findAll(projectId: string): Observable<Class[]> {
+    let params = new HttpParams();
+    params = params.append('projectId', projectId);
+
+    return this.http.get<Class[]>(this.baseURL + '/class/list', {params});
   }
 
   save(clazz: Class): Observable<Class> {

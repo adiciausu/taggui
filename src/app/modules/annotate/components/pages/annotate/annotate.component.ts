@@ -9,6 +9,7 @@ import {getImages, getSelectedImage, getSelectedImageIndex} from '../../../../im
 import {LoadImagesAction, NextImageAction, PreviousImageAction, SelectImageAction} from '../../../../image/store/actions/image.actions';
 import {LoadClassesAction} from '../../../../class/store/actions/class.actions';
 import {getClasses} from '../../../../class/store/selectors/class.selector';
+import {getSelectedProjectId} from '../../../../project/store/selectors/project.selector';
 
 @Component({
   selector: 'app-annotate',
@@ -16,16 +17,15 @@ import {getClasses} from '../../../../class/store/selectors/class.selector';
   styleUrls: ['./annotate.component.css']
 })
 export class AnnotateComponent implements OnInit {
-  classes: Class[] = [];
-  selectedClass: Class;
-
   images$: Observable<Image[]>;
   selectedImage$: Observable<Image>;
+  selectedImage: Image;
   selectedImageIndex$: Observable<number>;
   classes$: Observable<Class[]>;
-
-
-  selectedImage: Image;
+  classes: Class[] = [];
+  selectedClass: Class;
+  selectedProjectId$: Observable<string>;
+  selectedProjectId: string;
 
   hotkeysDialogVisible: boolean;
   hintMessage: string;
@@ -40,7 +40,7 @@ export class AnnotateComponent implements OnInit {
     this.selectedImage$ = this.store.pipe(select(getSelectedImage));
     this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
     this.classes$ = this.store.pipe(select(getClasses));
-
+    this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
 
     this.selectedImage$.subscribe((item: Image) => {
       this.selectedImage = item;
@@ -50,6 +50,9 @@ export class AnnotateComponent implements OnInit {
       if (items.length && !this.selectedClass) {
         this.selectedClass = items[0];
       }
+    });
+    this.selectedProjectId$.subscribe((item: string) => {
+      this.selectedProjectId = item;
     });
 
     this.smartClassStrategies = [
@@ -61,8 +64,8 @@ export class AnnotateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new LoadImagesAction());
-    this.store.dispatch(new LoadClassesAction());
+    this.store.dispatch(new LoadImagesAction(this.selectedProjectId));
+    this.store.dispatch(new LoadClassesAction(this.selectedProjectId));
   }
 
   onSelectImage(event) {

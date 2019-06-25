@@ -8,6 +8,7 @@ import {
   DeleteImageAction,
   DeleteImageSuccessAction,
   LOAD_IMAGES,
+  LoadImagesAction,
   LoadImagesSuccessAction,
   SAVE_IMAGES,
   SaveImageAction,
@@ -22,7 +23,7 @@ export class ImageEffects {
 
   @Effect() loadImages$ = this.actions$.pipe(
     ofType(LOAD_IMAGES),
-    switchMap(() => this.imageService.findAll()),
+    switchMap((action: LoadImagesAction) => this.imageService.findAll(action.payload)),
     map((images: Image[]) => {
       return new LoadImagesSuccessAction(images);
     }),

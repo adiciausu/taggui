@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Image} from '../models/image.model';
 import {environment} from '../../../../environments/environment';
 
@@ -11,8 +11,11 @@ export class ImageService {
   constructor(private http: HttpClient) {
   }
 
-  findAll(): Observable<Image[]> {
-    return this.http.get<Image[]>(this.env.apiHost + '/image/list');
+  findAll(projectId: string): Observable<Image[]> {
+    let params = new HttpParams();
+    params = params.set('projectId', projectId);
+
+    return this.http.get<Image[]>(this.env.apiHost + '/image/list', {params});
   }
 
   save(image: Image): Observable<Image> {

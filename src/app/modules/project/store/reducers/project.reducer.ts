@@ -15,7 +15,8 @@ export function projectReducer(state: ProjectState = initialProjectState, action
     case LOAD_PROJECTS_SUCCESS:
       return {
         ...state,
-        projects: action.payload
+        projects: action.payload,
+        selectedProjectId: state.selectedProjectId || action.payload[0].id || null
       };
 
     case SAVE_PROJECT_SUCCESS:

@@ -9,6 +9,8 @@ export const DELETE_CLASS_SUCCESS = '[Class] Delete Success';
 
 export class LoadClassesAction {
   readonly type = LOAD_CLASSES;
+    constructor(public payload: string) {
+  }
 }
 
 export class LoadClassesSuccessAction {

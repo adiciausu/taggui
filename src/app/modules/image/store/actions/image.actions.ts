@@ -12,6 +12,8 @@ export const PREVIOUS_IMAGE = '[Image] Previous';
 
 export class LoadImagesAction {
   readonly type = LOAD_IMAGES;
+  constructor(public payload: string) {
+  }
 }
 
 export class LoadImagesSuccessAction {

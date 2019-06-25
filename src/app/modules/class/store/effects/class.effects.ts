@@ -5,7 +5,7 @@ import {catchError, map, switchMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {
   DELETE_CLASS, DeleteClassAction, DeleteClassSuccessAction,
-  LOAD_CLASSES,
+  LOAD_CLASSES, LoadClassesAction,
   LoadClassesSuccessAction,
   SAVE_CLASS,
   SaveClassAction,
@@ -19,7 +19,7 @@ export class ClassEffects {
 
   @Effect() loadClasss$ = this.actions$.pipe(
     ofType(LOAD_CLASSES),
-    switchMap(() => this.classService.findAll()),
+    switchMap((action: LoadClassesAction) => this.classService.findAll(action.payload)),
     map((classes: Class[]) => {
       return new LoadClassesSuccessAction(classes);
     }),

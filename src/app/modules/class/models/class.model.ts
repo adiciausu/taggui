@@ -9,4 +9,5 @@ export interface Class {
   name: string;
   shape: Shape;
   color: string;
+  projectId: string;
 }
