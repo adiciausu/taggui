@@ -2,10 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3/index';
 import {Class, Shape} from '../../../class/models/class.model';
 import {Image} from '../../../image/models/image.model';
-import {ImageService} from '../../../image/service/image.service';
 import {Annotation} from '../../model/annotation.model';
 import {environment} from '../../../../../environments/environment';
 import {combineLatest, Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {SaveImageAction} from '../../../image/store/actions/image.actions';
 
 @Component({
   selector: 'app-canvas-d3',
@@ -27,7 +28,7 @@ export class CanvasD3Component implements OnInit {
   annotationNodes = [];
   env = environment;
 
-  constructor(private imageService: ImageService) {
+  constructor(private store: Store<any>) {
   }
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class CanvasD3Component implements OnInit {
       if (image) {
         this.drawImage(image);
       }
-      });
+    });
 
     this.classes$.subscribe((classes: Class[]) => {
       this.classes = classes;
@@ -70,7 +71,7 @@ export class CanvasD3Component implements OnInit {
     };
     this.selectedImage.annotations[clazz.name] = this.selectedImage.annotations[clazz.name] || [];
     this.selectedImage.annotations[clazz.name].push(ann);
-    this.imageService.save(this.selectedImage).subscribe();
+    this.store.dispatch(new SaveImageAction(this.selectedImage));
   }
 
   private drawImage(image: Image) {
@@ -150,7 +151,7 @@ export class CanvasD3Component implements OnInit {
       this.selectedImage.annotations[clazz.name][index].points[0].y = d.y;
       this.selectedImage.annotations[clazz.name][index].points[1].x = d.x + width;
       this.selectedImage.annotations[clazz.name][index].points[1].y = d.y + height;
-      this.imageService.save(this.selectedImage).subscribe();
+      this.store.dispatch(new SaveImageAction(this.selectedImage));
     });
 
     // add drag behaviour
@@ -212,11 +213,12 @@ export class CanvasD3Component implements OnInit {
         rect.attr('height', newHeight);
         rectangleGroup.select('.SE')
         .attr('cy', newHeight);
+
         this.selectedImage.annotations[clazz.name][index].points[1].y = this.selectedImage.annotations[clazz.name][index].points[0].y + newHeight;
       }
     })
     .on('end', () => {
-      this.imageService.save(this.selectedImage).subscribe();
+      this.store.dispatch(new SaveImageAction(this.selectedImage));
     });
 
     rectangleGroup.append('circle')
