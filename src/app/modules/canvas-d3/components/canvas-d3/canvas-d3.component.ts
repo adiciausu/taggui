@@ -5,6 +5,7 @@ import {Image} from '../../../image/models/image.model';
 import {ImageService} from '../../../image/service/image.service';
 import {Annotation} from '../../model/annotation.model';
 import {environment} from '../../../../../environments/environment';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-canvas-d3',
@@ -14,7 +15,8 @@ import {environment} from '../../../../../environments/environment';
 export class CanvasD3Component implements OnInit {
   @Input() selectedClass: Class;
   @Input() classes: Class[] = [];
-  @Input() selectedImage: Image;
+  @Input() selectedImage$: Observable<Image>;
+  selectedImage: Image;
 
   svg;
   image;
@@ -29,10 +31,13 @@ export class CanvasD3Component implements OnInit {
 
   ngOnInit() {
     this.initSVG();
-    console.log(this.selectedImage);
-    if (this.selectedImage) {
-      this.drawImage(this.selectedImage);
-    }
+    this.selectedImage$.subscribe((image: Image) => {
+      if (!image) {
+        return;
+      }
+      this.selectedImage = image;
+      this.drawImage(image);
+    });
   }
 
   saveClassAtCurrentMouseCorrds(clazz: Class) {

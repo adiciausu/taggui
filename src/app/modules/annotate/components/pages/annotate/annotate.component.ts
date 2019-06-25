@@ -21,6 +21,8 @@ export class AnnotateComponent implements OnInit {
   selectedImage$: Observable<Image>;
   selectedImageIndex$: Observable<number>;
 
+  selectedImage: Image;
+
   hotkeysDialogVisible: boolean;
   hintMessage: string;
   smartClassStrategies: any[];
@@ -33,6 +35,9 @@ export class AnnotateComponent implements OnInit {
     this.images$ = this.store.pipe(select(getImages));
     this.selectedImage$ = this.store.pipe(select(getSelectedImage));
     this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
+    this.selectedImage$.subscribe((image: Image) => {
+      this.selectedImage = image;
+    });
 
     this.smartClassStrategies = [
       {name: 'Use Google Detection API'},

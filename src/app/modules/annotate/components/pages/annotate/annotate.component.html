@@ -29,7 +29,7 @@
 
     <div style='padding-left:10px;padding-top:10px;' (mouseenter)="onMouseEnter()"
          (mouseleave)="onMouseLeave()">
-      <app-canvas-d3 [selectedImage]="selectedImage$ | async" [selectedClass]="selectedClass"
+      <app-canvas-d3 [selectedImage$]="selectedImage$" [selectedClass]="selectedClass"
                      [classes]="classes">
       </app-canvas-d3>
     </div>
@@ -50,6 +50,7 @@
     </div>
     <p-listbox [options]="images$ | async" optionLabel="name"
                (onChange)="onSelectImage($event)"
+               [(ngModel)]="selectedImage"
                [style]="{'width':'100%', 'border':'none', 'margin-top':'15px'}">
 
     </p-listbox>

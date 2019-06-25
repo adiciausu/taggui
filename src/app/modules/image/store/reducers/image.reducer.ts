@@ -60,23 +60,23 @@ export function imageReducer(state: ImageState = initialImageState, action: Imag
       };
 
     case NEXT_IMAGE:
-      if (!state.images[state.selectedImageIndex++]) {
+      if (!state.images[state.selectedImageIndex + 1]) {
         return state;
       }
       return {
         ...state,
-        selectedImage: state.images[state.selectedImageIndex++],
-        selectedImageIndex: state.selectedImageIndex++,
+        selectedImage: state.images[state.selectedImageIndex + 1],
+        selectedImageIndex: state.selectedImageIndex + 1,
       };
 
     case PREVIOUS_IMAGE:
-      if (!state.images[state.selectedImageIndex--]) {
+      if (!state.images[state.selectedImageIndex - 1]) {
         return state;
       }
       return {
         ...state,
-        selectedImage: state.images[state.selectedImageIndex--],
-        selectedImageIndex: state.selectedImageIndex--,
+        selectedImage: state.images[state.selectedImageIndex - 1],
+        selectedImageIndex: state.selectedImageIndex - 1,
       };
 
 
