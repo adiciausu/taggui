@@ -9,6 +9,8 @@ import {ProjectEffects} from './store/effects/project.effects';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {projectReducer} from './store/reducers/project.reducer';
+import {ConfirmationService} from 'primeng/api';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -21,12 +23,15 @@ import {projectReducer} from './store/reducers/project.reducer';
     TableModule,
     ButtonModule,
     DialogModule,
+    ConfirmDialogModule,
     EffectsModule.forFeature([
       ProjectEffects
     ]),
     StoreModule.forFeature('projects', projectReducer),
   ],
-  providers: []
+  providers: [
+    ConfirmationService
+  ]
 })
 export class ProjectModule {
 }

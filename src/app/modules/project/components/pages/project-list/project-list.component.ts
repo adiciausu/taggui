@@ -6,6 +6,7 @@ import {DeleteProjectAction, LoadProjectsAction, SaveProjectAction} from '../../
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {getProjects} from '../../../store/selectors/project.selector';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-project-list',
@@ -18,7 +19,7 @@ export class ProjectListComponent implements OnInit {
   addEditForm: FormGroup;
   newProject: Project = {} as Project;
 
-  constructor(private formBuilder: FormBuilder, private store: Store<any>) {
+  constructor(private formBuilder: FormBuilder, private store: Store<any>, private confirmationService: ConfirmationService) {
     this.projects$ = this.store.pipe(select(getProjects));
   }
 
@@ -52,6 +53,12 @@ export class ProjectListComponent implements OnInit {
   }
 
   onDelete(id: string) {
-    this.store.dispatch(new DeleteProjectAction(id));
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this project with all it\'s associated classes and images?<br/>' +
+        '<strong>You will not be able to rollback this operation</strong>',
+      accept: () => {
+        this.store.dispatch(new DeleteProjectAction(id));
+      }
+    });
   }
 }
