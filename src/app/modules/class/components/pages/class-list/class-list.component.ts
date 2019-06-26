@@ -31,7 +31,7 @@ export class ClassListComponent implements OnInit {
     this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
     this.availableShapes = [
       {label: 'Rectangle', value: Shape.RECTANGLE},
-      {label: 'Point (coming soon)', value: Shape.POINT},
+      {label: 'Point', value: Shape.POINT},
       {label: 'Polygon (coming soon)', value: Shape.POLYGON}
     ];
   }

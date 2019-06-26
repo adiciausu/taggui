@@ -53,15 +53,34 @@ export class CanvasD3Component implements OnInit {
   }
 
   saveClassAtCurrentMouseCorrds(clazz: Class) {
-    return this.saveRectangle(this.currentMouseCoords[0] - this.rectangleWidth / 2,
-      this.currentMouseCoords[1] - this.rectangleHeight / 2, this.rectangleWidth, this.rectangleHeight, clazz);
+    switch (clazz.shape) {
+      case Shape.RECTANGLE:
+        return this.saveRectangle(this.currentMouseCoords[0] - this.rectangleWidth / 2,
+          this.currentMouseCoords[1] - this.rectangleHeight / 2, this.rectangleWidth, this.rectangleHeight, clazz);
+      case Shape.POINT:
+        return this.savePoint(this.currentMouseCoords[0], this.currentMouseCoords[1], clazz);
+      default:
+        throw new Error('Not implemented');
+    }
+  }
+
+  savePoint(x: number, y: number, clazz: Class) {
+    const index = this.getClassIndex(clazz);
+    this.drawPoint(x, y, clazz, index);
+
+    const ann: Annotation = {
+      shape: Shape.POINT,
+      points: [
+        {x, y},
+      ]
+    };
+    this.selectedImage.annotations[clazz.id] = this.selectedImage.annotations[clazz.id] || [];
+    this.selectedImage.annotations[clazz.id].push(ann);
+    this.store.dispatch(new SaveImageAction(this.selectedImage));
   }
 
   saveRectangle(x: number, y: number, width: number, height: number, clazz: Class) {
-    let index = 0;
-    if (this.selectedImage.annotations[clazz.id]) {
-      index = this.selectedImage.annotations[clazz.id].length;
-    }
+    const index = this.getClassIndex(clazz);
     this.drawRectangle(x, y, width, height, clazz, index);
 
     const ann: Annotation = {
@@ -74,6 +93,14 @@ export class CanvasD3Component implements OnInit {
     this.selectedImage.annotations[clazz.id] = this.selectedImage.annotations[clazz.id] || [];
     this.selectedImage.annotations[clazz.id].push(ann);
     this.store.dispatch(new SaveImageAction(this.selectedImage));
+  }
+
+  private getClassIndex(clazz: Class) {
+    let index = 0;
+    if (this.selectedImage.annotations[clazz.id]) {
+      index = this.selectedImage.annotations[clazz.id].length;
+    }
+    return index;
   }
 
   private drawImage(image: Image) {
@@ -110,6 +137,9 @@ export class CanvasD3Component implements OnInit {
               annotation.points[1].x - annotation.points[0].x,
               annotation.points[1].y - annotation.points[0].y,
               clazz, index as number);
+            break;
+          case Shape.POINT:
+            this.drawPoint(annotation.points[0].x, annotation.points[0].y, clazz, index as number);
             break;
           case Shape.POLYGON:
           default:
@@ -167,6 +197,49 @@ export class CanvasD3Component implements OnInit {
     this.annotationNodes.push(rectangleGroup);
   }
 
+  private drawPoint(x: number, y: number, clazz: Class, index: number) {
+    if (!clazz) {
+      throw new Error('No class selected');
+    }
+
+    const pointGroup = this.svg.append('g')
+    .attr('id', clazz.name + '-' + index);
+
+    // add rectangle
+    pointGroup.append('circle')
+    .attr('r', this.hotCornerRadius)
+    .attr('stroke', 'orange')
+    .attr('stroke-width', this.rectangleStrokeWidth)
+    .attr('fill', clazz.color)
+    .style('opacity', 0.4)
+    .attr('cursor', 'move');
+
+    const pointDragBehaviour = d3.drag()
+    .on('drag', (d: { x: number, y: number }) => {
+      pointGroup.attr('transform', (datum) => {
+        datum.x += d3.event.dx;
+        datum.y += d3.event.dy;
+
+        return 'translate(' + [datum.x, datum.y] + ')';
+      });
+    })
+    .on('end', (d: { x: number, y: number }) => {
+      this.selectedImage.annotations[clazz.id][index].points[0].x = d.x;
+      this.selectedImage.annotations[clazz.id][index].points[0].y = d.y;
+      this.store.dispatch(new SaveImageAction(this.selectedImage));
+    });
+
+    // add drag behaviour
+    pointGroup
+    .datum({x, y})
+    .attr('transform', (d) => {
+      return 'translate(' + [d.x, d.y] + ')';
+    })
+    .call(pointDragBehaviour);
+
+    this.annotationNodes.push(pointGroup);
+  }
+
   private initSVG() {
     this.svg = d3.select('#canvas-d3')
     .append('svg');
@@ -177,8 +250,18 @@ export class CanvasD3Component implements OnInit {
     .attr('y', 0)
     .on('click', () => {
       const coords = d3.mouse(d3.event.target);
-      this.saveRectangle(coords[0] - this.rectangleWidth / 2, coords[1] - this.rectangleHeight / 2, this.rectangleWidth,
-        this.rectangleHeight, this.selectedClass);
+      switch (this.selectedClass.shape) {
+        case Shape.POINT:
+          this.savePoint(coords[0], coords[1], this.selectedClass);
+          break;
+        case Shape.RECTANGLE:
+          this.saveRectangle(coords[0] - this.rectangleWidth / 2, coords[1] - this.rectangleHeight / 2, this.rectangleWidth,
+            this.rectangleHeight, this.selectedClass);
+          break;
+        default:
+          throw new Error('Invalid shape');
+      }
+
     });
 
     // add zoom
