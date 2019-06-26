@@ -55,8 +55,8 @@ export class CanvasD3Component implements OnInit {
 
   saveClass(x: number, y: number, width: number, height: number, clazz: Class) {
     let index = 0;
-    if (this.selectedImage.annotations[clazz.name]) {
-      index = this.selectedImage.annotations[clazz.name].length;
+    if (this.selectedImage.annotations[clazz.id]) {
+      index = this.selectedImage.annotations[clazz.id].length;
     }
     this.drawRectangle(x, y, width, height, clazz, index);
 
@@ -67,8 +67,8 @@ export class CanvasD3Component implements OnInit {
         {x: x + width, y: y + height},
       ]
     };
-    this.selectedImage.annotations[clazz.name] = this.selectedImage.annotations[clazz.name] || [];
-    this.selectedImage.annotations[clazz.name].push(ann);
+    this.selectedImage.annotations[clazz.id] = this.selectedImage.annotations[clazz.id] || [];
+    this.selectedImage.annotations[clazz.id].push(ann);
     this.store.dispatch(new SaveImageAction(this.selectedImage));
   }
 
@@ -83,23 +83,23 @@ export class CanvasD3Component implements OnInit {
     this.annotationNodes.forEach((annotation) => annotation.remove());
 
     // draw new annotations
-    for (const className of Object.keys(image.annotations)) {
+    for (const classId of Object.keys(image.annotations)) {
       // determine class
       let clazz = null;
       for (const searchedClass of this.classes) {
-        if (searchedClass.name === className) {
+        if (searchedClass.id === classId) {
           clazz = searchedClass;
           break;
         }
       }
 
       if (!clazz) {
-        console.error('Inexistent class: ' + className + '. Check to see if annotations remained on images$ after they where deleted');
+        console.error('Inexistent class: ' + classId + '. Check to see if annotations remained on images$ after they where deleted');
         continue;
       }
 
-      for (const index of image.annotations[className].keys()) {
-        const annotation = image.annotations[className][index];
+      for (const index of image.annotations[classId].keys()) {
+        const annotation = image.annotations[classId][index];
         switch (annotation.shape) {
           case Shape.RECTANGLE:
             this.drawRectangle(annotation.points[0].x, annotation.points[0].y,
@@ -145,10 +145,10 @@ export class CanvasD3Component implements OnInit {
       });
     })
     .on('end', (d: { x: number, y: number }) => {
-      this.selectedImage.annotations[clazz.name][index].points[0].x = d.x;
-      this.selectedImage.annotations[clazz.name][index].points[0].y = d.y;
-      this.selectedImage.annotations[clazz.name][index].points[1].x = d.x + width;
-      this.selectedImage.annotations[clazz.name][index].points[1].y = d.y + height;
+      this.selectedImage.annotations[clazz.id][index].points[0].x = d.x;
+      this.selectedImage.annotations[clazz.id][index].points[0].y = d.y;
+      this.selectedImage.annotations[clazz.id][index].points[1].x = d.x + width;
+      this.selectedImage.annotations[clazz.id][index].points[1].y = d.y + height;
       this.store.dispatch(new SaveImageAction(this.selectedImage));
     });
 
@@ -203,7 +203,7 @@ export class CanvasD3Component implements OnInit {
         rectangleGroup.select('.SE')
         .attr('cx', newWidth);
 
-        this.selectedImage.annotations[clazz.name][index].points[1].x = this.selectedImage.annotations[clazz.name][index].points[0].x + newWidth;
+        this.selectedImage.annotations[clazz.id][index].points[1].x = this.selectedImage.annotations[clazz.id][index].points[0].x + newWidth;
       }
 
       if (newCoords[1] > currentShapeOriginCoords.y) {
@@ -212,7 +212,7 @@ export class CanvasD3Component implements OnInit {
         rectangleGroup.select('.SE')
         .attr('cy', newHeight);
 
-        this.selectedImage.annotations[clazz.name][index].points[1].y = this.selectedImage.annotations[clazz.name][index].points[0].y + newHeight;
+        this.selectedImage.annotations[clazz.id][index].points[1].y = this.selectedImage.annotations[clazz.id][index].points[0].y + newHeight;
       }
     })
     .on('end', () => {
