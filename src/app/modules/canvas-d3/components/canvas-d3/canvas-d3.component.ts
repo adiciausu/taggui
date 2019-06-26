@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3/index';
 import {Class, Shape} from '../../../class/models/class.model';
 import {Image} from '../../../image/models/image.model';
@@ -28,6 +28,9 @@ export class CanvasD3Component implements OnInit {
   annotationNodes = [];
   env = environment;
 
+  rectangleWidth = 100;
+  rectangleHeight = 100;
+
   constructor(private store: Store<any>) {
   }
 
@@ -50,10 +53,11 @@ export class CanvasD3Component implements OnInit {
   }
 
   saveClassAtCurrentMouseCorrds(clazz: Class) {
-    return this.saveClass(this.currentMouseCoords[0], this.currentMouseCoords[1], 100, 100, clazz);
+    return this.saveRectangle(this.currentMouseCoords[0] - this.rectangleWidth / 2,
+      this.currentMouseCoords[1] - this.rectangleHeight / 2, this.rectangleWidth, this.rectangleHeight, clazz);
   }
 
-  saveClass(x: number, y: number, width: number, height: number, clazz: Class) {
+  saveRectangle(x: number, y: number, width: number, height: number, clazz: Class) {
     let index = 0;
     if (this.selectedImage.annotations[clazz.id]) {
       index = this.selectedImage.annotations[clazz.id].length;
@@ -173,7 +177,7 @@ export class CanvasD3Component implements OnInit {
     .attr('y', 0)
     .on('click', () => {
       const coords = d3.mouse(d3.event.target);
-      this.saveClass(coords[0], coords[1], 100, 100, this.selectedClass);
+      this.saveRectangle(coords[0] - this.rectangleWidth / 2, coords[1] - this.rectangleHeight / 2, this.rectangleWidth, this.rectangleHeight, this.selectedClass);
     });
 
     // add zoom
@@ -190,7 +194,7 @@ export class CanvasD3Component implements OnInit {
     });
   }
 
-  private addResizeHotcorner(rectangleGroup, x: number, y: number, cssClassName: string, clazz: Class, index: number) {
+  private addResizeHotcorner(rectangleGroup, x: number, y: number, cssClassName: string, cls: Class, index: number) {
     const resize = d3.drag()
     .on('drag', () => {
       const rect = rectangleGroup.select('rect');
@@ -203,7 +207,7 @@ export class CanvasD3Component implements OnInit {
         rectangleGroup.select('.SE')
         .attr('cx', newWidth);
 
-        this.selectedImage.annotations[clazz.id][index].points[1].x = this.selectedImage.annotations[clazz.id][index].points[0].x + newWidth;
+        this.selectedImage.annotations[cls.id][index].points[1].x = this.selectedImage.annotations[cls.id][index].points[0].x + newWidth;
       }
 
       if (newCoords[1] > currentShapeOriginCoords.y) {
@@ -212,7 +216,7 @@ export class CanvasD3Component implements OnInit {
         rectangleGroup.select('.SE')
         .attr('cy', newHeight);
 
-        this.selectedImage.annotations[clazz.id][index].points[1].y = this.selectedImage.annotations[clazz.id][index].points[0].y + newHeight;
+        this.selectedImage.annotations[cls.id][index].points[1].y = this.selectedImage.annotations[cls.id][index].points[0].y + newHeight;
       }
     })
     .on('end', () => {
