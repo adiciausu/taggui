@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Class, Shape} from '../../../models/class.model';
-import {SelectItem} from 'primeng/api';
+import {ConfirmationService, SelectItem} from 'primeng/api';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {DeleteClassAction, LoadClassesAction, SaveClassAction} from '../../../store/actions/class.actions';
@@ -26,7 +26,7 @@ export class ClassListComponent implements OnInit {
   private defaultColor = '#FF0000';
   newClass: Class = {shape: this.defaultShape, color: this.defaultColor} as Class;
 
-  constructor(private store: Store<any>, private formBuilder: FormBuilder) {
+  constructor(private store: Store<any>, private formBuilder: FormBuilder, private confirmationService: ConfirmationService) {
     this.classes$ = this.store.pipe(select(getClasses));
     this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
     this.availableShapes = [
@@ -77,6 +77,12 @@ export class ClassListComponent implements OnInit {
   }
 
   onDelete(classId: string) {
-    this.store.dispatch(new DeleteClassAction(classId));
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this class and all the image annotations that use it?<br/>' +
+        '<strong>You will not be able to rollback this operation</strong>',
+      accept: () => {
+        this.store.dispatch(new DeleteClassAction(classId));
+      }
+    });
   }
 }

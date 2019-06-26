@@ -9,6 +9,8 @@ import {DialogModule} from 'primeng/dialog';
 import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
 import {ColorPickerModule} from 'primeng/colorpicker';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -23,10 +25,12 @@ import {ColorPickerModule} from 'primeng/colorpicker';
     DialogModule,
     InputTextModule,
     DropdownModule,
-    ColorPickerModule
+    ColorPickerModule,
+    ConfirmDialogModule
   ],
   providers: [
-    ClassService
+    ClassService,
+    ConfirmationService
   ]
 })
 export class ClassModule {

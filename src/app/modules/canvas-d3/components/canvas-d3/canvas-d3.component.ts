@@ -177,7 +177,8 @@ export class CanvasD3Component implements OnInit {
     .attr('y', 0)
     .on('click', () => {
       const coords = d3.mouse(d3.event.target);
-      this.saveRectangle(coords[0] - this.rectangleWidth / 2, coords[1] - this.rectangleHeight / 2, this.rectangleWidth, this.rectangleHeight, this.selectedClass);
+      this.saveRectangle(coords[0] - this.rectangleWidth / 2, coords[1] - this.rectangleHeight / 2, this.rectangleWidth,
+        this.rectangleHeight, this.selectedClass);
     });
 
     // add zoom
