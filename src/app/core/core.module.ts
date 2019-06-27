@@ -2,7 +2,7 @@ import {NgModule, Optional, SkipSelf} from '@angular/core';
 import {throwIfAlreadyLoaded} from './guards/module-import.guard';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
-import {MenuComponent} from './components/menu/menu.component';
+import {MenuLoggedComponent} from './components/menu/menu-logged.component';
 import {MenubarModule} from 'primeng/menubar';
 import {HttpClientModule} from '@angular/common/http';
 import {DropdownModule} from 'primeng/dropdown';
@@ -13,12 +13,14 @@ import {EffectsModule} from '@ngrx/effects';
 import {projectReducer} from '../modules/project/store/reducers/project.reducer';
 import {ProjectEffects} from '../modules/project/store/effects/project.effects';
 import {SharedModule} from '../shared/shared.module';
+import {AuthGuard} from './guards/auth.guard';
+import {AuthService} from '../modules/auth/service/auth.service';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    MenuComponent
+    MenuLoggedComponent
   ],
   imports: [
     SharedModule,
@@ -35,10 +37,12 @@ import {SharedModule} from '../shared/shared.module';
   exports: [
     HeaderComponent,
     FooterComponent,
-    MenuComponent
+    MenuLoggedComponent
   ],
   providers: [
-    ProjectService
+    ProjectService,
+    AuthGuard,
+    AuthService
   ]
 })
 export class CoreModule {

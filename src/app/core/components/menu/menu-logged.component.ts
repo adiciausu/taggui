@@ -7,11 +7,11 @@ import {LoadProjectsAction, SelectProjectAction} from '../../../modules/project/
 import {getProjects, getProjectsAsSelectOptions} from '../../../modules/project/store/selectors/project.selector';
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  selector: 'app-menu-logged',
+  templateUrl: './menu-logged.component.html',
+  styleUrls: ['./menu-logged.component.css']
 })
-export class MenuComponent implements OnInit {
+export class MenuLoggedComponent implements OnInit {
   projects$: Observable<Project[]>;
   availableProjectSelectOptions$: Observable<SelectItem[]>;
   menuItems: any[];

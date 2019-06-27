@@ -26,6 +26,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     // app
     AppRoutingModule
   ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

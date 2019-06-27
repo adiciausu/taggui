@@ -1,10 +1,13 @@
 <div class="layout-wrapper">
-    <app-menu></app-menu>
-    <app-header></app-header>
-    <div class="layout-main">
-        <div class="layout-content" style='height:90%;padding-bottom:100px;margin-top:20px;padding-left:10px;'>
-            <router-outlet></router-outlet>
-        </div>
-        <app-footer></app-footer>
+  <div *ngIf="isLogged">
+    <app-menu-logged></app-menu-logged>
+  </div>
+  <app-header></app-header>
+  <div class="layout-main">
+    <div class="layout-content"
+         style='height:90%;padding-bottom:100px;margin-top:20px;padding-left:10px;'>
+      <router-outlet></router-outlet>
     </div>
+    <app-footer></app-footer>
+  </div>
 </div>
