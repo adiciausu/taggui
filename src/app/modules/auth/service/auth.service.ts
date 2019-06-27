@@ -8,26 +8,29 @@ import {tap} from 'rxjs/operators';
 @Injectable()
 export class AuthService {
   env = environment;
-  TOKEN = 'LOGGED_USER';
+  TOKEN = 'JWT_TOKEN';
 
   constructor(private http: HttpClient) {
   }
 
-  login(user: User): Observable<User> {
-    return this.http.post<User>(this.env.apiHost + '/auth/login', {
+  login(user: User): Observable<string> {
+    return this.http.post<string>(this.env.apiHost + '/auth/login', {
       email: user.email,
       password: user.password,
     }).pipe(tap(item => {
-      console.log('dsad');
-      this.setLoggedInUser(item);
+      this.setJWT(item);
     }));
   }
 
-  setLoggedInUser(user: User): void {
-    localStorage.setItem(this.TOKEN, JSON.stringify(user));
+  setJWT(token: string): void {
+    localStorage.setItem(this.TOKEN, token);
   }
 
   isLogged() {
     return localStorage.getItem(this.TOKEN) != null;
+  }
+
+  getJWT(): string {
+    return localStorage.getItem(this.TOKEN);
   }
 }
