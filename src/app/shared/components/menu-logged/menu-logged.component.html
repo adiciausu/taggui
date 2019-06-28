@@ -5,6 +5,7 @@
     id='logo'
     src="assets/images/tagdroid-logo.png">
   <p-dropdown [options]="availableProjectSelectOptions$ | async"
+    [(ngModel)]="selectedProjectId"
     (onChange)="onSelectedProjectChange($event)">
   </p-dropdown>
   <a href="/project/list">Manage projects</a>

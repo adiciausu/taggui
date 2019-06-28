@@ -4,7 +4,11 @@ import {Project} from '../../../modules/project/model/project.model';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {LoadProjectsAction, SelectProjectAction} from '../../../modules/project/store/actions/project.actions';
-import {getProjects, getProjectsAsSelectOptions} from '../../../modules/project/store/selectors/project.selector';
+import {
+  getProjects,
+  getProjectsAsSelectOptions,
+  getSelectedProjectId
+} from '../../../modules/project/store/selectors/project.selector';
 
 @Component({
   selector: 'app-menu-logged',
@@ -14,11 +18,14 @@ import {getProjects, getProjectsAsSelectOptions} from '../../../modules/project/
 export class MenuLoggedComponent implements OnInit {
   projects$: Observable<Project[]>;
   availableProjectSelectOptions$: Observable<SelectItem[]>;
+  selectedProjectId$: Observable<string>;
+  selectedProjectId: string;
   menuItems: any[];
 
   constructor(private store: Store<any>) {
     this.projects$ = this.store.pipe(select(getProjects));
     this.availableProjectSelectOptions$ = this.store.pipe(select(getProjectsAsSelectOptions));
+    this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
 
     this.menuItems = [
       {label: 'Annotate', routerLink: ['/']},
@@ -29,6 +36,9 @@ export class MenuLoggedComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedProjectId$.subscribe((item) => {
+      this.selectedProjectId = item;
+    });
     this.store.dispatch(new LoadProjectsAction());
   }
 
