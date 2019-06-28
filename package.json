@@ -27,6 +27,7 @@
     "d3": "5.8.2",
     "lodash": "4.17.11",
     "ng2-logger": "2.0.48",
+    "ngx-cookie-service": "^2.2.0",
     "primeflex": "1.0.0-rc.1",
     "primeicons": "1.0.0",
     "primeng": "8.0.0-rc.1",

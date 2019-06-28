@@ -14,6 +14,7 @@ import {SharedModule} from '../shared/shared.module';
 import {AuthGuard} from './guards/auth.guard';
 import {AuthService} from '../modules/auth/service/auth.service';
 import {JwtInterceptor} from "../modules/auth/models/jwt.interceptor";
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {JwtInterceptor} from "../modules/auth/models/jwt.interceptor";
       useClass: JwtInterceptor,
       multi: true
     },
+    CookieService
   ]
 })
 export class CoreModule {

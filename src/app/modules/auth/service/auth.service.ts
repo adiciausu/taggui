@@ -4,13 +4,14 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {User} from '../models/user.model';
 import {tap} from 'rxjs/operators';
+import {CookieService} from 'ngx-cookie-service';
 
 @Injectable()
 export class AuthService {
   env = environment;
   TOKEN = 'JWT_TOKEN';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
   }
 
   login(user: User): Observable<string> {
@@ -24,6 +25,7 @@ export class AuthService {
 
   setJWT(token: string): void {
     localStorage.setItem(this.TOKEN, token);
+    this.cookieService.set('jwt', token)
   }
 
   isLogged() {
