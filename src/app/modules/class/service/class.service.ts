@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Class} from '../models/class.model';
-import {HttpParams} from '@angular/common/http';
 import {AbstractService} from '../../../core/service/abstract.service';
+import {HttpParams} from "@angular/common/http";
 
 @Injectable()
 export class ClassService extends AbstractService {
@@ -12,14 +12,14 @@ export class ClassService extends AbstractService {
     let params = new HttpParams();
     params = params.append('projectId', projectId);
 
-    return this.http.get<Class[]>(this.baseURL + '/class/list', {params: params, headers: this.getAuthHeaders()});
+    return this.http.get<Class[]>(this.baseURL + '/class/list', {params});
   }
 
   save(clazz: Class): Observable<Class> {
-    return this.http.post<Class>(this.baseURL + '/class', clazz, {headers: this.getAuthHeaders()});
+    return this.http.post<Class>(this.baseURL + '/class', clazz,);
   }
 
   delete(classId: string): Observable<string> {
-    return this.http.delete<string>(this.baseURL + '/class/' + classId, {headers: this.getAuthHeaders()});
+    return this.http.delete<string>(this.baseURL + '/class/' + classId,);
   }
 }

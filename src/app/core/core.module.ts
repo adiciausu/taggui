@@ -3,7 +3,7 @@ import {throwIfAlreadyLoaded} from './guards/module-import.guard';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {MenubarModule} from 'primeng/menubar';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ProjectService} from '../modules/project/service/project.service';
 import {FormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
@@ -13,6 +13,7 @@ import {ProjectEffects} from '../modules/project/store/effects/project.effects';
 import {SharedModule} from '../shared/shared.module';
 import {AuthGuard} from './guards/auth.guard';
 import {AuthService} from '../modules/auth/service/auth.service';
+import {JwtInterceptor} from "../modules/auth/models/jwt.interceptor";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,12 @@ import {AuthService} from '../modules/auth/service/auth.service';
   providers: [
     ProjectService,
     AuthGuard,
-    AuthService
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
   ]
 })
 export class CoreModule {

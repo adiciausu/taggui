@@ -10,14 +10,14 @@ export class ImageService extends AbstractService {
     let params = new HttpParams();
     params = params.set('projectId', projectId);
 
-    return this.http.get<Image[]>(this.env.apiHost + '/image/list', {params: params, headers: this.getAuthHeaders()});
+    return this.http.get<Image[]>(this.env.apiHost + '/image/list', {params});
   }
 
   save(image: Image): Observable<Image> {
-    return this.http.post<Image>(this.env.apiHost + '/image', image, {headers: this.getAuthHeaders()});
+    return this.http.post<Image>(this.env.apiHost + '/image', image,);
   }
 
   delete(imageId: string): Observable<string> {
-    return this.http.delete<string>(this.env.apiHost + '/image/' + imageId, {headers: this.getAuthHeaders()});
+    return this.http.delete<string>(this.env.apiHost + '/image/' + imageId,);
   }
 }

@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {DeleteImageAction, LoadImagesAction} from '../../../store/actions/image.actions';
 import {getImages} from '../../../store/selectors/image.selector';
 import {getSelectedProjectId} from '../../../../project/store/selectors/project.selector';
+import {AuthService} from "../../../../auth/service/auth.service";
 
 @Component({
   selector: 'app-image-list',
@@ -18,7 +19,7 @@ export class ImageListComponent implements OnInit {
   images$: Observable<Image[]>;
   env = environment;
 
-  constructor(private store: Store<any>) {
+  constructor(private store: Store<any>, private authService: AuthService) {
     this.images$ = this.store.select(getImages);
     this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
   }
