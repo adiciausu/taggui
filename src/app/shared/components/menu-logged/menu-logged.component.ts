@@ -9,6 +9,7 @@ import {
   getProjectsAsSelectOptions,
   getSelectedProjectId
 } from '../../../modules/project/store/selectors/project.selector';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-menu-logged',
@@ -22,7 +23,7 @@ export class MenuLoggedComponent implements OnInit {
   selectedProjectId: string;
   menuItems: any[];
 
-  constructor(private store: Store<any>) {
+  constructor(private store: Store<any>, private router: Router) {
     this.projects$ = this.store.pipe(select(getProjects));
     this.availableProjectSelectOptions$ = this.store.pipe(select(getProjectsAsSelectOptions));
     this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
@@ -44,5 +45,10 @@ export class MenuLoggedComponent implements OnInit {
 
   onSelectedProjectChange(event) {
     this.store.dispatch(new SelectProjectAction(event.value));
+  }
+
+  onLogout() {
+    localStorage.clear();
+    this.router.navigateByUrl('/');
   }
 }
