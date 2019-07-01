@@ -9,5 +9,5 @@
     [(ngModel)]="selectedProjectId"
     (onChange)="onSelectedProjectChange($event)">
   </p-dropdown>
-  <a (click)="onLogout">Logout</a>
+  <a [routerLink]="" (click)="onLogout()">Logout</a>
 </p-menubar>
