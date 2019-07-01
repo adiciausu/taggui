@@ -49,6 +49,6 @@ export class MenuLoggedComponent implements OnInit {
 
   onLogout() {
     localStorage.clear();
-    window.location = '/';
+    window.location.replace('/');
   }
 }
