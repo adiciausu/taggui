@@ -6,7 +6,12 @@ import {Image} from '../../../../image/models/image.model';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getImages, getSelectedImage, getSelectedImageIndex} from '../../../../image/store/selectors/image.selector';
-import {LoadImagesAction, NextImageAction, PreviousImageAction, SelectImageAction} from '../../../../image/store/actions/image.actions';
+import {
+  LoadImagesAction,
+  NextImageAction,
+  PreviousImageAction,
+  SelectImageAction
+} from '../../../../image/store/actions/image.actions';
 import {LoadClassesAction} from '../../../../class/store/actions/class.actions';
 import {getClasses} from '../../../../class/store/selectors/class.selector';
 import {getSelectedProjectId} from '../../../../project/store/selectors/project.selector';
@@ -52,6 +57,9 @@ export class AnnotateComponent implements OnInit {
 
   ngOnInit() {
     this.selectedProjectId$.subscribe((item: string) => {
+      if (!item) {
+        return;
+      }
       this.selectedProjectId = item;
       this.store.dispatch(new LoadClassesAction(this.selectedProjectId));
       this.store.dispatch(new LoadImagesAction(this.selectedProjectId));

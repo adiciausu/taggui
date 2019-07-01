@@ -13,6 +13,13 @@ export class ImageService extends AbstractService {
     return this.http.get<Image[]>(this.env.apiHost + '/image/list', {params});
   }
 
+  findBatch(projectId: string): Observable<Image[]> {
+    let params = new HttpParams();
+    params = params.set('projectId', projectId);
+
+    return this.http.get<Image[]>(this.env.apiHost + '/image/batch', {params});
+  }
+
   save(image: Image): Observable<Image> {
     return this.http.post<Image>(this.env.apiHost + '/image', image,);
   }
