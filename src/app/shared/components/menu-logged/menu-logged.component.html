@@ -4,10 +4,14 @@
   <img
     id='logo'
     src="assets/images/tagdroid-logo.png">
-  <a href="/project/list">Manage projects</a>
+  <a routerLink="/project/list">
+    Manage projects
+  </a>
   <p-dropdown [options]="availableProjectSelectOptions$ | async"
     [(ngModel)]="selectedProjectId"
     (onChange)="onSelectedProjectChange($event)">
   </p-dropdown>
-  <a [routerLink]="" (click)="onLogout()">Logout</a>
+  <a [routerLink]="" (click)="onLogout()">
+    Logout
+  </a>
 </p-menubar>
