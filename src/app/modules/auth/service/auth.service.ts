@@ -25,7 +25,7 @@ export class AuthService {
 
   setJWT(token: string): void {
     localStorage.setItem(this.TOKEN, token);
-    this.cookieService.set('jwt', token)
+    this.cookieService.set('jwt', token);
   }
 
   isLogged() {

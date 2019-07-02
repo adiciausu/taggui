@@ -5,7 +5,12 @@ import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canv
 import {Image} from '../../../../image/models/image.model';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {getImages, getSelectedImage, getSelectedImageIndex} from '../../../../image/store/selectors/image.selector';
+import {
+  getImageBatchForAnnotating,
+  getImages,
+  getSelectedImage,
+  getSelectedImageIndex
+} from '../../../../image/store/selectors/image.selector';
 import {
   LoadImagesAction,
   NextImageAction,
@@ -41,7 +46,7 @@ export class AnnotateComponent implements OnInit {
   @ViewChild(CanvasD3Component, {static: false}) canvasd3Component: CanvasD3Component;
 
   constructor(private classService: ClassService, private store: Store<any>) {
-    this.images$ = this.store.pipe(select(getImages));
+    this.images$ = this.store.pipe(select(getImageBatchForAnnotating,  ));
     this.selectedImage$ = this.store.pipe(select(getSelectedImage));
     this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
     this.classes$ = this.store.pipe(select(getClasses));
