@@ -5,14 +5,9 @@ import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canv
 import {Image} from '../../../../image/models/image.model';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
+import {getImageBatchForAnnotating, getSelectedImage, getSelectedImageIndex} from '../../../../image/store/selectors/image.selector';
 import {
-  getImageBatchForAnnotating,
-  getImages,
-  getSelectedImage,
-  getSelectedImageIndex
-} from '../../../../image/store/selectors/image.selector';
-import {
-  LoadImagesAction,
+  LoadAnnotationBatchImagesAction,
   NextImageAction,
   PreviousImageAction,
   SelectImageAction
@@ -47,9 +42,9 @@ export class AnnotateComponent implements OnInit {
   @ViewChild(CanvasD3Component, {static: false}) canvasd3Component: CanvasD3Component;
 
   constructor(private classService: ClassService, private store: Store<any>, private authService: AuthService) {
-    const decodedJWT = this.authService.getDecodedJWT().sub;
-    const currentUserId = decodedJWT.sub;
-    this.images$ = this.store.pipe(select(getImageBatchForAnnotating,  currentUserId));
+    const decodedJWT = this.authService.getDecodedJWT();
+    const userId = decodedJWT.sub;
+    this.images$ = this.store.pipe(select(getImageBatchForAnnotating, {userId}));
     this.selectedImage$ = this.store.pipe(select(getSelectedImage));
     this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
     this.classes$ = this.store.pipe(select(getClasses));
@@ -70,8 +65,10 @@ export class AnnotateComponent implements OnInit {
       }
       this.selectedProjectId = item;
       this.store.dispatch(new LoadClassesAction(this.selectedProjectId));
-      this.store.dispatch(new LoadImagesAction(this.selectedProjectId));
+      console.log(new LoadAnnotationBatchImagesAction(this.selectedProjectId));
+      this.store.dispatch(new LoadAnnotationBatchImagesAction(this.selectedProjectId));
     });
+
     this.selectedImage$.subscribe((item: Image) => {
       this.selectedImage = item;
     });

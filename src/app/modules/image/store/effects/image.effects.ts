@@ -6,8 +6,8 @@ import {Observable} from 'rxjs';
 import {
   DELETE_IMAGE,
   DeleteImageAction,
-  DeleteImageSuccessAction,
-  LOAD_IMAGES, LoadIAnnotationBatchmagesSuccessAction,
+  DeleteImageSuccessAction, LOAD_ANNOTATION_IMAGE_BATCH,
+  LOAD_IMAGES, LoadAnnotationBatchImagesAction, LoadAnnotationBatchImagesSuccessAction,
   LoadImagesAction,
   LoadImagesSuccessAction,
   SAVE_IMAGES,
@@ -31,10 +31,10 @@ export class ImageEffects {
   );
 
   @Effect() loadAnnotationBatchImages$ = this.actions$.pipe(
-    ofType(LOAD_IMAGES),
-    switchMap((action: LoadImagesAction) => this.imageService.findBatch(action.payload)),
+    ofType(LOAD_ANNOTATION_IMAGE_BATCH),
+    switchMap((action: LoadAnnotationBatchImagesAction) => this.imageService.findBatch(action.payload)),
     map((images: Image[]) => {
-      return new LoadIAnnotationBatchmagesSuccessAction(images);
+      return new LoadAnnotationBatchImagesSuccessAction(images);
     }),
     catchError(error => new Observable(error))
   );

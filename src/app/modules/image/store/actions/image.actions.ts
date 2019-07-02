@@ -18,6 +18,7 @@ export class LoadImagesAction {
   constructor(public payload: string) {
   }
 }
+
 export class LoadImagesSuccessAction {
   readonly type = LOAD_IMAGES_SUCCESS;
 
@@ -25,20 +26,19 @@ export class LoadImagesSuccessAction {
   }
 }
 
-export class LoadIAnnotationBatchmagesAction {
+export class LoadAnnotationBatchImagesAction {
   readonly type = LOAD_ANNOTATION_IMAGE_BATCH;
 
   constructor(public payload: string) {
   }
 }
 
-export class LoadIAnnotationBatchmagesSuccessAction {
+export class LoadAnnotationBatchImagesSuccessAction {
   readonly type = LOAD_ANNOTATION_IMAGE_BATCH_SUCCESS;
 
   constructor(public payload: Image[]) {
   }
 }
-
 
 export class SaveImageAction {
   readonly type = SAVE_IMAGES;
@@ -90,9 +90,9 @@ export class PreviousImageAction {
   }
 }
 
-export type ImageActions = LoadImagesAction
-  | LoadIAnnotationBatchmagesAction
-  | LoadIAnnotationBatchmagesSuccessAction
+export type ImageActions = LoadAnnotationBatchImagesAction
+  | LoadAnnotationBatchImagesSuccessAction
+  | LoadImagesAction
   | LoadImagesSuccessAction
   | SaveImageAction
   | SaveImageSuccessAction

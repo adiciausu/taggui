@@ -14,6 +14,7 @@ export class ImageService extends AbstractService {
   }
 
   findBatch(projectId: string): Observable<Image[]> {
+    console.log('bat');
     let params = new HttpParams();
     params = params.set('projectId', projectId);
 
@@ -21,7 +22,7 @@ export class ImageService extends AbstractService {
   }
 
   save(image: Image): Observable<Image> {
-    return this.http.post<Image>(this.env.apiHost + '/image', image,);
+    return this.http.post<Image>(this.env.apiHost + '/image', image);
   }
 
   delete(imageId: string): Observable<string> {

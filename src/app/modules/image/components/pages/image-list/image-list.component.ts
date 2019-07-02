@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {DeleteImageAction, LoadImagesAction} from '../../../store/actions/image.actions';
 import {getImages} from '../../../store/selectors/image.selector';
 import {getSelectedProjectId} from '../../../../project/store/selectors/project.selector';
-import {AuthService} from "../../../../auth/service/auth.service";
+import {AuthService} from '../../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-image-list',
@@ -25,9 +25,11 @@ export class ImageListComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.selectedProjectId) {
+      this.store.dispatch(new LoadImagesAction(this.selectedProjectId));
+    }
     this.selectedProjectId$.subscribe((item: string) => {
       this.selectedProjectId = item;
-
       if (this.selectedProjectId) {
         this.store.dispatch(new LoadImagesAction(this.selectedProjectId));
       }

@@ -5,7 +5,6 @@ import {TableModule} from 'primeng/table';
 import {SharedModule} from '../../shared/shared.module';
 import {ImageService} from './service/image.service';
 import {FileUploadModule} from 'primeng/fileupload';
-import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
