@@ -13,6 +13,10 @@
         <p-listbox [options]="classes$ | async" [(ngModel)]="selectedClass" optionLabel="name"
                    [style]="{'width':'100%', 'border':'none','margin-top':'15px'}">
         </p-listbox>
+        <p></p>
+        <p-button styleClass="ui-button-primary" (click)="onSave()"
+                  label="Mark as completed">
+        </p-button>
       </div>
 
       <div>

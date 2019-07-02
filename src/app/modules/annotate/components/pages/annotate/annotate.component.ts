@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ClassService} from '../../../../class/service/class.service';
 import {Class} from '../../../../class/models/class.model';
 import {CanvasD3Component} from '../../../../canvas-d3/components/canvas-d3/canvas-d3.component';
-import {Image} from '../../../../image/models/image.model';
+import {Image, ImageStatus} from '../../../../image/models/image.model';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getImageBatchForAnnotating, getSelectedImage, getSelectedImageIndex} from '../../../../image/store/selectors/image.selector';
@@ -10,6 +10,7 @@ import {
   LoadAnnotationBatchImagesAction,
   NextImageAction,
   PreviousImageAction,
+  SaveImageAction,
   SelectImageAction
 } from '../../../../image/store/actions/image.actions';
 import {LoadClassesAction} from '../../../../class/store/actions/class.actions';
@@ -65,7 +66,6 @@ export class AnnotateComponent implements OnInit {
       }
       this.selectedProjectId = item;
       this.store.dispatch(new LoadClassesAction(this.selectedProjectId));
-      console.log(new LoadAnnotationBatchImagesAction(this.selectedProjectId));
       this.store.dispatch(new LoadAnnotationBatchImagesAction(this.selectedProjectId));
     });
 
@@ -78,6 +78,12 @@ export class AnnotateComponent implements OnInit {
         this.selectedClass = items[0];
       }
     });
+  }
+
+  onSave() {
+    this.selectedImage.status = ImageStatus.FINISHED;
+    this.store.dispatch(new SaveImageAction(this.selectedImage));
+    this.store.dispatch(new LoadAnnotationBatchImagesAction(this.selectedProjectId));
   }
 
   onSelectImage(event) {
