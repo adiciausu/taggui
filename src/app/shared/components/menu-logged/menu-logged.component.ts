@@ -38,7 +38,6 @@ export class MenuLoggedComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedProjectId$.subscribe((item) => {
-      console.log(item);
       this.selectedProjectId = item;
     });
     this.store.dispatch(new LoadProjectsAction());

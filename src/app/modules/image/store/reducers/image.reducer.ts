@@ -3,6 +3,7 @@ import {Image} from '../../models/image.model';
 import {
   DELETE_IMAGE_SUCCESS,
   ImageActions,
+  LOAD_ANNOTATION_IMAGE_BATCH_SUCCESS,
   LOAD_IMAGES_SUCCESS,
   NEXT_IMAGE,
   PREVIOUS_IMAGE,
@@ -15,6 +16,12 @@ import {ImageState, initialImageState} from '../state/image.state';
 export function imageReducer(state: ImageState = initialImageState, action: ImageActions): ImageState {
   switch (action.type) {
     case LOAD_IMAGES_SUCCESS:
+      return {
+        ...state,
+        images: action.payload
+      };
+
+    case LOAD_ANNOTATION_IMAGE_BATCH_SUCCESS:
       return {
         ...state,
         images: action.payload,

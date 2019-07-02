@@ -20,6 +20,7 @@ import {
 import {LoadClassesAction} from '../../../../class/store/actions/class.actions';
 import {getClasses} from '../../../../class/store/selectors/class.selector';
 import {getSelectedProjectId} from '../../../../project/store/selectors/project.selector';
+import {AuthService} from '../../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-annotate',
@@ -45,8 +46,10 @@ export class AnnotateComponent implements OnInit {
 
   @ViewChild(CanvasD3Component, {static: false}) canvasd3Component: CanvasD3Component;
 
-  constructor(private classService: ClassService, private store: Store<any>) {
-    this.images$ = this.store.pipe(select(getImageBatchForAnnotating,  ));
+  constructor(private classService: ClassService, private store: Store<any>, private authService: AuthService) {
+    const decodedJWT = this.authService.getDecodedJWT().sub;
+    const currentUserId = decodedJWT.sub;
+    this.images$ = this.store.pipe(select(getImageBatchForAnnotating,  currentUserId));
     this.selectedImage$ = this.store.pipe(select(getSelectedImage));
     this.selectedImageIndex$ = this.store.pipe(select(getSelectedImageIndex));
     this.classes$ = this.store.pipe(select(getClasses));

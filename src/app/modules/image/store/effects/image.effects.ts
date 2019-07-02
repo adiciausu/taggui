@@ -7,7 +7,7 @@ import {
   DELETE_IMAGE,
   DeleteImageAction,
   DeleteImageSuccessAction,
-  LOAD_IMAGES,
+  LOAD_IMAGES, LoadIAnnotationBatchmagesSuccessAction,
   LoadImagesAction,
   LoadImagesSuccessAction,
   SAVE_IMAGES,
@@ -26,6 +26,15 @@ export class ImageEffects {
     switchMap((action: LoadImagesAction) => this.imageService.findAll(action.payload)),
     map((images: Image[]) => {
       return new LoadImagesSuccessAction(images);
+    }),
+    catchError(error => new Observable(error))
+  );
+
+  @Effect() loadAnnotationBatchImages$ = this.actions$.pipe(
+    ofType(LOAD_IMAGES),
+    switchMap((action: LoadImagesAction) => this.imageService.findBatch(action.payload)),
+    map((images: Image[]) => {
+      return new LoadIAnnotationBatchmagesSuccessAction(images);
     }),
     catchError(error => new Observable(error))
   );

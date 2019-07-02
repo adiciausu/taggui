@@ -25,6 +25,7 @@
     "@ngrx/store-devtools": "^8.0.1",
     "@types/d3": "5.7.2",
     "d3": "5.8.2",
+    "jwt-decode": "^2.2.0",
     "lodash": "4.17.11",
     "ng2-logger": "2.0.48",
     "ngx-cookie-service": "^2.2.0",

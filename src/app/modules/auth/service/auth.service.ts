@@ -5,6 +5,7 @@ import {environment} from '../../../../environments/environment';
 import {User} from '../models/user.model';
 import {tap} from 'rxjs/operators';
 import {CookieService} from 'ngx-cookie-service';
+import * as jwtdecode from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
@@ -34,5 +35,15 @@ export class AuthService {
 
   getJWT(): string {
     return localStorage.getItem(this.TOKEN);
+  }
+
+  getDecodedJWT(): any {
+    try {
+      return jwtdecode(this.getJWT());
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
   }
 }

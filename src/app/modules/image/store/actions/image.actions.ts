@@ -2,6 +2,8 @@ import {Image} from '../../models/image.model';
 
 export const LOAD_IMAGES = '[Image] Load';
 export const LOAD_IMAGES_SUCCESS = '[Image] Load Success';
+export const LOAD_ANNOTATION_IMAGE_BATCH = '[Image] Load Annotation Batch';
+export const LOAD_ANNOTATION_IMAGE_BATCH_SUCCESS = '[Image] Load Annotation Batch Success';
 export const SAVE_IMAGES = '[Image] Save';
 export const SAVE_IMAGE_SUCCESS = '[Image] Save Success';
 export const DELETE_IMAGE = '[Image] Delete';
@@ -12,16 +14,31 @@ export const PREVIOUS_IMAGE = '[Image] Previous';
 
 export class LoadImagesAction {
   readonly type = LOAD_IMAGES;
+
   constructor(public payload: string) {
   }
 }
-
 export class LoadImagesSuccessAction {
   readonly type = LOAD_IMAGES_SUCCESS;
 
   constructor(public payload: Image[]) {
   }
 }
+
+export class LoadIAnnotationBatchmagesAction {
+  readonly type = LOAD_ANNOTATION_IMAGE_BATCH;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class LoadIAnnotationBatchmagesSuccessAction {
+  readonly type = LOAD_ANNOTATION_IMAGE_BATCH_SUCCESS;
+
+  constructor(public payload: Image[]) {
+  }
+}
+
 
 export class SaveImageAction {
   readonly type = SAVE_IMAGES;
@@ -74,6 +91,8 @@ export class PreviousImageAction {
 }
 
 export type ImageActions = LoadImagesAction
+  | LoadIAnnotationBatchmagesAction
+  | LoadIAnnotationBatchmagesSuccessAction
   | LoadImagesSuccessAction
   | SaveImageAction
   | SaveImageSuccessAction
