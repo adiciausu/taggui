@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpParams} from '@angular/common/http';
-import {Image} from '../models/image.model';
+import {Image, ImageStatus} from '../models/image.model';
 import {AbstractService} from '../../../core/service/abstract.service';
 
 @Injectable()
@@ -14,7 +14,6 @@ export class ImageService extends AbstractService {
   }
 
   findBatch(projectId: string): Observable<Image[]> {
-    console.log('bat');
     let params = new HttpParams();
     params = params.set('projectId', projectId);
 
@@ -27,5 +26,11 @@ export class ImageService extends AbstractService {
 
   delete(imageId: string): Observable<string> {
     return this.http.delete<string>(this.env.apiHost + '/image/' + imageId,);
+  }
+
+  markAnnotationComplete(image: Image, userId: string) {
+    image.status = ImageStatus.FINISHED;
+
+    return this.save(image);
   }
 }

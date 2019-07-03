@@ -14,4 +14,5 @@ export interface Image {
   annotations: { [className: string]: Annotation[] };
   status: ImageStatus;
   processorUserId: string;
+  projectId: string;
 }

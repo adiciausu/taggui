@@ -6,10 +6,17 @@ import {Observable} from 'rxjs';
 import {
   DELETE_IMAGE,
   DeleteImageAction,
-  DeleteImageSuccessAction, LOAD_ANNOTATION_IMAGE_BATCH,
-  LOAD_IMAGES, LoadAnnotationBatchImagesAction, LoadAnnotationBatchImagesSuccessAction,
+  DeleteImageSuccessAction,
+  LOAD_ANNOTATION_IMAGE_BATCH,
+  LOAD_IMAGES,
+  LoadAnnotationBatchImagesAction,
+  LoadAnnotationBatchImagesSuccessAction,
   LoadImagesAction,
   LoadImagesSuccessAction,
+  MARK_IMAGE_ANNOTATION_COMPLETE,
+  MARK_IMAGE_ANNOTATION_COMPLETE_SUCCESS,
+  MarkAnnotationComplete,
+  MarkAnnotationCompleteSucces,
   SAVE_IMAGES,
   SaveImageAction,
   SaveImageSuccessAction
@@ -43,6 +50,20 @@ export class ImageEffects {
     ofType(SAVE_IMAGES),
     switchMap((action: SaveImageAction) => this.imageService.save(action.payload)),
     map((image: Image) => new SaveImageSuccessAction(image)),
+    catchError(error => new Observable(error))
+  );
+
+  @Effect() markAnnotaionComplete$ = this.actions$.pipe(
+    ofType(MARK_IMAGE_ANNOTATION_COMPLETE),
+    switchMap((action: MarkAnnotationComplete) => this.imageService.markAnnotationComplete(action.payload)),
+    map((image: Image) => new LoadAnnotationBatchImagesAction(image.projectId)),
+    catchError(error => new Observable(error))
+  );
+
+  @Effect() fetchNewBatch$ = this.actions$.pipe(
+    ofType(MARK_IMAGE_ANNOTATION_COMPLETE_SUCCESS),
+    switchMap((action: MarkAnnotationCompleteSucces) => this.imageService.markAnnotationComplete(action.payload)),
+    map((image: Image) => new MarkAnnotationCompleteSucces(image)),
     catchError(error => new Observable(error))
   );
 

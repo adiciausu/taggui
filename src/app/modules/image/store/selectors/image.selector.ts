@@ -7,7 +7,8 @@ export const getImages = createSelector(getImagesState, (state: ImageState) => {
   return state.images;
 });
 export const getImageBatchForAnnotating = createSelector(getImagesState, (state: ImageState, props) => {
-  return state.images.filter((image: Image) => image.processorUserId === props.userId && ImageStatus[image.status] === ImageStatus.PROCESSING);
+  return state.images.filter(
+    (image: Image) => image.processorUserId === props.userId && ImageStatus[image.status] === ImageStatus.PROCESSING);
 });
 export const getSelectedImage = createSelector(getImagesState, (state: ImageState) => {
   return state.selectedImage;

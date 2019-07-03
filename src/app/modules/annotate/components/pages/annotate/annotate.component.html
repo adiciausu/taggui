@@ -14,7 +14,7 @@
                    [style]="{'width':'100%', 'border':'none','margin-top':'15px'}">
         </p-listbox>
         <p></p>
-        <p-button styleClass="ui-button-success" (click)="onSave()"
+        <p-button styleClass="ui-button-success" (click)="onMarkAnnotationComplete()"
                   label="Mark as completed">
         </p-button>
       </div>
@@ -53,7 +53,7 @@
                 class="ui-button-secondary"
                 style='font-size:80%;float:right;margin-top:0px;'></button>
       </div>
-      <p-listbox [options]="images$ | async" optionLabel="name"
+      <p-listbox [options]="images" optionLabel="name"
                  (onChange)="onSelectImage($event)"
                  [(ngModel)]="selectedImage"
                  [style]="{'width':'100%', 'border':'none', 'margin-top':'15px'}">

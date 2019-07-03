@@ -5,6 +5,8 @@ export const LOAD_IMAGES_SUCCESS = '[Image] Load Success';
 export const LOAD_ANNOTATION_IMAGE_BATCH = '[Image] Load Annotation Batch';
 export const LOAD_ANNOTATION_IMAGE_BATCH_SUCCESS = '[Image] Load Annotation Batch Success';
 export const SAVE_IMAGES = '[Image] Save';
+export const MARK_IMAGE_ANNOTATION_COMPLETE = '[Image] Annotation Complete';
+export const MARK_IMAGE_ANNOTATION_COMPLETE_SUCCESS = '[Image] Annotation Complete Success';
 export const SAVE_IMAGE_SUCCESS = '[Image] Save Success';
 export const DELETE_IMAGE = '[Image] Delete';
 export const DELETE_IMAGE_SUCCESS = '[Image] Delete Success';
@@ -39,6 +41,21 @@ export class LoadAnnotationBatchImagesSuccessAction {
   constructor(public payload: Image[]) {
   }
 }
+
+export class MarkAnnotationComplete {
+  readonly type = MARK_IMAGE_ANNOTATION_COMPLETE;
+
+  constructor(public payload: Image) {
+  }
+}
+
+export class MarkAnnotationCompleteSucces {
+  readonly type = MARK_IMAGE_ANNOTATION_COMPLETE_SUCCESS;
+
+  constructor(public payload: Image) {
+  }
+}
+
 
 export class SaveImageAction {
   readonly type = SAVE_IMAGES;
@@ -91,6 +108,8 @@ export class PreviousImageAction {
 }
 
 export type ImageActions = LoadAnnotationBatchImagesAction
+  | MarkAnnotationComplete
+  | MarkAnnotationCompleteSucces
   | LoadAnnotationBatchImagesSuccessAction
   | LoadImagesAction
   | LoadImagesSuccessAction
