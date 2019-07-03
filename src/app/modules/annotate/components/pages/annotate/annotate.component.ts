@@ -104,8 +104,9 @@ export class AnnotateComponent implements OnInit, OnDestroy {
   }
 
   onMarkAnnotationComplete() {
-    console.log('marke');
-    console.log(this.selectedImage);
+    if (!this.selectedImage) {
+      return;
+    }
     this.store.dispatch(new MarkAnnotationCompleteAction(this.selectedImage));
   }
 

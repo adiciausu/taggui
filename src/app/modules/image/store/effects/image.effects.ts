@@ -56,7 +56,6 @@ export class ImageEffects {
   @Effect() markAnnotaionComplete$ = this.actions$.pipe(
     ofType(MARK_IMAGE_ANNOTATION_COMPLETE),
     switchMap((action: MarkAnnotationCompleteAction) => {
-      console.log(action);
       return this.imageService.markAnnotationComplete(action.payload);
     }),
     map((image: Image) => new MarkAnnotationCompleteSuccesAction(image)),
