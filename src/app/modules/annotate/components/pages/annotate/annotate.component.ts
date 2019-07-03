@@ -8,7 +8,7 @@ import {select, Store} from '@ngrx/store';
 import {getImageBatchForAnnotating, getSelectedImage} from '../../../../image/store/selectors/image.selector';
 import {
   LoadAnnotationBatchImagesAction,
-  MarkAnnotationComplete,
+  MarkAnnotationCompleteAction,
   NextImageAction,
   PreviousImageAction,
   SaveImageAction,
@@ -64,10 +64,6 @@ export class AnnotateComponent implements OnInit, OnDestroy {
     this.classes$ = this.store.pipe(select(getClasses));
     this.selectedProjectId$ = this.store.pipe(select(getSelectedProjectId));
 
-    this.cici = this.images$.subscribe((item) => {
-      this.images = item;
-      console.log(item);
-    });
     this.imageSubscription = this.selectedImage$.subscribe((item: Image) => {
       this.selectedImage = item;
     });
@@ -98,11 +94,9 @@ export class AnnotateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('onDestory');
     this.imageSubscription.unsubscribe();
     this.projectIdSubscription.unsubscribe();
     this.classSubscription.unsubscribe();
-    this.cici.unsubscribe();
   }
 
   onSave() {
@@ -111,7 +105,8 @@ export class AnnotateComponent implements OnInit, OnDestroy {
 
   onMarkAnnotationComplete() {
     console.log('marke');
-    this.store.dispatch(new MarkAnnotationComplete(this.selectedImage));
+    console.log(this.selectedImage);
+    this.store.dispatch(new MarkAnnotationCompleteAction(this.selectedImage));
   }
 
   onSelectImage(event) {

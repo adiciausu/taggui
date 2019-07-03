@@ -28,7 +28,8 @@ export class ImageService extends AbstractService {
     return this.http.delete<string>(this.env.apiHost + '/image/' + imageId,);
   }
 
-  markAnnotationComplete(image: Image, userId: string) {
+  markAnnotationComplete(image: Image) {
+    console.log('makr')
     image.status = ImageStatus.FINISHED;
 
     return this.save(image);

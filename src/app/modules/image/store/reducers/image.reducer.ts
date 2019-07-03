@@ -22,13 +22,6 @@ export function imageReducer(state: ImageState = initialImageState, action: Imag
       };
 
     case LOAD_ANNOTATION_IMAGE_BATCH_SUCCESS:
-      console.log(action.payload);
-      console.log({
-        ...state,
-        images: action.payload,
-        selectedImage: action.payload[0] ? action.payload[0] : null,
-        selectedImageIndex: action.payload[0] ? 0 : null
-      });
       return {
         ...state,
         images: action.payload,

@@ -42,14 +42,14 @@ export class LoadAnnotationBatchImagesSuccessAction {
   }
 }
 
-export class MarkAnnotationComplete {
+export class MarkAnnotationCompleteAction {
   readonly type = MARK_IMAGE_ANNOTATION_COMPLETE;
 
   constructor(public payload: Image) {
   }
 }
 
-export class MarkAnnotationCompleteSucces {
+export class MarkAnnotationCompleteSuccesAction {
   readonly type = MARK_IMAGE_ANNOTATION_COMPLETE_SUCCESS;
 
   constructor(public payload: Image) {
@@ -108,8 +108,8 @@ export class PreviousImageAction {
 }
 
 export type ImageActions = LoadAnnotationBatchImagesAction
-  | MarkAnnotationComplete
-  | MarkAnnotationCompleteSucces
+  | MarkAnnotationCompleteAction
+  | MarkAnnotationCompleteSuccesAction
   | LoadAnnotationBatchImagesSuccessAction
   | LoadImagesAction
   | LoadImagesSuccessAction
