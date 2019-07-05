@@ -16,7 +16,6 @@ import {catchError, map, switchMap} from 'rxjs/operators';
 import {Project} from '../../model/project.model';
 import {Observable} from 'rxjs';
 
-
 @Injectable()
 export class ProjectEffects {
 
