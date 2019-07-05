@@ -1,9 +1,9 @@
 import {Annotation} from '../../canvas-d3/model/annotation.model';
 
 export enum ImageStatus {
-  PROCESSING,
-  FINISHED,
-  PENDING
+  PROCESSING = 'PROCESSING',
+  FINISHED = 'FINISHED',
+  PENDING = 'PENDING'
 }
 
 export interface Image {

@@ -26,7 +26,6 @@ import {AuthService} from '../../../../auth/service/auth.service';
 })
 export class AnnotateComponent implements OnInit, OnDestroy {
   images$: Observable<Image[]>;
-  images: Image[];
   selectedImage$: Observable<Image>;
   selectedImage: Image;
   classes$: Observable<Class[]>;
