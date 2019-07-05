@@ -83,6 +83,13 @@ export class CanvasD3Component implements OnInit {
     const index = this.getClassIndex(clazz);
     this.drawRectangle(x, y, width, height, clazz, index);
 
+    if (x < 0) {
+      x = 0; // in case annotation is out of bounds, consider it at origin
+    }
+
+    if (y < 0) {
+      y = 0;
+    }
     const ann: Annotation = {
       shape: Shape.RECTANGLE,
       points: [
