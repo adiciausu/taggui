@@ -43,9 +43,19 @@ export function projectReducer(state: ProjectState = initialProjectState, action
         return project.id !== action.payload;
       });
 
+      let newSelectedProjectId = state.selectedProjectId;
+      if (action.payload === state.selectedProjectId) {
+        if (projectListAfterDelete.length) {
+          newSelectedProjectId = projectListAfterDelete[0].id;
+        } else {
+          newSelectedProjectId = null;
+        }
+      }
+
       return {
         ...state,
-        projects: projectListAfterDelete
+        projects: projectListAfterDelete,
+        selectedProjectId: newSelectedProjectId
       };
     case SELECT_PROJECT:
       return {

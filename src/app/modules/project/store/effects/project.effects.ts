@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Injectable} from '@angular/core';
 import {ProjectService} from '../../service/project.service';
 import {
-  DELETE_PROJECT,
+  DELETE_PROJECT, DELETE_PROJECT_SUCCESS,
   DeleteProjectAction,
   DeleteProjectSuccessAction,
   LOAD_PROJECTS,
@@ -40,6 +40,15 @@ export class ProjectEffects {
     ofType(DELETE_PROJECT),
     switchMap((action: DeleteProjectAction) => this.projectService.delete(action.payload)),
     map((id: string) => new DeleteProjectSuccessAction(id)),
+    catchError(error => new Observable(error))
+  );
+
+  @Effect() deleteProjectSuccess$ = this.actions$.pipe(
+    ofType(DELETE_PROJECT_SUCCESS),
+    map((action: DeleteProjectSuccessAction) => {
+      // Should have used https://redux.js.org/api/combinereducers but who got time for that? I was young, i needed the money...
+      window.location.reload();
+    }),
     catchError(error => new Observable(error))
   );
 
